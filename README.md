@@ -10,3 +10,6 @@ B팀의 서버 개발자로 참여했습니다.
 + 개발 기획안 작성 및 제출
 + Github 연동
 + gitignore 파일 생성 (Android, Android Studio)
+
+## Issues
+
