@@ -8,4 +8,5 @@ B팀의 서버 개발자로 참여했습니다.
 ## Progress
 ### 2021-08-14 진행상황
 + 개발 기획안 작성 및 제출
-+ Github 
++ Github 연동
++ gitignore 파일 생성 (Android, Android Studio)
