@@ -38,8 +38,8 @@ public class UserService {
     //POST
     public PostUserRes createUser(PostUserReq postUserReq) throws BaseException {
         //중복
-        if(userProvider.checkEmail(postUserReq.getEmail()) ==1){
-            throw new BaseException(POST_USERS_EXISTS_EMAIL);
+        if(userProvider.checkID(postUserReq.getUserID()) ==1){
+            throw new BaseException(POST_USERS_EXISTS_ID);
         }
 
         String pwd;
@@ -50,14 +50,14 @@ public class UserService {
         } catch (Exception ignored) {
             throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
         }
-        try{
-            int userIdx = userDao.createUser(postUserReq);
+//        try{
+            int userInfoIdx = userDao.createUser(postUserReq);
             //jwt 발급.
-            String jwt = jwtService.createJwt(userIdx);
-            return new PostUserRes(jwt,userIdx);
-        } catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
-        }
+            String jwt = jwtService.createJwt(userInfoIdx);
+            return new PostUserRes(jwt,userInfoIdx);
+//        } catch (Exception exception) {
+//            throw new BaseException(DATABASE_ERROR);
+//        }
     }
 
     public void modifyUserName(PatchUserReq patchUserReq) throws BaseException {

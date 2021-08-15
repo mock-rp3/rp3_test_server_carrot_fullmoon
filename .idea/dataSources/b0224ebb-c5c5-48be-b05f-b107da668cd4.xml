@@ -1314,33 +1314,37 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <key id="338" parent="287" name="PRIMARY">
+    <column id="338" parent="287" name="authJwt">
+      <Position>10</Position>
+      <DataType>text|0s</DataType>
+    </column>
+    <key id="339" parent="287" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>userInfoIdx</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="339" parent="288" name="userVarIdx">
+    <column id="340" parent="288" name="userVarIdx">
       <Position>1</Position>
       <Comment>유저 정보 식별자</Comment>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="340" parent="288" name="status">
+    <column id="341" parent="288" name="status">
       <Position>2</Position>
       <Comment>유저 정보 상태</Comment>
       <DataType>varchar(15)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;normal&apos;</DefaultExpression>
     </column>
-    <column id="341" parent="288" name="createdAt">
+    <column id="342" parent="288" name="createdAt">
       <Position>3</Position>
       <Comment>유저 정보 등록 일시</Comment>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
     </column>
-    <column id="342" parent="288" name="updatedAt">
+    <column id="343" parent="288" name="updatedAt">
       <Position>4</Position>
       <Comment>유저 정보 수정 일시</Comment>
       <DataType>timestamp|0s</DataType>
@@ -1348,7 +1352,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
     </column>
-    <column id="343" parent="288" name="lastLogin">
+    <column id="344" parent="288" name="lastLogin">
       <Position>5</Position>
       <Comment>유저 로그인 일시</Comment>
       <DataType>timestamp|0s</DataType>
@@ -1356,43 +1360,43 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
     </column>
-    <column id="344" parent="288" name="mannerGrade">
+    <column id="345" parent="288" name="mannerGrade">
       <Position>6</Position>
       <Comment>매너온도</Comment>
       <DataType>decimal(3,1 digit)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>36.5</DefaultExpression>
     </column>
-    <column id="345" parent="288" name="ratioRetrade">
+    <column id="346" parent="288" name="ratioRetrade">
       <Position>7</Position>
       <Comment>재거래희망률</Comment>
       <DataType>decimal(4,1 digit)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>100.0</DefaultExpression>
     </column>
-    <column id="346" parent="288" name="ratioResponse">
+    <column id="347" parent="288" name="ratioResponse">
       <Position>8</Position>
       <Comment>응답률</Comment>
       <DataType>decimal(4,1 digit)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>100.0</DefaultExpression>
     </column>
-    <column id="347" parent="288" name="userInfoId">
+    <column id="348" parent="288" name="userInfoId">
       <Position>9</Position>
       <Comment>유저 식별자 fk</Comment>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="348" parent="288" name="FK_UserVar_userInfoId_UserInfo_userInfoIdx">
+    <index id="349" parent="288" name="FK_UserVar_userInfoId_UserInfo_userInfoIdx">
       <ColNames>userInfoId</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="349" parent="288" name="PRIMARY">
+    <key id="350" parent="288" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>userVarIdx</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="350" parent="288" name="FK_UserVar_userInfoId_UserInfo_userInfoIdx">
+    <foreign-key id="351" parent="288" name="FK_UserVar_userInfoId_UserInfo_userInfoIdx">
       <ColNames>userInfoId</ColNames>
       <RefTableName>UserInfo</RefTableName>
       <RefColNames>userInfoIdx</RefColNames>
