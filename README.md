@@ -8,6 +8,7 @@ B팀의 서버 개발자로 참여했습니다.
 ## Planning
 ### 2021-08-14 회의
 https://docs.google.com/document/d/1iK6TaV5BXOXLn7x_N5avh8IvKkrzLpgXpGJPgib4gC4/edit?usp=sharing
+
 클라이언트 개발자와의 기획 회의에 따라 프로젝트 진행 기간인 2주간 유저 회원가입 및 로그인, 상품 조회 및 등록, 검색, 카테고리, 채팅, 동네인증 등의 기능을 개발키로 했습니다.
 1주차 피드백(2021.08.17)까지 작업할 기능은 다음과 같습니다.
 + AWS EC2 인스턴스 구축
