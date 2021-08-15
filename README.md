@@ -41,3 +41,8 @@ https://docs.google.com/document/d/1iK6TaV5BXOXLn7x_N5avh8IvKkrzLpgXpGJPgib4gC4/
 > 해결을 위해 시행한 방법들
 1. Nginx와 php-fpm 재시작 -> 해결되지 않음. nginx 문제없이 running 되고 있는 것 확인
 
+### Github Repository not found 이슈 (2021.08.15)
+github에 push 및 pull이 되지 않으며 repository를 찾지 못하는 이슈 발생
+> 해결 
+
+git fetch 명령어로 전체 내용 받아온 뒤 reset --hard를 통해 복구
