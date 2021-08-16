@@ -57,18 +57,35 @@ Password : hwy7f2
 + 로그인 API 개발
 + ERD 설계 (Chat, Keyword, Product, Region, Wish Table 설계)
 + API 명세서 설계 (상품 게시글 API, 채팅 API, 동네생활 API 명세 설계)
-
-
-
++ 상품 조회 API 개발
 
 ## ⚠️ Issues
 ### Nginx 서버 502 이슈 (2021.08.15)
 서버에서 502 bad gateway 에러 발생
-> 해결을 위해 시행한 방법들
+> 해결 과정
 1. Nginx와 php-fpm 재시작 -> 해결되지 않음. nginx 문제없이 running 되고 있는 것 확인
-2. 기존 네임서버에 AWS Route 53 서비스만 연결했으나 가비아 전체 네임서버도 추가 -> Route 53 레코드 테스트는 통과하나 브라우저에서 접속시 ERR_CONNECTION_TIMED_OUT 에러 발생 
+2. 기존 네임서버에 AWS Route 53 서비스만 연결했으나 가비아 전체 네임서버도 추가 -> Route 53 레코드 테스트는 통과하나 브라우저에서 접속시 ```ERR_CONNECTION_TIMED_OUT``` 에러 발생
+-> 일정 시간 후 접속 가능해짐, 가비아 내부의 네임서버 적용 딜레이 문제로 보임 (해결)
 
 ### Github Repository not found 이슈 (2021.08.15)
 github에 push 및 pull이 되지 않으며 repository를 찾지 못하는 이슈 발생
-> 해결 
-+ git fetch 명령어로 전체 내용 받아온 뒤 reset --hard를 통해 복구
+> 해결 과정
++ git fetch 명령어로 전체 내용 받아온 뒤 ```reset --hard```를 통해 복구 (해결)
+
+### 서브 도메인 적용 이슈 (2021.08.16)
+서브 도메인 접속 시 ```ERR_CONNECTION_TIMED_OUT``` 에러 발생 
+> 해결 과정 
+
+### certbot 적용 실패 이슈 (2021.08.16)
+certbot 적용시 실패하는 이슈가 발생 
+> 해결 과정 
+1. 기존 repository로 certbot 저장소를 만드는 방식에서 install 방식으로 업데이트 됨 -> apt-get으로 certbot 설치
+2. ```[emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)``` 이슈 발생
+<br/> 
+   80포트를 이미 사용 중이라 서버 구동이 불가능한 이슈로 ubuntu 20.04에서 종종 나타나는 현상 -> 
+   1. default sites-available file에서
+   ```listen [::]:80 default_server;```를 ```listen [::]:80 ipv6only=on default_server;```로 변경,
+   ipv6 주소 아이피만 사용하도록 함 -> 해결 안 됨
+   2. webroot가 아닌 standalone 방식으로 authentication 취득하기로 결정
+   3. standalone 방식 선택 -> ssl 적용 성공 로그 뜸, 그러나 서버 접속 시 ```ERR_CONNECTION_REFUSED```, 사이트에 연결할 수 없음. 
+3. ```Certbot Error 13 Permission denied: ‘/etc/letsencrypt’``` 권한 이슈 -> sudo 명령어로 (해결)
