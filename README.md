@@ -2,13 +2,10 @@
 
 ## 💡 Introduction
 
-> 라이징 프로그래머 3 교육 프로그램에서 진행하는 실전 프로젝트에서 개발한 당근마켓 클론 버전의 개발 일지입니다. 
-B팀의 서버 개발자로 참여했습니다.
+라이징 프로그래머 3 교육 프로그램에서 진행하는 실전 프로젝트에서 개발한 당근마켓 클론 버전의 개발 일지입니다. <br/>
+2021.8.14부터 2021.8.27까지 B팀의 서버 개발자로 참여했습니다.
 
-## 🖋 Planning
-### 2021-08-14 회의
-
-> 회의록 
+> 기획서 
 
 https://docs.google.com/document/d/1iK6TaV5BXOXLn7x_N5avh8IvKkrzLpgXpGJPgib4gC4/edit?usp=sharing
 
@@ -16,7 +13,15 @@ https://docs.google.com/document/d/1iK6TaV5BXOXLn7x_N5avh8IvKkrzLpgXpGJPgib4gC4/
 
 https://docs.google.com/spreadsheets/d/1AN8mMcLtqntN6YwmVyS9J1ptAL1yD-AK/edit#gid=446451871
 
-클라이언트 개발자와의 기획 회의에 따라 프로젝트 진행 기간인 2주간 유저 회원가입 및 로그인, 상품 조회 및 등록, 검색, 카테고리, 채팅, 동네인증 등의 기능을 개발키로 했습니다.
+> ERD 
+
+URL : https://aquerytool.com/aquerymain/index/?rurl=b5559ea5-4879-437d-8209-0d7d4b3f3a84& <br/>
+Password : hwy7f2
+
+## 🖋 Meeting
+### 2021-08-14 회의
+
+클라이언트 개발자와의 기획 회의에 따라 프로젝트 진행 기간인 2주간 유저 회원가입 및 로그인, 상품 조회 및 등록, 검색, 카테고리, 채팅, 동네인증 등의 기능을 개발키로 했습니다. <br/>
 1주차 피드백(2021.08.17)까지 작업할 기능은 다음과 같습니다.
 + AWS EC2 인스턴스 구축
 + AWS RDS 데이터베이스 구축
@@ -46,6 +51,8 @@ https://docs.google.com/spreadsheets/d/1AN8mMcLtqntN6YwmVyS9J1ptAL1yD-AK/edit#gi
 
 ### 2021-08-16 진행상황
 + 로그인 API 개발
++ ERD 설계 (Chat, Keyword, Product, Region, Wish Table 설계)
+
 
 
 ## ⚠️ Issues
