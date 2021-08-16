@@ -7,7 +7,14 @@ B팀의 서버 개발자로 참여했습니다.
 
 ## 🖋 Planning
 ### 2021-08-14 회의
+
+> 회의록 
+
 https://docs.google.com/document/d/1iK6TaV5BXOXLn7x_N5avh8IvKkrzLpgXpGJPgib4gC4/edit?usp=sharing
+
+> API 명세서
+
+https://docs.google.com/spreadsheets/d/1AN8mMcLtqntN6YwmVyS9J1ptAL1yD-AK/edit#gid=446451871
 
 클라이언트 개발자와의 기획 회의에 따라 프로젝트 진행 기간인 2주간 유저 회원가입 및 로그인, 상품 조회 및 등록, 검색, 카테고리, 채팅, 동네인증 등의 기능을 개발키로 했습니다.
 1주차 피드백(2021.08.17)까지 작업할 기능은 다음과 같습니다.
@@ -34,6 +41,12 @@ https://docs.google.com/document/d/1iK6TaV5BXOXLn7x_N5avh8IvKkrzLpgXpGJPgib4gC4/
 + ERD 설계 (10% - User Table 설계)
 + dev/prod 서브도메인 서버 구축 (70% - 구축했으나 502 이슈 발생)
 + SSL 적용 (60% - 적용했으나 502 이슈 발생)
++ 회원가입 API 개발
++ 로컬호스트 서버 외부 연결 (ngrok 사용)
+
+### 2021-08-16 진행상황
++ 로그인 API 개발
+
 
 ## ⚠️ Issues
 ### Nginx 서버 502 이슈 (2021.08.15)
@@ -44,5 +57,4 @@ https://docs.google.com/document/d/1iK6TaV5BXOXLn7x_N5avh8IvKkrzLpgXpGJPgib4gC4/
 ### Github Repository not found 이슈 (2021.08.15)
 github에 push 및 pull이 되지 않으며 repository를 찾지 못하는 이슈 발생
 > 해결 
-
-git fetch 명령어로 전체 내용 받아온 뒤 reset --hard를 통해 복구
++ git fetch 명령어로 전체 내용 받아온 뒤 reset --hard를 통해 복구

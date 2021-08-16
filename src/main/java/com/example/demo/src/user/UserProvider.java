@@ -2,6 +2,7 @@ package com.example.demo.src.user;
 
 
 import com.example.demo.config.BaseException;
+import com.example.demo.config.BaseResponse;
 import com.example.demo.config.secret.Secret;
 import com.example.demo.src.user.model.*;
 import com.example.demo.utils.AES128;
@@ -11,6 +12,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
@@ -69,24 +76,19 @@ public class UserProvider {
         }
     }
 
-    public PostLoginRes logIn(PostLoginReq postLoginReq) throws BaseException{
+    public PostLoginRes logIn(PostLoginReq postLoginReq) throws BaseException {
         User user = userDao.getPwd(postLoginReq);
         String password;
+        int no = userDao.getPwd(postLoginReq).getUserInfoIdx();
+        String jwt = jwtService.createJwt(no);
+
         try {
             password = new AES128(Secret.USER_INFO_PASSWORD_KEY).decrypt(user.getPassword());
+            return new PostLoginRes(no, jwt);
+
         } catch (Exception ignored) {
             throw new BaseException(PASSWORD_DECRYPTION_ERROR);
         }
-
-        if(postLoginReq.getPassword().equals(password)){
-            int userIdx = userDao.getPwd(postLoginReq).getUserIdx();
-            String jwt = jwtService.createJwt(userIdx);
-            return new PostLoginRes(userIdx,jwt);
-        }
-        else{
-            throw new BaseException(FAILED_TO_LOGIN);
-        }
-
     }
 
 }

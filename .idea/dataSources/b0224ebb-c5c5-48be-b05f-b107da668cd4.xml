@@ -1297,7 +1297,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
     <column id="335" parent="287" name="password">
       <Position>7</Position>
       <Comment>비밀번호</Comment>
-      <DataType>varchar(25)|0s</DataType>
+      <DataType>varchar(55)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;carrotuser&apos;</DefaultExpression>
     </column>
