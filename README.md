@@ -33,6 +33,10 @@ Password : hwy7f2
 + 자동로그인 적용
 + 메인화면 게시글 조회 API 개발
 
+### 2021-08-15 논의 
+
+자동로그인 기능의 난이도가 높다 판단하여 개발순위를 뒤로 미루고 메인 화면 API를 먼저 개발키로 함.
+
 ## 👩🏻‍💻 Progress
 ### 2021-08-14 진행상황
 + 개발 기획안 작성 및 제출
@@ -52,6 +56,8 @@ Password : hwy7f2
 ### 2021-08-16 진행상황
 + 로그인 API 개발
 + ERD 설계 (Chat, Keyword, Product, Region, Wish Table 설계)
++ API 명세서 설계 (상품 게시글 API, 채팅 API, 동네생활 API 명세 설계)
+
 
 
 
@@ -60,6 +66,7 @@ Password : hwy7f2
 서버에서 502 bad gateway 에러 발생
 > 해결을 위해 시행한 방법들
 1. Nginx와 php-fpm 재시작 -> 해결되지 않음. nginx 문제없이 running 되고 있는 것 확인
+2. 기존 네임서버에 AWS Route 53 서비스만 연결했으나 가비아 전체 네임서버도 추가 -> Route 53 레코드 테스트는 통과하나 브라우저에서 접속시 ERR_CONNECTION_TIMED_OUT 에러 발생 
 
 ### Github Repository not found 이슈 (2021.08.15)
 github에 push 및 pull이 되지 않으며 repository를 찾지 못하는 이슈 발생
