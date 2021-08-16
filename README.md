@@ -17,7 +17,7 @@ https://docs.google.com/spreadsheets/d/1AN8mMcLtqntN6YwmVyS9J1ptAL1yD-AK/edit#gi
 
 URL : https://aquerytool.com/aquerymain/index/?rurl=b5559ea5-4879-437d-8209-0d7d4b3f3a84& <br/>
 Password : hwy7f2
-
+  
 ## 🖋 Meeting
 ### 2021-08-14 회의
 
