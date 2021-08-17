@@ -88,4 +88,13 @@ certbot 적용시 실패하는 이슈가 발생
    ipv6 주소 아이피만 사용하도록 함 -> 해결 안 됨
    2. webroot가 아닌 standalone 방식으로 authentication 취득하기로 결정
    3. standalone 방식 선택 -> ssl 적용 성공 로그 뜸, 그러나 서버 접속 시 ```ERR_CONNECTION_REFUSED```, 사이트에 연결할 수 없음. 
+   4. 인바운드 규칙에 HTTPS 443 포트 추가 -> 해결 안 됨 
+   5. ```sudo /etc/init.d/apache2 stop```로 Apache 2 중지 시켜서 해결 -> 502 Bad Gateway 발생
+   6. 에러 로그에서 ```*20 connect() failed (111: Connection refused) while connecting to upstream, client: 39.17.3.115, server: www.devjiyoon.shop, request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:9000/", host: "dev.devjiyoon.shop"```
+      로그 확인
+   7. 로컬 저장소의 git 히스토리 삭제 및 초기화 -> 해결 안 됨
+   8. ```The repository 'http://ppa.launchpad.net/certbot/certbot/ubuntu focal Release' does not have a Release file.```
+   로그 발견, certbot과 관련된 repository가 depricated되었음 -> ```sudo apt-add-repository -r ppa:certbot/certbot```로 ppa repository 삭제 -> 로그 더 이상 뜨지 않음
+   9. nginx와 apache의 충돌 문제일 수도 있다고 판단, apache2 웹서버 삭제 -> 해결 안 됨 
+   10. php-fpm 재설치 -> 메인 서버는 작동하나 SSL 적용 안 됨, dev/prod 서버는 502 에러 발생하나 SSL 적용됨
 3. ```Certbot Error 13 Permission denied: ‘/etc/letsencrypt’``` 권한 이슈 -> sudo 명령어로 (해결)
