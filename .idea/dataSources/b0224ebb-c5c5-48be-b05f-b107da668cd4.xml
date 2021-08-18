@@ -1404,12 +1404,11 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
     </column>
-    <column id="357" parent="289" name="regionName">
+    <column id="357" parent="289" name="userInfoId">
       <Position>5</Position>
-      <Comment>동네 이름</Comment>
-      <DataType>varchar(10)|0s</DataType>
+      <Comment>유저 식별자 fk</Comment>
+      <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
-      <DefaultExpression>&apos;carrottown&apos;</DefaultExpression>
     </column>
     <column id="358" parent="289" name="regionLatitude">
       <Position>6</Position>
@@ -1439,48 +1438,61 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <NotNull>1</NotNull>
       <DefaultExpression>0</DefaultExpression>
     </column>
-    <column id="362" parent="289" name="userInfoId">
+    <column id="362" parent="289" name="regionNameCity">
       <Position>10</Position>
-      <Comment>유저 식별자 fk</Comment>
-      <DataType>int|0s</DataType>
+      <DataType>varchar(10)|0s</DataType>
       <NotNull>1</NotNull>
+      <DefaultExpression>&apos;서울시&apos;</DefaultExpression>
     </column>
-    <index id="363" parent="289" name="FK_Region_userInfoId_UserInfo_userInfoIdx">
+    <column id="363" parent="289" name="regionNameGu">
+      <Position>11</Position>
+      <DataType>varchar(10)|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;광진구&apos;</DefaultExpression>
+    </column>
+    <column id="364" parent="289" name="regionNameTown">
+      <Position>12</Position>
+      <Comment>동네 이름</Comment>
+      <DataType>varchar(10)|0s</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;중곡동&apos;</DefaultExpression>
+    </column>
+    <index id="365" parent="289" name="FK_Region_userInfoId_UserInfo_userInfoIdx">
       <ColNames>userInfoId</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="364" parent="289" name="PRIMARY">
+    <key id="366" parent="289" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>regionIdx</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="365" parent="289" name="FK_Region_userInfoId_UserInfo_userInfoIdx">
+    <foreign-key id="367" parent="289" name="FK_Region_userInfoId_UserInfo_userInfoIdx">
       <ColNames>userInfoId</ColNames>
       <RefTableName>UserInfo</RefTableName>
       <RefColNames>userInfoIdx</RefColNames>
     </foreign-key>
-    <column id="366" parent="290" name="userInfoIdx">
+    <column id="368" parent="290" name="userInfoIdx">
       <Position>1</Position>
       <Comment>유저 식별자</Comment>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="367" parent="290" name="status">
+    <column id="369" parent="290" name="status">
       <Position>2</Position>
       <Comment>noramal: 정상, deleted: 탈퇴, reported: 신고</Comment>
       <DataType>varchar(15)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;normal&apos;</DefaultExpression>
     </column>
-    <column id="368" parent="290" name="createdAt">
+    <column id="370" parent="290" name="createdAt">
       <Position>3</Position>
       <Comment>유저 등록 일시</Comment>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
     </column>
-    <column id="369" parent="290" name="updatedAt">
+    <column id="371" parent="290" name="updatedAt">
       <Position>4</Position>
       <Comment>유저 수정 일시</Comment>
       <DataType>timestamp|0s</DataType>
@@ -1488,71 +1500,70 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
     </column>
-    <column id="370" parent="290" name="phoneNumber">
+    <column id="372" parent="290" name="phoneNumber">
       <Position>5</Position>
       <Comment>유저 전화번호</Comment>
       <DataType>varchar(15)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;11111111111&apos;</DefaultExpression>
     </column>
-    <column id="371" parent="290" name="userID">
+    <column id="373" parent="290" name="userID">
       <Position>6</Position>
       <Comment>아이디</Comment>
       <DataType>varchar(15)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;carrotuser&apos;</DefaultExpression>
     </column>
-    <column id="372" parent="290" name="password">
+    <column id="374" parent="290" name="password">
       <Position>7</Position>
       <Comment>비밀번호</Comment>
-      <DataType>varchar(35)|0s</DataType>
+      <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
-      <DefaultExpression>&apos;carrotuser&apos;</DefaultExpression>
     </column>
-    <column id="373" parent="290" name="nickname">
+    <column id="375" parent="290" name="nickname">
       <Position>8</Position>
       <Comment>닉네임</Comment>
       <DataType>varchar(15)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;carrotuser&apos;</DefaultExpression>
     </column>
-    <column id="374" parent="290" name="profileImageUrl">
+    <column id="376" parent="290" name="profileImageUrl">
       <Position>9</Position>
       <Comment>프로필 이미지 URL</Comment>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="375" parent="290" name="authJwt">
+    <column id="377" parent="290" name="authJwt">
       <Position>10</Position>
       <DataType>text|0s</DataType>
     </column>
-    <key id="376" parent="290" name="PRIMARY">
+    <key id="378" parent="290" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>userInfoIdx</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="377" parent="291" name="userVarIdx">
+    <column id="379" parent="291" name="userVarIdx">
       <Position>1</Position>
       <Comment>유저 정보 식별자</Comment>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="378" parent="291" name="status">
+    <column id="380" parent="291" name="status">
       <Position>2</Position>
       <Comment>유저 정보 상태</Comment>
       <DataType>varchar(15)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;normal&apos;</DefaultExpression>
     </column>
-    <column id="379" parent="291" name="createdAt">
+    <column id="381" parent="291" name="createdAt">
       <Position>3</Position>
       <Comment>유저 정보 등록 일시</Comment>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
     </column>
-    <column id="380" parent="291" name="updatedAt">
+    <column id="382" parent="291" name="updatedAt">
       <Position>4</Position>
       <Comment>유저 정보 수정 일시</Comment>
       <DataType>timestamp|0s</DataType>
@@ -1560,7 +1571,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
     </column>
-    <column id="381" parent="291" name="lastLogin">
+    <column id="383" parent="291" name="lastLogin">
       <Position>5</Position>
       <Comment>유저 로그인 일시</Comment>
       <DataType>timestamp|0s</DataType>
@@ -1568,69 +1579,69 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
     </column>
-    <column id="382" parent="291" name="mannerGrade">
+    <column id="384" parent="291" name="mannerGrade">
       <Position>6</Position>
       <Comment>매너온도</Comment>
       <DataType>decimal(3,1 digit)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>36.5</DefaultExpression>
     </column>
-    <column id="383" parent="291" name="ratioRetrade">
+    <column id="385" parent="291" name="ratioRetrade">
       <Position>7</Position>
       <Comment>재거래희망률</Comment>
       <DataType>decimal(4,1 digit)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>100.0</DefaultExpression>
     </column>
-    <column id="384" parent="291" name="ratioResponse">
+    <column id="386" parent="291" name="ratioResponse">
       <Position>8</Position>
       <Comment>응답률</Comment>
       <DataType>decimal(4,1 digit)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>100.0</DefaultExpression>
     </column>
-    <column id="385" parent="291" name="userInfoId">
+    <column id="387" parent="291" name="userInfoId">
       <Position>9</Position>
       <Comment>유저 식별자 fk</Comment>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="386" parent="291" name="FK_UserVar_userInfoId_UserInfo_userInfoIdx">
+    <index id="388" parent="291" name="FK_UserVar_userInfoId_UserInfo_userInfoIdx">
       <ColNames>userInfoId</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="387" parent="291" name="PRIMARY">
+    <key id="389" parent="291" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>userVarIdx</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="388" parent="291" name="FK_UserVar_userInfoId_UserInfo_userInfoIdx">
+    <foreign-key id="390" parent="291" name="FK_UserVar_userInfoId_UserInfo_userInfoIdx">
       <ColNames>userInfoId</ColNames>
       <RefTableName>UserInfo</RefTableName>
       <RefColNames>userInfoIdx</RefColNames>
     </foreign-key>
-    <column id="389" parent="292" name="wishIdx">
+    <column id="391" parent="292" name="wishIdx">
       <Position>1</Position>
       <Comment>관심 식별자</Comment>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="390" parent="292" name="status">
+    <column id="392" parent="292" name="status">
       <Position>2</Position>
       <Comment>관심 상태</Comment>
       <DataType>varchar(15)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;normal&apos;</DefaultExpression>
     </column>
-    <column id="391" parent="292" name="createdAt">
+    <column id="393" parent="292" name="createdAt">
       <Position>3</Position>
       <Comment>관심 등록 일시</Comment>
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
     </column>
-    <column id="392" parent="292" name="updatedAt">
+    <column id="394" parent="292" name="updatedAt">
       <Position>4</Position>
       <Comment>관심 수정 일시</Comment>
       <DataType>timestamp|0s</DataType>
@@ -1638,37 +1649,37 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <DefaultExpression>CURRENT_TIMESTAMP</DefaultExpression>
       <OnUpdate>CURRENT_TIMESTAMP</OnUpdate>
     </column>
-    <column id="393" parent="292" name="productId">
+    <column id="395" parent="292" name="productId">
       <Position>5</Position>
       <Comment>상품 식별자</Comment>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="394" parent="292" name="userInfoId">
+    <column id="396" parent="292" name="userInfoId">
       <Position>6</Position>
       <Comment>유저 식별자</Comment>
       <DataType>int|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="395" parent="292" name="FK_Wish_productId_Product_productIdx">
+    <index id="397" parent="292" name="FK_Wish_productId_Product_productIdx">
       <ColNames>productId</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="396" parent="292" name="FK_Wish_userInfoId_UserInfo_userInfoIdx">
+    <index id="398" parent="292" name="FK_Wish_userInfoId_UserInfo_userInfoIdx">
       <ColNames>userInfoId</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="397" parent="292" name="PRIMARY">
+    <key id="399" parent="292" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>wishIdx</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="398" parent="292" name="FK_Wish_productId_Product_productIdx">
+    <foreign-key id="400" parent="292" name="FK_Wish_productId_Product_productIdx">
       <ColNames>productId</ColNames>
       <RefTableName>Product</RefTableName>
       <RefColNames>productIdx</RefColNames>
     </foreign-key>
-    <foreign-key id="399" parent="292" name="FK_Wish_userInfoId_UserInfo_userInfoIdx">
+    <foreign-key id="401" parent="292" name="FK_Wish_userInfoId_UserInfo_userInfoIdx">
       <ColNames>userInfoId</ColNames>
       <RefTableName>UserInfo</RefTableName>
       <RefColNames>userInfoIdx</RefColNames>

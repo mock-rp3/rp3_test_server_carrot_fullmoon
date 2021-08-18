@@ -36,45 +36,51 @@ public class UserController {
     }
 
     /**
-     * 회원 조회 API
+     * 회원 전체 조회 API
      * [GET] /app/users
+     * 회원 닉네임 검색 조회 API
+     * [GET] /users?name=
+     * @return BaseResponse<List<GetUsersRes>>
+     *     성공!
      */
     //Query String
     @ResponseBody
     @GetMapping("/users") // (GET) 127.0.0.1:9000/app/users
-    public BaseResponse<List<GetUserRes>> getUsers(@RequestParam(required = false) String Email) {
+    public BaseResponse<List<GetUserRes>> getUsers(@RequestParam(required = false) String name) {
         try{
-            if(Email == null){
+            if(name == null){
                 List<GetUserRes> getUsersRes = userProvider.getUsers();
                 return new BaseResponse<>(getUsersRes);
             }
-            // Get Users
-            List<GetUserRes> getUsersRes = userProvider.getUsersByEmail(Email);
+            // Get Users By name
+            List<GetUserRes> getUsersRes = userProvider.getUsersByName(name);
             return new BaseResponse<>(getUsersRes);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }
     }
-//
-//    /**
-//     * 회원 1명 조회 API
-//     * [GET] /users/:userIdx
-//     * @return BaseResponse<GetUserRes>
-//     */
-//    // Path-variable
-//    @ResponseBody
-//    @GetMapping("/{userIdx}") // (GET) 127.0.0.1:9000/app/users/:userIdx
-//    public BaseResponse<GetUserRes> getUser(@PathVariable("userIdx") int userIdx) {
-//        // Get Users
-//        try{
-//            GetUserRes getUserRes = userProvider.getUser(userIdx);
-//            return new BaseResponse<>(getUserRes);
-//        } catch(BaseException exception){
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//
-//    }
-//
+
+    /**
+     * 회원 1명 조회 API
+     * [GET] /users/:userIdx
+     * @PathVariable userIdx
+     * @return BaseResponse<GetUserRes>
+     *     성공!
+     */
+    // Path-variable
+    @ResponseBody
+    @GetMapping("/{userIdx}") // (GET) 127.0.0.1:9000/app/users/:userIdx
+    public BaseResponse<GetUserRes> getUser(@PathVariable("userIdx") int userIdx) {
+        // Get Users
+        try{
+            GetUserRes getUserRes = userProvider.getUser(userIdx);
+            return new BaseResponse<>(getUserRes);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
+
     /**
      * 회원가입 API
      * [POST] /app/users
@@ -84,7 +90,7 @@ public class UserController {
     @ResponseBody
     @PostMapping("/users")
     public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) {
-        if(postUserReq.getUserID() == null){
+        if(postUserReq.getPhoneNumber() == null){
             return new BaseResponse<>(POST_USERS_EMPTY_ID);
         }
         try{
@@ -97,16 +103,14 @@ public class UserController {
     /**
      * 로그인 API
      * [POST] /app/logIn
+     * @RequestBody PostLoginReq
      * @return BaseResponse<PostLoginRes>
      */
     @ResponseBody
     @PostMapping("/logIn")
-    public BaseResponse<PostLoginRes> logIn(@RequestBody PostLoginReq postLoginReq) throws BaseException{
-        if(postLoginReq.getUserID() == null){
-            return new BaseResponse<>(LOGIN_USERS_EMPTY_ID);
-        }
-        if(postLoginReq.getPassword() == null){
-            return new BaseResponse<>(LOGIN_USERS_EMPTY_PASSWORD);
+    public BaseResponse<PostLoginRes> logIn(@RequestBody PostLoginReq postLoginReq){
+        if(postLoginReq.getPhoneNumber() == null || postLoginReq.getPhoneNumber().length() == 0){
+            return new BaseResponse<>(LOGIN_USERS_EMPTY_PHONE_NUMBER);
         }
         try{
             PostLoginRes postLoginRes = userProvider.logIn(postLoginReq);

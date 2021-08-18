@@ -59,6 +59,13 @@ Password : hwy7f2
 + API 명세서 설계 (상품 게시글 API, 채팅 API, 동네생활 API 명세 설계)
 + 상품 조회 API 개발
 
+### 2021-08-17 진행상황
++ certbot 이슈 해결 (50% - 여러 방법 실행해봤으나 해결 안 됨)
+
+### 2021-08-18 진행상황
++ 특정 유저 조회 API 개발
++ 유저 닉네임 검색 API 개발
+
 ## ⚠️ Issues
 ### Nginx 서버 502 이슈 (2021.08.15)
 서버에서 502 bad gateway 에러 발생
@@ -81,20 +88,18 @@ certbot 적용시 실패하는 이슈가 발생
 > 해결 과정 
 1. 기존 repository로 certbot 저장소를 만드는 방식에서 install 방식으로 업데이트 됨 -> apt-get으로 certbot 설치
 2. ```[emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)``` 이슈 발생
-<br/> 
-   80포트를 이미 사용 중이라 서버 구동이 불가능한 이슈로 ubuntu 20.04에서 종종 나타나는 현상 -> 
-   1. default sites-available file에서
+   -> 80포트를 이미 사용 중이라 서버 구동이 불가능한 이슈로 ubuntu 20.04에서 종종 나타나는 현상 -> 
+3. default sites-available file에서
    ```listen [::]:80 default_server;```를 ```listen [::]:80 ipv6only=on default_server;```로 변경,
    ipv6 주소 아이피만 사용하도록 함 -> 해결 안 됨
-   2. webroot가 아닌 standalone 방식으로 authentication 취득하기로 결정
-   3. standalone 방식 선택 -> ssl 적용 성공 로그 뜸, 그러나 서버 접속 시 ```ERR_CONNECTION_REFUSED```, 사이트에 연결할 수 없음. 
-   4. 인바운드 규칙에 HTTPS 443 포트 추가 -> 해결 안 됨 
-   5. ```sudo /etc/init.d/apache2 stop```로 Apache 2 중지 시켜서 해결 -> 502 Bad Gateway 발생
-   6. 에러 로그에서 ```*20 connect() failed (111: Connection refused) while connecting to upstream, client: 39.17.3.115, server: www.devjiyoon.shop, request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:9000/", host: "dev.devjiyoon.shop"```
+4. webroot가 아닌 standalone 방식으로 authentication 취득하기로 결정
+5. standalone 방식 선택 -> ssl 적용 성공 로그 뜸, 그러나 서버 접속 시 ```ERR_CONNECTION_REFUSED```, 사이트에 연결할 수 없음. 
+6. 인바운드 규칙에 HTTPS 443 포트 추가 -> 해결 안 됨 
+7. ```sudo /etc/init.d/apache2 stop```로 Apache 2 중지 시켜서 해결 -> 502 Bad Gateway 발생
+8. 에러 로그에서 ```*20 connect() failed (111: Connection refused) while connecting to upstream, client: 39.17.3.115, server: www.devjiyoon.shop, request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:9000/", host: "dev.devjiyoon.shop"```
       로그 확인
-   7. 로컬 저장소의 git 히스토리 삭제 및 초기화 -> 해결 안 됨
-   8. ```The repository 'http://ppa.launchpad.net/certbot/certbot/ubuntu focal Release' does not have a Release file.```
+9. 로컬 저장소의 git 히스토리 삭제 및 초기화 -> 해결 안 됨
+10. ```The repository 'http://ppa.launchpad.net/certbot/certbot/ubuntu focal Release' does not have a Release file.```
    로그 발견, certbot과 관련된 repository가 depricated되었음 -> ```sudo apt-add-repository -r ppa:certbot/certbot```로 ppa repository 삭제 -> 로그 더 이상 뜨지 않음
-   9. nginx와 apache의 충돌 문제일 수도 있다고 판단, apache2 웹서버 삭제 -> 해결 안 됨 
-   10. php-fpm 재설치 -> 메인 서버는 작동하나 SSL 적용 안 됨, dev/prod 서버는 502 에러 발생하나 SSL 적용됨
-3. ```Certbot Error 13 Permission denied: ‘/etc/letsencrypt’``` 권한 이슈 -> sudo 명령어로 (해결)
+11. nginx와 apache의 충돌 문제일 수도 있다고 판단, apache2 웹서버 삭제 -> 해결 안 됨 
+12. php-fpm 재설치 -> 메인 서버는 작동하나 SSL 적용 안 됨, dev/prod 서버는 502 에러 발생하나 SSL 적용됨

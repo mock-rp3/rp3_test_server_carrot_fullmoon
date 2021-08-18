@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -38,6 +39,7 @@ public class UserProvider {
         this.jwtService = jwtService;
     }
 
+    @Transactional
     public List<GetUserRes> getUsers() throws BaseException{
         try{
             List<GetUserRes> getUserRes = userDao.getUsers();
@@ -48,47 +50,43 @@ public class UserProvider {
         }
     }
 
-    public List<GetUserRes> getUsersByEmail(String email) throws BaseException{
+    @Transactional
+    public List<GetUserRes> getUsersByName(String name) throws BaseException{
         try{
-            List<GetUserRes> getUsersRes = userDao.getUsersByEmail(email);
+            List<GetUserRes> getUsersRes = userDao.getUsersByName(name);
             return getUsersRes;
         }
         catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
-                    }
+    }
 
-
-    public GetUserRes getUser(int userIdx) throws BaseException {
+    @Transactional
+    public GetUserRes getUser(int userInfoIdx) throws BaseException {
         try {
-            GetUserRes getUserRes = userDao.getUser(userIdx);
+            GetUserRes getUserRes = userDao.getUser(userInfoIdx);
             return getUserRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }
 
-    public int checkID(String ID) throws BaseException{
+    @Transactional
+    public int checkPhoneNumber(String phoneNumber) throws BaseException{
         try{
-            return userDao.checkID(ID);
+            return userDao.checkPhoneNumber(phoneNumber);
         } catch (Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }
     }
 
+    @Transactional
     public PostLoginRes logIn(PostLoginReq postLoginReq) throws BaseException {
-        User user = userDao.getPwd(postLoginReq);
-        String password;
-        int no = userDao.getPwd(postLoginReq).getUserInfoIdx();
-        String jwt = jwtService.createJwt(no);
+        User user = userDao.getPhoneNumber(postLoginReq);
 
-        try {
-            password = new AES128(Secret.USER_INFO_PASSWORD_KEY).decrypt(user.getPassword());
-            return new PostLoginRes(no, jwt);
-
-        } catch (Exception ignored) {
-            throw new BaseException(PASSWORD_DECRYPTION_ERROR);
-        }
+        int userInfoIdx = userDao.getPhoneNumber(postLoginReq).getUserInfoIdx();
+        String jwt = jwtService.createJwt(userInfoIdx);
+        return new PostLoginRes(userInfoIdx, jwt);
     }
 
 }

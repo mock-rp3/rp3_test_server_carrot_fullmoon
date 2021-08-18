@@ -31,7 +31,7 @@ public enum BaseResponseStatus {
     POST_USERS_EXISTS_ID(false,2017,"중복된 ID입니다."),
 
     // [POST] /logIn
-    LOGIN_USERS_EMPTY_ID(false, 2020, "ID를 입력해주세요."),
+    LOGIN_USERS_EMPTY_PHONE_NUMBER(false, 2020, "ID를 입력해주세요."),
     LOGIN_USERS_EMPTY_PASSWORD(false, 2021, "password를 입력해주세요."),
     LOGIN_USERS_DELETED(false, 2021, "탈퇴한 유저입니다."),
 

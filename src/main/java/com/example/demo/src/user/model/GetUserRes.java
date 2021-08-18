@@ -12,6 +12,7 @@ public class GetUserRes {
     private int userInfoIdx;
     private String status;
     private String createdAt;
+    private String phoneNumber;
     private String nickname;
     private String profileImageUrl;
 }

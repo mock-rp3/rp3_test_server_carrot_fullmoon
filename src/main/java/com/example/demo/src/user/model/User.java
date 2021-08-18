@@ -10,7 +10,6 @@ import lombok.Setter;
 public class User {
     private int userInfoIdx;
     private String phoneNumber;
-    private String userID;
     private String password;
     private String nickname;
     private String profileImageUrl;
