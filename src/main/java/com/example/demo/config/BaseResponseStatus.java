@@ -11,6 +11,8 @@ public enum BaseResponseStatus {
      * 1000 : 요청 성공
      */
     SUCCESS(true, 1000, "요청에 성공하였습니다."),
+    SUCCESS_DELETE_USER(true, 1001, "탈퇴에 성공하였습니다."),
+    SUCCESS_UPDATE_USER(true, 1002, "회원 정보 수정에 성공하였습니다."),
 
 
     /**
@@ -42,6 +44,9 @@ public enum BaseResponseStatus {
     PATCH_USERS_EMPTY_NICKNAME(false, 2030, "닉네임을 입력해주세요."),
     PATCH_USERS_EMPTY_PROFILE_URL(false, 2031, "프로필 이미지를 입력해주세요."),
 
+    // [DELETE] /users/{userInfoIdx}
+    EMPTY_CLOSING_ACCOUNT_REASON(false, 2040, "계정 삭제 이유를 선택해주세요."),
+
     /**
      * 3000 : Response 오류
      */
@@ -64,8 +69,10 @@ public enum BaseResponseStatus {
     MODIFY_FAIL_USER(false,4014,"유저 정보 수정 실패"),
 
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),
-    PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다.");
+    PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
 
+    //[DELETE] /users/{userInfoIdx}/delete
+    DELETE_FAIL_USER(false,4020,"유저 정보 수정 실패");
 
     // 5000 : 필요시 만들어서 쓰세요
     // 6000 : 필요시 만들어서 쓰세요

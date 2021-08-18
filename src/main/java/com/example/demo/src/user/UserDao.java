@@ -79,13 +79,6 @@ public class UserDao {
 
     }
 
-    public int modifyUserInfo(PatchUserReq patchUserReq){
-        String modifyUserInfoQuery = "update UserInfo set nickname = ?, profileImageUrl = ? where userInfoIdx = ? ";
-        Object[] modifyUserInfoParams = new Object[]{patchUserReq.getNickname(), patchUserReq.getProfileImageUrl(), patchUserReq.getUserInfoIdx()};
-
-        return this.jdbcTemplate.update(modifyUserInfoQuery,modifyUserInfoParams);
-    }
-
     public User getUserByPhoneNumber(PostLoginReq postLoginReq){
         String getUserByPhoneNumberQuery = "select userInfoIdx, phoneNumber, password, nickname, profileImageUrl from UserInfo where phoneNumber = ?";
         String getUserByPhoneNumberParams = postLoginReq.getPhoneNumber();
@@ -100,6 +93,20 @@ public class UserDao {
                 getUserByPhoneNumberParams
                 );
 
+    }
+
+    public int modifyUserInfo(PatchUserReq patchUserReq){
+        String modifyUserInfoQuery = "update UserInfo set nickname = ?, profileImageUrl = ? where userInfoIdx = ? ";
+        Object[] modifyUserInfoParams = new Object[]{patchUserReq.getNickname(), patchUserReq.getProfileImageUrl(), patchUserReq.getUserInfoIdx()};
+
+        return this.jdbcTemplate.update(modifyUserInfoQuery,modifyUserInfoParams);
+    }
+
+    public int deleteUserInfo(DeleteUserReq deleteUserReq){
+        String deleteUserInfoQuery = "update UserInfo set status = 'deleted', closingReason = ? where userInfoIdx = ? ";
+        Object[] deleteUserInfoParams = new Object[]{deleteUserReq.getClosingReason(), deleteUserReq.getUserInfoIdx()};
+
+        return this.jdbcTemplate.update(deleteUserInfoQuery,deleteUserInfoParams);
     }
 
 

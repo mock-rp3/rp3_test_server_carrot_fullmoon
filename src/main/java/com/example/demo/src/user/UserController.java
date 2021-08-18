@@ -72,7 +72,7 @@ public class UserController {
      */
     // Path-variable
     @ResponseBody
-    @GetMapping("/{userInfoIdx}") // (GET) 127.0.0.1:9000/app/users/:userInfoIdx
+    @GetMapping("/users/{userInfoIdx}") // (GET) 127.0.0.1:9000/app/users/:userInfoIdx
     public BaseResponse<GetUserRes> getUser(@PathVariable("userInfoIdx") int userInfoIdx) {
         // Get Users
         try {
@@ -138,11 +138,10 @@ public class UserController {
     /**
      * 유저정보변경 API
      * [PATCH] /users/:userInfoIdx
-     *
      * @return BaseResponse<String>
      */
     @ResponseBody
-    @PatchMapping("/{userInfoIdx}")
+    @PatchMapping("/users/{userInfoIdx}")
     public BaseResponse<String> modifyUserName(@PathVariable("userInfoIdx") int userInfoIdx, @RequestBody PatchUserReq patchUserReq) {
         if (patchUserReq.getNickname() == null) {
             return new BaseResponse<>(PATCH_USERS_EMPTY_NICKNAME);
@@ -164,13 +163,40 @@ public class UserController {
                     , patchUserReq.getProfileImageUrl());
             userService.modifyUserInfo(patchUserReq);
 
-            String result = "유저 정보 수정 완료";
-            return new BaseResponse<>(result);
+            return new BaseResponse<>(SUCCESS_UPDATE_USER);
 
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
 
+    /**
+     * 유저 탈퇴 API
+     * [PATCH] /users/:userInfoIdx/delete
+     * @return BaseResponse<String>
+     */
+    @PatchMapping("/users/delete/{userInfoIdx}")
+    public BaseResponse<String> deleteUserInfo(@PathVariable("userInfoIdx") int userInfoIdx, @RequestBody DeleteUserReq deleteUserReq) {
+        if (deleteUserReq.getClosingReason() == null) {
+            return new BaseResponse<>(EMPTY_CLOSING_ACCOUNT_REASON);
+        }
+        try {
+            //jwt에서 idx 추출.
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if (userInfoIdx != userIdxByJwt) {
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            //같다면 탈퇴로 status 변경
+            deleteUserReq = new DeleteUserReq(userInfoIdx
+                    , deleteUserReq.getClosingReason());
+            userService.deleteUserInfo(deleteUserReq);
+
+            return new BaseResponse<>(SUCCESS_DELETE_USER);
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
 }

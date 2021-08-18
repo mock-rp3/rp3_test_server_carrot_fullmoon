@@ -73,4 +73,16 @@ public class UserService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    @Transactional
+    public void deleteUserInfo(DeleteUserReq deleteUserReq) throws BaseException {
+//        try{
+            int result = userDao.deleteUserInfo(deleteUserReq);
+            if (result == 0){
+                throw new BaseException(DELETE_FAIL_USER);
+            }
+//        } catch(Exception exception){
+//            throw new BaseException(DATABASE_ERROR);
+//        }
+    }
 }
