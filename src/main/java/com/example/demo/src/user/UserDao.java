@@ -79,11 +79,11 @@ public class UserDao {
 
     }
 
-    public int modifyUserName(PatchUserReq patchUserReq){
-        String modifyUserNameQuery = "update UserInfo set userName = ? where userIdx = ? ";
-        Object[] modifyUserNameParams = new Object[]{patchUserReq.getUserName(), patchUserReq.getUserIdx()};
+    public int modifyUserInfo(PatchUserReq patchUserReq){
+        String modifyUserInfoQuery = "update UserInfo set nickname = ?, profileImageUrl = ? where userInfoIdx = ? ";
+        Object[] modifyUserInfoParams = new Object[]{patchUserReq.getNickname(), patchUserReq.getProfileImageUrl(), patchUserReq.getUserInfoIdx()};
 
-        return this.jdbcTemplate.update(modifyUserNameQuery,modifyUserNameParams);
+        return this.jdbcTemplate.update(modifyUserInfoQuery,modifyUserInfoParams);
     }
 
     public User getUserByPhoneNumber(PostLoginReq postLoginReq){
