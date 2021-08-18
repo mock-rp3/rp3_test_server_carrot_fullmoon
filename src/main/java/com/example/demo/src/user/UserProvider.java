@@ -40,23 +40,21 @@ public class UserProvider {
     }
 
     @Transactional
-    public List<GetUserRes> getUsers() throws BaseException{
-        try{
+    public List<GetUserRes> getUsers() throws BaseException {
+        try {
             List<GetUserRes> getUserRes = userDao.getUsers();
             return getUserRes;
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }
 
     @Transactional
-    public List<GetUserRes> getUsersByName(String name) throws BaseException{
-        try{
+    public List<GetUserRes> getUsersByName(String name) throws BaseException {
+        try {
             List<GetUserRes> getUsersRes = userDao.getUsersByName(name);
             return getUsersRes;
-        }
-        catch (Exception exception) {
+        } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }
@@ -72,21 +70,27 @@ public class UserProvider {
     }
 
     @Transactional
-    public int checkPhoneNumber(String phoneNumber) throws BaseException{
-        try{
+    public int checkPhoneNumber(String phoneNumber) throws BaseException {
+        try {
             return userDao.checkPhoneNumber(phoneNumber);
-        } catch (Exception exception){
+        } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }
 
     @Transactional
     public PostLoginRes logIn(PostLoginReq postLoginReq) throws BaseException {
-        User user = userDao.getPhoneNumber(postLoginReq);
+        User user = userDao.getUserByPhoneNumber(postLoginReq);
+        String userPhoneNumber;
+        userPhoneNumber = user.getPhoneNumber();
 
-        int userInfoIdx = userDao.getPhoneNumber(postLoginReq).getUserInfoIdx();
-        String jwt = jwtService.createJwt(userInfoIdx);
-        return new PostLoginRes(userInfoIdx, jwt);
+        if (postLoginReq.getPhoneNumber().equals(userPhoneNumber)) {
+            int userInfoIdx = userDao.getUserByPhoneNumber(postLoginReq).getUserInfoIdx();
+            String authJwt = jwtService.createJwt(userInfoIdx);
+            return new PostLoginRes(userInfoIdx, authJwt);
+        }
+        else{
+            throw new BaseException(LOGIN_USERS_NOT_JOIN);
+        }
     }
-
 }

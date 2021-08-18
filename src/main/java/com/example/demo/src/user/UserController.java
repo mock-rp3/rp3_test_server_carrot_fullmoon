@@ -115,6 +115,7 @@ public class UserController {
      * 로그인 API
      * [POST] /app/logIn
      * @RequestBody PostLoginReq
+     * @return PostLoginRes
      * @return BaseResponse<PostLoginRes>
      */
     @ResponseBody

@@ -33,9 +33,10 @@ public enum BaseResponseStatus {
 
 
     // [POST] /logIn
-    LOGIN_USERS_EMPTY_PHONE_NUMBER(false, 2020, "ID를 입력해주세요."),
+    LOGIN_USERS_EMPTY_PHONE_NUMBER(false, 2020, "전화번호를 입력해주세요."),
     LOGIN_USERS_EMPTY_PASSWORD(false, 2021, "password를 입력해주세요."),
-    LOGIN_USERS_DELETED(false, 2021, "탈퇴한 유저입니다."),
+    LOGIN_USERS_DELETED(false, 2022, "탈퇴한 유저입니다."),
+    LOGIN_USERS_NOT_JOIN(false, 2023, "가입되지 않은 전화번호입니다."),
 
 
     /**
