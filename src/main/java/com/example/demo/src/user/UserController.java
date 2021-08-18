@@ -1,5 +1,6 @@
 package com.example.demo.src.user;
 
+import com.example.demo.utils.ValidationRegex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseException;
@@ -13,6 +14,8 @@ import java.util.List;
 
 
 import static com.example.demo.config.BaseResponseStatus.*;
+import static com.example.demo.utils.ValidationRegex.isRegexPhoneNumber;
+
 
 @RestController
 @RequestMapping("/app")
@@ -90,9 +93,17 @@ public class UserController {
     @ResponseBody
     @PostMapping("/users")
     public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) {
-        if(postUserReq.getPhoneNumber() == null){
-            return new BaseResponse<>(POST_USERS_EMPTY_ID);
+        if(postUserReq.getPhoneNumber() == null || postUserReq.getPhoneNumber().length() == 0){
+            return new BaseResponse<>(POST_USERS_EMPTY_PHONE_NUMBER);
         }
+        if(postUserReq.getNickname() == null || postUserReq.getNickname().length() == 0){
+            return new BaseResponse<>(POST_USERS_EMPTY_NICKNAME);
+        }
+
+        if(!isRegexPhoneNumber(postUserReq.getPhoneNumber())) {
+            return new BaseResponse<>(INVALID_PHONE_NUMBER);
+        }
+
         try{
             PostUserRes postUserRes = userService.createUser(postUserReq);
             return new BaseResponse<>(postUserRes);

@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 
@@ -36,10 +37,11 @@ public class UserService {
     }
 
     //POST
+    @Transactional
     public PostUserRes createUser(PostUserReq postUserReq) throws BaseException {
         //중복
         if(userProvider.checkPhoneNumber(postUserReq.getPhoneNumber()) ==1){
-            throw new BaseException(POST_USERS_EXISTS_ID);
+            throw new BaseException(POST_USERS_EXISTS_PHONE_NUMBER);
         }
 
         String pwd;
