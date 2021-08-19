@@ -9,8 +9,20 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class GetDetailRes {
-    private int pdImageIdx;
-    private String status;
+    private int productIdx;
     private String imageUrl;
-    private int productId;
+    private String profileImageUrl;
+    private String nickname;
+    private String regionNameGu;
+    private String regionNameTown;
+    private int mannerGrade;
+    private String title;
+    private String name;
+    private String createdAt;
+    private String pulledAt;
+    private String description;
+    private int wishCount;
+    private int price;
+    private String canProposal;
+    private int userInfoIdx;
 }
