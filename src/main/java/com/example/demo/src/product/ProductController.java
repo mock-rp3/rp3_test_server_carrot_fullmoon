@@ -47,25 +47,25 @@ public class ProductController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
-//
-//    /**
-//     * 상품 디테일 조회 API
-//     * [GET] /app/products/:productIdx
-//     * @return BaseResponse<GetProductRes>
-//     */
-//    // Path-variable
-//    @ResponseBody
-//    @GetMapping("/{productIdx}") // (GET) 127.0.0.1:9000/app/products/:productIdx
-//    public BaseResponse<GetProductRes> getProduct(@PathVariable("productIdx") int productIdx) {
-//        // Get Products
-//        try{
-//            GetProductRes getProductRes = productProvider.getProduct(productIdx);
-//            return new BaseResponse<>(getProductRes);
-//        } catch(BaseException exception){
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//
-//    }
+
+    /**
+     * 상품 디테일 조회 API
+     * [GET] /app/products/:productIdx
+     * @return BaseResponse<GetDetailRes, GetDetailImageRes>
+     */
+    // Path-variable
+    @ResponseBody
+    @GetMapping("/{productIdx}") // (GET) 127.0.0.1:9000/app/products/:productIdx
+    public BaseResponse<GetDetailRes> getProduct(@PathVariable("productIdx") int productIdx) {
+        // Get Products
+        try{
+            GetDetailRes getDetailRes = productProvider.getDetail(productIdx);
+            return new BaseResponse<>(getDetailRes);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
 //
 //    /**
 //     * 회원가입 API

@@ -82,25 +82,53 @@ public class ProductDao {
                 getProductsByTitleParams);
     }
 
-//    public GetProductRes getProduct(int productIdx){
-//        String getProductQuery = "select * from Product where productIdx = ?";
-//        int getProductParams = productIdx;
-//        return this.jdbcTemplate.queryForObject(getProductQuery,
-//                (rs, rowNum) -> new GetProductRes(
-//                        rs.getInt("productIdx"),
-//                        rs.getString("status"),
-//                        rs.getString("createdAt"),
-//                        rs.getString("title"),
-//                        rs.getString("description"),
-//                        rs.getInt("price"),
-//                        rs.getInt("viewCount"),
-//                        rs.getString("pulledAt"),
-//                        rs.getString("category"),
-//                        rs.getString("canProposal"),
-//                        rs.getInt("sellerId"),
-//                        rs.getInt("regionId")),
-//                getProductParams);
-//    }
+    public GetDetailRes getDetail(int productIdx){
+        String getDetailQuery = "select productIdx,\n" +
+                "       imageUrl,\n" +
+                "       UI.profileImageUrl,\n" +
+                "       UI.nickname,\n" +
+                "       regionNameGu,\n" +
+                "       regionNameTown,\n" +
+                "       UV.mannerGrade,\n" +
+                "       title,\n" +
+                "       C.name,\n" +
+                "       P.createdAt,\n" +
+                "       pulledAt,\n" +
+                "       description,\n" +
+                "       count(W.wishIdx),\n" +
+                "       price,\n" +
+                "       canProposal,\n" +
+                "       UI.userInfoIdx\n" +
+                "from Product P\n" +
+                "         join ProductImage PI on P.productIdx = PI.productId\n" +
+                "         join UserInfo UI on UI.userInfoIdx = P.sellerId\n" +
+                "         join UserVar UV on UI.userInfoIdx = UV.userInfoId\n" +
+                "         join Region R on R.regionIdx = P.regionId\n" +
+                "         join Wish W on P.productIdx = W.productId\n" +
+                "         join Category C on C.categoryIdx = P.categoryId\n" +
+                "where (UI.status & P.status = 'normal')\n" +
+                "  AND productIdx = ?";
+        int getDetailParams = productIdx;
+        return this.jdbcTemplate.queryForObject(getDetailQuery,
+                (rs, rowNum) -> new GetDetailRes(
+                        rs.getInt("productIdx"),
+                        rs.getString("imageUrl"),
+                        rs.getString("profileImageUrl"),
+                        rs.getString("nickname"),
+                        rs.getString("regionNameGu"),
+                        rs.getString("regionNameTown"),
+                        rs.getInt("mannerGrade"),
+                        rs.getString("title"),
+                        rs.getString("name"),
+                        rs.getString("createdAt"),
+                        rs.getString("pulledAt"),
+                        rs.getString("description"),
+                        rs.getInt("count(W.wishIdx)"),
+                        rs.getInt("price"),
+                        rs.getString("canProposal"),
+                        rs.getInt("userInfoIdx")),
+                getDetailParams);
+    }
     
 
 //    public int createUser(PostUserReq postUserReq){

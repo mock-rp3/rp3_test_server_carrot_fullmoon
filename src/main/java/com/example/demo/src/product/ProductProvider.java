@@ -48,15 +48,15 @@ public class ProductProvider {
         }
     }
 
-
-//    public GetProductRes getProduct(int productIdx) throws BaseException {
-//        try {
-//            GetProductRes getProductRes = productDao.getProduct(productIdx);
-//            return getProductRes;
-//        } catch (Exception exception) {
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
+    @Transactional
+    public GetDetailRes getDetail(int productIdx) throws BaseException {
+        try {
+            GetDetailRes getDetailRes = productDao.getDetail(productIdx);
+            return getDetailRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 
 //    public int checkID(String ID) throws BaseException{
 //        try{
