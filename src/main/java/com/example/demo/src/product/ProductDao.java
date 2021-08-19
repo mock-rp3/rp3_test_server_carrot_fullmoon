@@ -20,63 +20,87 @@ public class ProductDao {
     }
 
     public List<GetProductRes> getProducts(){
-        String getProductsQuery = "select * from Product";
+        String getProductsQuery = "select productIdx,\n" +
+                "       Product.createdAt,\n" +
+                "       title,\n" +
+                "       price,\n" +
+                "       pulledAt,\n" +
+                "       imageUrl,\n" +
+                "       regionNameGu,\n" +
+                "       regionNameTown,\n" +
+                "       count(W.wishIdx)\n" +
+                "from Product\n" +
+                "         join ProductImage PI on Product.productIdx = PI.productId\n" +
+                "         join UserInfo UI on UI.userInfoIdx = Product.sellerId\n" +
+                "         join Region R on R.regionIdx = Product.regionId\n" +
+                "         join Wish W on Product.productIdx = W.productId\n" +
+                "where UI.status & Product.status = 'normal'\n" +
+                "group by productIdx";
         return this.jdbcTemplate.query(getProductsQuery,
                 (rs,rowNum) -> new GetProductRes(
                         rs.getInt("productIdx"),
-                        rs.getString("status"),
                         rs.getString("createdAt"),
                         rs.getString("title"),
-                        rs.getString("description"),
                         rs.getInt("price"),
-                        rs.getInt("viewCount"),
                         rs.getString("pulledAt"),
-                        rs.getString("category"),
-                        rs.getString("canProposal"),
-                        rs.getInt("sellerId"),
-                        rs.getInt("regionId"))
+                        rs.getString("imageUrl"),
+                        rs.getString("regionNameGu"),
+                        rs.getString("regionNameTown"),
+                        rs.getInt("count(W.wishIdx)"))
                 );
     }
 
     public List<GetProductRes> getProductsByTitle(String title){
-        String getProductsByTitleQuery = "select * from Product where title =?";
+        String getProductsByTitleQuery = "select productIdx,\n" +
+                "       Product.createdAt,\n" +
+                "       title,\n" +
+                "       price,\n" +
+                "       pulledAt,\n" +
+                "       imageUrl,\n" +
+                "       regionNameGu,\n" +
+                "       regionNameTown,\n" +
+                "       count(W.wishIdx)\n" +
+                "from Product\n" +
+                "         join ProductImage PI on Product.productIdx = PI.productId\n" +
+                "         join UserInfo UI on UI.userInfoIdx = Product.sellerId\n" +
+                "         join Region R on R.regionIdx = Product.regionId\n" +
+                "         join Wish W on Product.productIdx = W.productId\n" +
+                "where (UI.status & Product.status = 'normal') AND title = ?\n" +
+                "group by productIdx";
         String getProductsByTitleParams = title;
         return this.jdbcTemplate.query(getProductsByTitleQuery,
                 (rs, rowNum) -> new GetProductRes(
                         rs.getInt("productIdx"),
-                        rs.getString("status"),
                         rs.getString("createdAt"),
                         rs.getString("title"),
-                        rs.getString("description"),
                         rs.getInt("price"),
-                        rs.getInt("viewCount"),
                         rs.getString("pulledAt"),
-                        rs.getString("category"),
-                        rs.getString("canProposal"),
-                        rs.getInt("sellerId"),
-                        rs.getInt("regionId")),
+                        rs.getString("imageUrl"),
+                        rs.getString("regionNameGu"),
+                        rs.getString("regionNameTown"),
+                        rs.getInt("count(W.wishIdx)")),
                 getProductsByTitleParams);
     }
 
-    public GetProductRes getProduct(int productIdx){
-        String getProductQuery = "select * from Product where productIdx = ?";
-        int getProductParams = productIdx;
-        return this.jdbcTemplate.queryForObject(getProductQuery,
-                (rs, rowNum) -> new GetProductRes(
-                        rs.getInt("productIdx"),
-                        rs.getString("status"),
-                        rs.getString("createdAt"),
-                        rs.getString("title"),
-                        rs.getString("description"),
-                        rs.getInt("price"),
-                        rs.getInt("viewCount"),
-                        rs.getString("pulledAt"),
-                        rs.getString("category"),
-                        rs.getString("canProposal"),
-                        rs.getInt("sellerId"),
-                        rs.getInt("regionId")),
-                getProductParams);
-    }
+//    public GetProductRes getProduct(int productIdx){
+//        String getProductQuery = "select * from Product where productIdx = ?";
+//        int getProductParams = productIdx;
+//        return this.jdbcTemplate.queryForObject(getProductQuery,
+//                (rs, rowNum) -> new GetProductRes(
+//                        rs.getInt("productIdx"),
+//                        rs.getString("status"),
+//                        rs.getString("createdAt"),
+//                        rs.getString("title"),
+//                        rs.getString("description"),
+//                        rs.getInt("price"),
+//                        rs.getInt("viewCount"),
+//                        rs.getString("pulledAt"),
+//                        rs.getString("category"),
+//                        rs.getString("canProposal"),
+//                        rs.getInt("sellerId"),
+//                        rs.getInt("regionId")),
+//                getProductParams);
+//    }
     
 
 //    public int createUser(PostUserReq postUserReq){

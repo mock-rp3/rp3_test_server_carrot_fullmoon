@@ -28,7 +28,7 @@ public class ProductController {
     }
 
     /**
-     * 상품 조회 API
+     * 상품 전체 조회 API [메인화면]
      * [GET] /app/products
      */
     //Query String
@@ -48,24 +48,24 @@ public class ProductController {
         }
     }
 //
-    /**
-     * 상품 디테일 조회 API
-     * [GET] /app/products/:productIdx
-     * @return BaseResponse<GetProductRes>
-     */
-    // Path-variable
-    @ResponseBody
-    @GetMapping("/{productIdx}") // (GET) 127.0.0.1:9000/app/products/:productIdx
-    public BaseResponse<GetProductRes> getProduct(@PathVariable("productIdx") int productIdx) {
-        // Get Products
-        try{
-            GetProductRes getProductRes = productProvider.getProduct(productIdx);
-            return new BaseResponse<>(getProductRes);
-        } catch(BaseException exception){
-            return new BaseResponse<>((exception.getStatus()));
-        }
-
-    }
+//    /**
+//     * 상품 디테일 조회 API
+//     * [GET] /app/products/:productIdx
+//     * @return BaseResponse<GetProductRes>
+//     */
+//    // Path-variable
+//    @ResponseBody
+//    @GetMapping("/{productIdx}") // (GET) 127.0.0.1:9000/app/products/:productIdx
+//    public BaseResponse<GetProductRes> getProduct(@PathVariable("productIdx") int productIdx) {
+//        // Get Products
+//        try{
+//            GetProductRes getProductRes = productProvider.getProduct(productIdx);
+//            return new BaseResponse<>(getProductRes);
+//        } catch(BaseException exception){
+//            return new BaseResponse<>((exception.getStatus()));
+//        }
+//
+//    }
 //
 //    /**
 //     * 회원가입 API

@@ -10,15 +10,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class GetProductRes {
     private int productIdx;
-    private String status;
     private String createdAt;
     private String title;
-    private String description;
     private int price;
-    private int viewCount;
     private String pulledAt;
-    private String category;
-    private String canProposal;
-    private int sellerId;
-    private int regionId;
+    private String imageUrl;
+    private String regionNameGu;
+    private String regionNameTown;
+    private int wishCount;
 }

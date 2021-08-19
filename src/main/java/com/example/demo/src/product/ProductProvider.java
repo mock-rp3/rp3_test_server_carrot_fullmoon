@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,35 +28,35 @@ public class ProductProvider {
         this.productDao = productDao;
     }
 
-    public List<GetProductRes> getProducts() throws BaseException{
-        try{
-            List<GetProductRes> getProductRes = productDao.getProducts();
-            return getProductRes;
-        }
-        catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
-        }
-    }
-
-    public List<GetProductRes> getProductsByTitle(String title) throws BaseException{
-        try{
-            List<GetProductRes> getProductRes = productDao.getProductsByTitle(title);
-            return getProductRes;
-        }
-        catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
-        }
-                    }
-
-
-    public GetProductRes getProduct(int productIdx) throws BaseException {
+    @Transactional
+    public List<GetProductRes> getProducts() throws BaseException {
         try {
-            GetProductRes getProductRes = productDao.getProduct(productIdx);
+            List<GetProductRes> getProductRes = productDao.getProducts();
             return getProductRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    @Transactional
+    public List<GetProductRes> getProductsByTitle(String title) throws BaseException {
+        try {
+            List<GetProductRes> getProductRes = productDao.getProductsByTitle(title);
+            return getProductRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+
+//    public GetProductRes getProduct(int productIdx) throws BaseException {
+//        try {
+//            GetProductRes getProductRes = productDao.getProduct(productIdx);
+//            return getProductRes;
+//        } catch (Exception exception) {
+//            throw new BaseException(DATABASE_ERROR);
+//        }
+//    }
 
 //    public int checkID(String ID) throws BaseException{
 //        try{
