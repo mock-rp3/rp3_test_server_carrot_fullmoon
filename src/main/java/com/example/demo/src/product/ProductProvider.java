@@ -42,6 +42,7 @@ public class ProductProvider {
     public List<GetProductRes> getProductsByTitle(String title) throws BaseException {
         try {
             List<GetProductRes> getProductRes = productDao.getProductsByTitle(title);
+            System.out.println(title+title.getClass().getName());
             return getProductRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
@@ -57,6 +58,16 @@ public class ProductProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+//    @Transactional
+//    public GetDetailImageRes getDetailImage() throws BaseException {
+//        try {
+//            List<GetDetailImageRes> getDetailImageRes = productDao.getDetailImage();
+//            return getDetailImageRes;
+//        } catch (Exception exception) {
+//            throw new BaseException(DATABASE_ERROR);
+//        }
+//    }
 
 //    public int checkID(String ID) throws BaseException{
 //        try{

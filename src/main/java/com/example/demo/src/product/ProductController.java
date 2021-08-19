@@ -66,6 +66,22 @@ public class ProductController {
         }
 
     }
+
+//    /**
+//     * 이미지 리스트로 불러오기
+//     */
+//    @ResponseBody
+//    @GetMapping("/image-test") // (GET) 127.0.0.1:9000/app/products/image-test
+//    public BaseResponse<GetDetailImageRes> getProduct() {
+//        // Get Image
+//        try{
+//            GetDetailImageRes getDetailImageRes = productProvider.getDetailImage();
+//            return new BaseResponse<>(getDetailImageRes);
+//        } catch(BaseException exception){
+//            return new BaseResponse<>((exception.getStatus()));
+//        }
+//
+//    }
 //
 //    /**
 //     * 회원가입 API

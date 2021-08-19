@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ProductDao {
@@ -65,7 +66,7 @@ public class ProductDao {
                 "         join UserInfo UI on UI.userInfoIdx = Product.sellerId\n" +
                 "         join Region R on R.regionIdx = Product.regionId\n" +
                 "         join Wish W on Product.productIdx = W.productId\n" +
-                "where (UI.status & Product.status = 'normal') AND title = ?\n" +
+                "where (UI.status & Product.status = 'normal') AND title LIKE concat('%',?,'%')\n" +
                 "group by productIdx";
         String getProductsByTitleParams = title;
         return this.jdbcTemplate.query(getProductsByTitleQuery,
@@ -128,6 +129,14 @@ public class ProductDao {
                         rs.getString("canProposal"),
                         rs.getInt("userInfoIdx")),
                 getDetailParams);
+    }
+
+    public List<GetDetailImageRes> getDetailImage() {
+        String getProductImageQuery = "select imageUrl from ProductImage where productId = 3";
+        return this.jdbcTemplate.query(getProductImageQuery,
+                (rs,rowNum) -> new GetDetailImageRes(
+                        rs.getString("imageUrl"))
+        );
     }
     
 
