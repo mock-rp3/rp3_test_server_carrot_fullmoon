@@ -10,7 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class GetDetailRes {
     private int productIdx;
-    private String imageUrl;
     private String profileImageUrl;
     private String nickname;
     private String regionNameGu;

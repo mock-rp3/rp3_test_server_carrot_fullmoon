@@ -83,9 +83,8 @@ public class ProductDao {
                 getProductsByTitleParams);
     }
 
-    public GetDetailRes getDetail(int productIdx){
+    public List<GetDetailRes> getDetail(int productIdx){
         String getDetailQuery = "select productIdx,\n" +
-                "       imageUrl,\n" +
                 "       UI.profileImageUrl,\n" +
                 "       UI.nickname,\n" +
                 "       regionNameGu,\n" +
@@ -110,10 +109,9 @@ public class ProductDao {
                 "where (UI.status & P.status = 'normal')\n" +
                 "  AND productIdx = ?";
         int getDetailParams = productIdx;
-        return this.jdbcTemplate.queryForObject(getDetailQuery,
+        return this.jdbcTemplate.query(getDetailQuery,
                 (rs, rowNum) -> new GetDetailRes(
                         rs.getInt("productIdx"),
-                        rs.getString("imageUrl"),
                         rs.getString("profileImageUrl"),
                         rs.getString("nickname"),
                         rs.getString("regionNameGu"),
@@ -131,13 +129,22 @@ public class ProductDao {
                 getDetailParams);
     }
 
-    public List<GetDetailImageRes> getDetailImage() {
-        String getProductImageQuery = "select imageUrl from ProductImage where productId = 3";
-        return this.jdbcTemplate.query(getProductImageQuery,
-                (rs,rowNum) -> new GetDetailImageRes(
-                        rs.getString("imageUrl"))
-        );
+    // 그냥 Map 안 쓰고 리스트로만 가져와도 됨
+    public List<Map<String, Object>> getDetailImage(int productId) {
+        String getProductImageQuery = "select imageUrl from ProductImage where productId = ?";
+        int getProductImageParams = productId;
+        List<Map<String, Object>> images = jdbcTemplate.queryForList(getProductImageQuery,getProductImageParams);
+        return images;
     }
+
+//    public List<GetDetailAllRes> getAllDetail(int productIdx) {
+//        String getDetailAllQuery = "select imageUrl from ProductImage where productIdx = ?";
+//        int getDetailAllParams = productIdx;
+//        return this.jdbcTemplate.query(getDetailAllQuery,
+//                (rs,rowNum) -> new GetDetailImageRes(
+//                        rs.getString("imageUrl")),
+//                getDetailAllParams);
+//    }
     
 
 //    public int createUser(PostUserReq postUserReq){

@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
@@ -50,9 +52,9 @@ public class ProductProvider {
     }
 
     @Transactional
-    public GetDetailRes getDetail(int productIdx) throws BaseException {
+    public List<GetDetailRes> getProduct(int productIdx) throws BaseException {
         try {
-            GetDetailRes getDetailRes = productDao.getDetail(productIdx);
+            List<GetDetailRes> getDetailRes = productDao.getDetail(productIdx);
             return getDetailRes;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
@@ -60,14 +62,26 @@ public class ProductProvider {
     }
 
 //    @Transactional
-//    public GetDetailImageRes getDetailImage() throws BaseException {
+//    public List<GetDetailImageRes> getDetailImage(int productIdx) throws BaseException {
 //        try {
-//            List<GetDetailImageRes> getDetailImageRes = productDao.getDetailImage();
+//            List<GetDetailImageRes> getDetailImageRes = productDao.getDetailImage(productIdx);
 //            return getDetailImageRes;
 //        } catch (Exception exception) {
 //            throw new BaseException(DATABASE_ERROR);
 //        }
 //    }
+
+    @Transactional
+    public List getAllDetail(int productIdx) throws BaseException {
+        try {
+            List detailInfo = productDao.getDetail(productIdx);
+            List imageUrl = productDao.getDetailImage(productIdx);
+            List resultDetailList = new ArrayList<>(Arrays.asList(detailInfo,imageUrl));
+            return resultDetailList;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 
 //    public int checkID(String ID) throws BaseException{
 //        try{

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
@@ -56,11 +57,11 @@ public class ProductController {
     // Path-variable
     @ResponseBody
     @GetMapping("/{productIdx}") // (GET) 127.0.0.1:9000/app/products/:productIdx
-    public BaseResponse<GetDetailRes> getProduct(@PathVariable("productIdx") int productIdx) {
-        // Get Products
+    public BaseResponse<List<String>> getAllDetail(@PathVariable("productIdx") int productIdx) {
+        // Get Image
         try{
-            GetDetailRes getDetailRes = productProvider.getDetail(productIdx);
-            return new BaseResponse<>(getDetailRes);
+            List<String> resultDetailList = productProvider.getAllDetail(productIdx);
+            return new BaseResponse<>(resultDetailList);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }
@@ -71,17 +72,35 @@ public class ProductController {
 //     * 이미지 리스트로 불러오기
 //     */
 //    @ResponseBody
-//    @GetMapping("/image-test") // (GET) 127.0.0.1:9000/app/products/image-test
-//    public BaseResponse<GetDetailImageRes> getProduct() {
+//    @GetMapping("/image-test/{productIdx}") // (GET) 127.0.0.1:9000/app/products/image-test
+//    public BaseResponse<List<GetDetailImageRes>> getDetailImage(@PathVariable("productIdx") int productIdx) {
 //        // Get Image
 //        try{
-//            GetDetailImageRes getDetailImageRes = productProvider.getDetailImage();
+//            List<GetDetailImageRes> getDetailImageRes = productProvider.getDetailImage(productIdx);
 //            return new BaseResponse<>(getDetailImageRes);
 //        } catch(BaseException exception){
 //            return new BaseResponse<>((exception.getStatus()));
 //        }
 //
 //    }
+
+//    /**
+//     * 디테일 전체 받아오기
+//     */
+//    @ResponseBody
+//    @GetMapping("/detail/{productIdx}") // (GET) 127.0.0.1:9000/app/products/image-test
+//    public BaseResponse<List<String>> getAllDetail(@PathVariable("productIdx") int productIdx) {
+//        // Get Image
+//        try{
+//            List<String> resultDetailList = productProvider.getAllDetail(productIdx);
+//            return new BaseResponse<>(resultDetailList);
+//        } catch(BaseException exception){
+//            return new BaseResponse<>((exception.getStatus()));
+//        }
+//
+//    }
+
+
 //
 //    /**
 //     * 회원가입 API
