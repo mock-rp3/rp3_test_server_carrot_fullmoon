@@ -1,10 +1,14 @@
 package com.example.demo.src.product;
 
 
+import com.example.demo.config.BaseException;
+import com.example.demo.src.product.model.PostProductReq;
+import com.example.demo.src.product.model.PostProductRes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -24,30 +28,16 @@ public class ProductService {
 
     }
 
-//    //POST
-//    public PostUserRes createUser(PostUserReq postUserReq) throws BaseException {
-//        //중복
-//        if(userProvider.checkID(postUserReq.getUserID()) ==1){
-//            throw new BaseException(POST_USERS_EXISTS_ID);
-//        }
-//
-//        String pwd;
+    //POST
+    @Transactional
+    public PostProductRes createProduct(PostProductReq postProductReq) throws BaseException {
 //        try{
-//            //암호화
-//            pwd = new AES128(Secret.USER_INFO_PASSWORD_KEY).encrypt(postUserReq.getPassword());
-//            postUserReq.setPassword(pwd);
-//        } catch (Exception ignored) {
-//            throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
+            int newProduct = productDao.createProduct(postProductReq);
+            return new PostProductRes(newProduct);
+//        } catch (Exception exception) {
+//            throw new BaseException(DATABASE_ERROR);
 //        }
-////        try{
-//            int userInfoIdx = userDao.createUser(postUserReq);
-//            //jwt 발급.
-//            String jwt = jwtService.createJwt(userInfoIdx);
-//            return new PostUserRes(jwt,userInfoIdx);
-////        } catch (Exception exception) {
-////            throw new BaseException(DATABASE_ERROR);
-////        }
-//    }
+    }
 //
 //    public void modifyUserName(PatchUserReq patchUserReq) throws BaseException {
 //        try{

@@ -16,11 +16,11 @@ public class ProductDao {
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public void setDataSource(DataSource dataSource){
+    public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public List<GetProductRes> getProducts(){
+    public List<GetProductRes> getProducts() {
         String getProductsQuery = "select productIdx,\n" +
                 "       Product.createdAt,\n" +
                 "       title,\n" +
@@ -38,7 +38,7 @@ public class ProductDao {
                 "where UI.status & Product.status = 'normal'\n" +
                 "group by productIdx";
         return this.jdbcTemplate.query(getProductsQuery,
-                (rs,rowNum) -> new GetProductRes(
+                (rs, rowNum) -> new GetProductRes(
                         rs.getInt("productIdx"),
                         rs.getString("createdAt"),
                         rs.getString("title"),
@@ -48,10 +48,10 @@ public class ProductDao {
                         rs.getString("regionNameGu"),
                         rs.getString("regionNameTown"),
                         rs.getInt("count(W.wishIdx)"))
-                );
+        );
     }
 
-    public List<GetProductRes> getProductsByTitle(String title){
+    public List<GetProductRes> getProductsByTitle(String title) {
         String getProductsByTitleQuery = "select productIdx,\n" +
                 "       Product.createdAt,\n" +
                 "       title,\n" +
@@ -83,7 +83,7 @@ public class ProductDao {
                 getProductsByTitleParams);
     }
 
-    public List<GetDetailRes> getDetail(int productIdx){
+    public List<GetDetailRes> getDetail(int productIdx) {
         String getDetailQuery = "select productIdx,\n" +
                 "       UI.profileImageUrl,\n" +
                 "       UI.nickname,\n" +
@@ -133,7 +133,7 @@ public class ProductDao {
     public List<Map<String, Object>> getDetailImage(int productId) {
         String getProductImageQuery = "select imageUrl from ProductImage where productId = ?";
         int getProductImageParams = productId;
-        List<Map<String, Object>> images = jdbcTemplate.queryForList(getProductImageQuery,getProductImageParams);
+        List<Map<String, Object>> images = jdbcTemplate.queryForList(getProductImageQuery, getProductImageParams);
         return images;
     }
 
@@ -145,17 +145,34 @@ public class ProductDao {
 //                        rs.getString("imageUrl")),
 //                getDetailAllParams);
 //    }
-    
 
-//    public int createUser(PostUserReq postUserReq){
-//        String createUserQuery = "insert into UserInfo (userID, password, nickname, profileImageUrl) VALUES (?,?,?,?)";
-//        Object[] createUserParams = new Object[]{postUserReq.getUserID(), postUserReq.getPassword(), postUserReq.getNickname(), postUserReq.getProfileImageUrl()};
-//        this.jdbcTemplate.update(createUserQuery, createUserParams);
-//
-//        String lastInsertIdQuery = "select last_insert_id()";
-//        return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
-//    }
-//
+
+    public int createProduct(PostProductReq postProductReq) {
+        int sellerId = postProductReq.getSellerId();
+        String createProductQuery = "insert into Product (title" +
+                ", description, price, canProposal, categoryId, sellerId, regionId)\n" +
+                "values (?,?,?,?,?,?,(select regionIdx from Region where userInfoId = 28))";
+        Object[] createProductParams = new Object[]{postProductReq.getTitle()
+                , postProductReq.getDescription()
+                , postProductReq.getPrice()
+                , postProductReq.getCanProposal()
+                , postProductReq.getCategoryId()
+                , sellerId};
+        this.jdbcTemplate.update(createProductQuery, createProductParams);
+
+        String createProductImageQuery = "insert into ProductImage (imageUrl, productId) " +
+                "VALUES (?,(select last_insert_id()))" +
+                ",(?,(select last_insert_id()))";
+        Object[] createProductImageParams = new Object[]{postProductReq.getImageUrl1()
+                , postProductReq.getImageUrl2()};
+        this.jdbcTemplate.update(createProductImageQuery, createProductImageParams);
+
+        String lastInsertIdQuery = "select last_insert_id()";
+
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+
+    }
+
 //    public int checkID(String ID){
 //        String checkIDQuery = "select exists(select userID from UserInfo where userID = ?)";
 //        String checkIDParams = ID;

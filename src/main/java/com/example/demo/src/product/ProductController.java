@@ -9,10 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
-
-import static com.example.demo.config.BaseResponseStatus.*;
 
 @RestController
 @RequestMapping("/app/products")
@@ -101,26 +98,23 @@ public class ProductController {
 //    }
 
 
-//
-//    /**
-//     * 회원가입 API
-//     * [POST] /app/users
-//     * @return BaseResponse<PostUserRes>
-//     */
-//    // Body
-//    @ResponseBody
-//    @PostMapping("/users")
-//    public BaseResponse<PostUserRes> createUser(@RequestBody PostUserReq postUserReq) {
-//        if(postUserReq.getUserID() == null){
-//            return new BaseResponse<>(POST_USERS_EMPTY_ID);
-//        }
-//        try{
-//            PostUserRes postUserRes = userService.createUser(postUserReq);
-//            return new BaseResponse<>(postUserRes);
-//        } catch(BaseException exception){
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//    }
+
+    /**
+     * 상품 등록 API
+     * [POST] /app/products
+     * @return BaseResponse<PostProductRes>
+     */
+    // Body
+    @ResponseBody
+    @PostMapping("")
+    public BaseResponse<PostProductRes> createProduct(@RequestBody PostProductReq postProductReq) {
+        try{
+            PostProductRes postProductRes = productService.createProduct(postProductReq);
+            return new BaseResponse<>(postProductRes);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
 //
 //    /**
