@@ -4,6 +4,8 @@ package com.example.demo.src.product;
 import com.example.demo.src.product.model.*;
 import com.example.demo.src.user.model.DeleteUserReq;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -149,36 +151,50 @@ public class ProductDao {
 
 
     public int createProduct(PostProductReq postProductReq) {
-        int sellerId = postProductReq.getSellerId();
-        System.out.println("셀러아이디 체크" + sellerId);
-        String createProductQuery = "insert into Product (title" +
-                ", description, price, canProposal, categoryId, sellerId, regionId)\n" +
-                "values (?,?,?,?,?,?,(select regionIdx from Region where userInfoId = sellerId))";
-        Object[] createProductParams = new Object[]{postProductReq.getTitle()
-                , postProductReq.getDescription()
-                , postProductReq.getPrice()
-                , postProductReq.getCanProposal()
-                , postProductReq.getCategoryId()
-                , sellerId};
-        this.jdbcTemplate.update(createProductQuery, createProductParams);
 
-        String createProductImageQuery = "insert into ProductImage (imageUrl, productId) " +
-                "VALUES (?,(select last_insert_id() from Product))" +
-                ",(?,(select last_insert_id() from Product))";
-        Object[] createProductImageParams = new Object[]{postProductReq.getImageUrl()};
-        this.jdbcTemplate.update(createProductImageQuery, createProductImageParams);
+        try {
+            String getRegionIdQuery = "select regionIdx from Region where userInfoId = ?";
+            int getSellerId = postProductReq.getSellerId();
 
-        String lastInsertIdQuery = "select last_insert_id()";
+            int regionId = this.jdbcTemplate.queryForObject(getRegionIdQuery, int.class, getSellerId);
 
-        return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+            System.out.println("셀러아이디 체크" + regionId);
+            String createProductQuery = "insert into Product (title" +
+                    ", description, price, canProposal, categoryId, sellerId, regionId)\n" +
+                    "values (?,?,?,?,?,?,?)";
+            Object[] createProductParams = new Object[]{postProductReq.getTitle()
+                    , postProductReq.getDescription()
+                    , postProductReq.getPrice()
+                    , postProductReq.getCanProposal()
+                    , postProductReq.getCategoryId()
+                    , postProductReq.getSellerId()
+                    , regionId};
+            this.jdbcTemplate.update(createProductQuery, createProductParams);
 
+            String lastProductIdQuery = "select last_insert_id()";
+            int lastProductId = this.jdbcTemplate.queryForObject(lastProductIdQuery, int.class);
+
+            String createProductImageQuery = "insert into ProductImage (imageUrl, productId) VALUES (?,?)";
+            Object[] createProductImageParams = new Object[]{postProductReq.getImageUrl(), lastProductId};
+            this.jdbcTemplate.update(createProductImageQuery, createProductImageParams);
+
+            String lastInsertIdQuery = "select last_insert_id()";
+            return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+
+        } catch (EmptyResultDataAccessException e) {
+            throw new RuntimeException("EmptyResult");
+
+        } catch (IncorrectResultSizeDataAccessException e) {
+            String lastInsertIdQuery = "select last_insert_id()";
+            return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+        }
     }
 
-    public int deleteProduct(int productIdx){
+    public int deleteProduct(int productIdx) {
         String deleteProductQuery = "update Product set status = 'deleted' where productIdx = ? ";
         int deleteProductParams = productIdx;
 
-        return this.jdbcTemplate.update(deleteProductQuery,deleteProductParams);
+        return this.jdbcTemplate.update(deleteProductQuery, deleteProductParams);
     }
 
 //    public int checkID(String ID){
