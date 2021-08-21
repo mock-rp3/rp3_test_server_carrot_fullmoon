@@ -149,9 +149,10 @@ public class ProductDao {
 
     public int createProduct(PostProductReq postProductReq) {
         int sellerId = postProductReq.getSellerId();
+        System.out.println("셀러아이디 체크" + sellerId);
         String createProductQuery = "insert into Product (title" +
                 ", description, price, canProposal, categoryId, sellerId, regionId)\n" +
-                "values (?,?,?,?,?,?,(select regionIdx from Region where userInfoId = 28))";
+                "values (?,?,?,?,?,?,(select regionIdx from Region where userInfoId = sellerId))";
         Object[] createProductParams = new Object[]{postProductReq.getTitle()
                 , postProductReq.getDescription()
                 , postProductReq.getPrice()
@@ -161,10 +162,9 @@ public class ProductDao {
         this.jdbcTemplate.update(createProductQuery, createProductParams);
 
         String createProductImageQuery = "insert into ProductImage (imageUrl, productId) " +
-                "VALUES (?,(select last_insert_id()))" +
-                ",(?,(select last_insert_id()))";
-        Object[] createProductImageParams = new Object[]{postProductReq.getImageUrl1()
-                , postProductReq.getImageUrl2()};
+                "VALUES (?,(select last_insert_id() from Product))" +
+                ",(?,(select last_insert_id() from Product))";
+        Object[] createProductImageParams = new Object[]{postProductReq.getImageUrl()};
         this.jdbcTemplate.update(createProductImageQuery, createProductImageParams);
 
         String lastInsertIdQuery = "select last_insert_id()";
