@@ -3,6 +3,7 @@ package com.example.demo.src.product;
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.product.model.*;
+import com.example.demo.src.user.model.DeleteUserReq;
 import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.example.demo.config.BaseResponseStatus.*;
 
 @RestController
 @RequestMapping("/app/products")
@@ -116,32 +119,19 @@ public class ProductController {
         }
     }
 
-//
-//    /**
-//     * 유저정보변경 API
-//     * [PATCH] /users/:userIdx
-//     * @return BaseResponse<String>
-//     */
-//    @ResponseBody
-//    @PatchMapping("/{userIdx}")
-//    public BaseResponse<String> modifyUserName(@PathVariable("userIdx") int userIdx, @RequestBody User user){
-//        try {
-//            //jwt에서 idx 추출.
-//            int userIdxByJwt = jwtService.getUserIdx();
-//            //userIdx와 접근한 유저가 같은지 확인
-//            if(userIdx != userIdxByJwt){
-//                return new BaseResponse<>(INVALID_USER_JWT);
-//            }
-//            //같다면 유저네임 변경
-//            PatchUserReq patchUserReq = new PatchUserReq(userIdx,user.getUserName());
-//            userService.modifyUserName(patchUserReq);
-//
-//            String result = "";
-//        return new BaseResponse<>(result);
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//    }
+    /**
+     * 상품 삭제 API
+     */
+    @PatchMapping("/delete/{productIdx}")
+    public BaseResponse<String> deleteProduct(@PathVariable("productIdx") int productIdx) {
+        try {
+            productService.deleteProduct(productIdx);
 
+            return new BaseResponse<>(SUCCESS_DELETE_PRODUCT);
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
 }

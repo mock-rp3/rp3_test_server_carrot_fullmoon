@@ -38,15 +38,16 @@ public class ProductService {
 //            throw new BaseException(DATABASE_ERROR);
 //        }
     }
-//
-//    public void modifyUserName(PatchUserReq patchUserReq) throws BaseException {
+
+    @Transactional
+    public void deleteProduct(int productIdx) throws BaseException {
 //        try{
-//            int result = userDao.modifyUserName(patchUserReq);
-//            if(result == 0){
-//                throw new BaseException(MODIFY_FAIL_USERNAME);
-//            }
+        int result = productDao.deleteProduct(productIdx);
+        if (result == 0){
+            throw new BaseException(DELETE_FAIL_PRODUCT);
+        }
+//        return result;
 //        } catch(Exception exception){
 //            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
+        }
 }
