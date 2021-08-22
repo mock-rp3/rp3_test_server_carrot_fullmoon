@@ -135,4 +135,20 @@ public class ProductController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 조회수 증가
+     * [PATCH} /app/products/view/:productIdx
+     */
+    @PatchMapping("/view/{productIdx}")
+    public BaseResponse<String> updateViewCount(@PathVariable("productIdx") int productIdx) {
+        try {
+            productService.updateViewCount(productIdx);
+
+            return new BaseResponse<>(SUCCESS_UPDATE_VIEW);
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }

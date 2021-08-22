@@ -206,17 +206,17 @@ public class ProductDao {
 //
 //    }
 
-    public int modifyProductInfo(PatchProductReq patchProductReq){
+    public int modifyProductInfo(PatchProductReq patchProductReq) {
         String modifyUserNameQuery = "update Product set title = ?, description = ?, price = ?, canProposal = ?, categoryId = ? where productIdx = ? ";
         Object[] modifyUserNameParams = new Object[]{
-        patchProductReq.getTitle()
-        ,patchProductReq.getDescription()
-        ,patchProductReq.getPrice()
-        ,patchProductReq.getCanProposal()
-        ,patchProductReq.getCategoryId()
-        ,patchProductReq.getProductIdx()};
+                patchProductReq.getTitle()
+                , patchProductReq.getDescription()
+                , patchProductReq.getPrice()
+                , patchProductReq.getCanProposal()
+                , patchProductReq.getCategoryId()
+                , patchProductReq.getProductIdx()};
 
-        return this.jdbcTemplate.update(modifyUserNameQuery,modifyUserNameParams);
+        return this.jdbcTemplate.update(modifyUserNameQuery, modifyUserNameParams);
     }
 
     public List<GetProductSellerRes> getProductsBySeller(String seller) {
@@ -238,6 +238,13 @@ public class ProductDao {
                         rs.getInt("price"),
                         rs.getString("imageUrl")),
                 getProductsBySellerParams);
+    }
+
+    public int updateViewCount(int productIdx) {
+        String updateViewCountQuery = "update Product set viewCount = viewCount + 1 where productIdx = ? ";
+        int updateViewCountParams = productIdx;
+
+        return this.jdbcTemplate.update(updateViewCountQuery, updateViewCountParams);
     }
 
 }

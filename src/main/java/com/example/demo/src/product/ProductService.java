@@ -5,7 +5,6 @@ import com.example.demo.config.BaseException;
 import com.example.demo.src.product.model.PatchProductReq;
 import com.example.demo.src.product.model.PostProductReq;
 import com.example.demo.src.product.model.PostProductRes;
-import com.example.demo.src.user.model.PatchUserReq;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,15 +42,16 @@ public class ProductService {
 
     @Transactional
     public void deleteProduct(int productIdx) throws BaseException {
-//        try{
-        int result = productDao.deleteProduct(productIdx);
-        if (result == 0){
-            throw new BaseException(DELETE_FAIL_PRODUCT);
-        }
+        try {
+            int result = productDao.deleteProduct(productIdx);
+            if (result == 0) {
+                throw new BaseException(DELETE_FAIL_PRODUCT);
+            }
 //        return result;
-//        } catch(Exception exception){
-//            throw new BaseException(DATABASE_ERROR);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
         }
+    }
 
     @Transactional
     public void modifyProductInfo(PatchProductReq patchProductReq) throws BaseException {
@@ -64,4 +64,18 @@ public class ProductService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    @Transactional
+    public void updateViewCount(int productIdx) throws BaseException {
+        try {
+            int result = productDao.updateViewCount(productIdx);
+            if (result == 0) {
+                throw new BaseException(MODIFY_FAIL_VIEW_COUNT);
+            }
+//        return result;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }
