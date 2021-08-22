@@ -14,6 +14,7 @@ public enum BaseResponseStatus {
     SUCCESS_DELETE_USER(true, 1001, "탈퇴에 성공하였습니다."),
     SUCCESS_UPDATE_USER(true, 1002, "회원 정보 수정에 성공하였습니다."),
     SUCCESS_DELETE_PRODUCT(true, 1003, "중고 판매글 삭제에 성공하였습니다."),
+    SUCCESS_UPDATE_PRODUCT(true, 1004, "중고 판매글 수정에 성공하였습니다."),
 
 
     /**
@@ -68,6 +69,7 @@ public enum BaseResponseStatus {
 
     //[PATCH] /users/{userInfoIdx}
     MODIFY_FAIL_USER(false,4014,"유저 정보 수정 실패"),
+    MODIFY_FAIL_PRODUCT(false,4015,"중고 판매글 정보 수정 실패"),
 
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),
     PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),

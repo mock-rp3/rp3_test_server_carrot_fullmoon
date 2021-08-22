@@ -206,11 +206,17 @@ public class ProductDao {
 //
 //    }
 
-//    public int modifyUserName(PatchUserReq patchUserReq){
-//        String modifyUserNameQuery = "update UserInfo set userName = ? where userIdx = ? ";
-//        Object[] modifyUserNameParams = new Object[]{patchUserReq.getUserName(), patchUserReq.getUserIdx()};
-//
-//        return this.jdbcTemplate.update(modifyUserNameQuery,modifyUserNameParams);
-//    }
+    public int modifyProductInfo(PatchProductReq patchProductReq){
+        String modifyUserNameQuery = "update Product set title = ?, description = ?, price = ?, canProposal = ?, categoryId = ? where productIdx = ? ";
+        Object[] modifyUserNameParams = new Object[]{
+        patchProductReq.getTitle()
+        ,patchProductReq.getDescription()
+        ,patchProductReq.getPrice()
+        ,patchProductReq.getCanProposal()
+        ,patchProductReq.getCategoryId()
+        ,patchProductReq.getProductIdx()};
+
+        return this.jdbcTemplate.update(modifyUserNameQuery,modifyUserNameParams);
+    }
 
 }

@@ -68,40 +68,6 @@ public class ProductController {
 
     }
 
-//    /**
-//     * 이미지 리스트로 불러오기
-//     */
-//    @ResponseBody
-//    @GetMapping("/image-test/{productIdx}") // (GET) 127.0.0.1:9000/app/products/image-test
-//    public BaseResponse<List<GetDetailImageRes>> getDetailImage(@PathVariable("productIdx") int productIdx) {
-//        // Get Image
-//        try{
-//            List<GetDetailImageRes> getDetailImageRes = productProvider.getDetailImage(productIdx);
-//            return new BaseResponse<>(getDetailImageRes);
-//        } catch(BaseException exception){
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//
-//    }
-
-//    /**
-//     * 디테일 전체 받아오기
-//     */
-//    @ResponseBody
-//    @GetMapping("/detail/{productIdx}") // (GET) 127.0.0.1:9000/app/products/image-test
-//    public BaseResponse<List<String>> getAllDetail(@PathVariable("productIdx") int productIdx) {
-//        // Get Image
-//        try{
-//            List<String> resultDetailList = productProvider.getAllDetail(productIdx);
-//            return new BaseResponse<>(resultDetailList);
-//        } catch(BaseException exception){
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//
-//    }
-
-
-
     /**
      * 상품 등록 API
      * [POST] /app/products
@@ -134,4 +100,23 @@ public class ProductController {
         }
     }
 
+    /**
+     * 상품 정보 변경
+     */
+    @PatchMapping("/{productIdx}")
+    public BaseResponse<String> modifyProductInfo(@PathVariable("productIdx") int productIdx, @RequestBody PatchProductReq patchProductReq) {
+        try {
+            patchProductReq = new PatchProductReq(productIdx,
+                    patchProductReq.getTitle(),
+                    patchProductReq.getDescription(),
+                    patchProductReq.getPrice(),
+                    patchProductReq.getCanProposal(),
+                    patchProductReq.getCategoryId());
+            productService.modifyProductInfo(patchProductReq);
+
+            return new BaseResponse<>(SUCCESS_UPDATE_PRODUCT);
+        } catch (BaseException baseException) {
+            return new BaseResponse<>(baseException.getStatus());
+        }
+    }
 }
