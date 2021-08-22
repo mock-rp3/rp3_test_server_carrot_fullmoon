@@ -219,4 +219,25 @@ public class ProductDao {
         return this.jdbcTemplate.update(modifyUserNameQuery,modifyUserNameParams);
     }
 
+    public List<GetProductSellerRes> getProductsBySeller(String seller) {
+        String getProductsBySellerQuery = "select productIdx,\n" +
+                "       title,\n" +
+                "       price,\n" +
+                "       imageUrl\n" +
+                "from Product\n" +
+                "         join ProductImage PI on Product.productIdx = PI.productId\n" +
+                "         join UserInfo UI on UI.userInfoIdx = Product.sellerId\n" +
+                "where (UI.status & Product.status = 'normal')\n" +
+                "  AND sellerId = ?\n" +
+                "group by productIdx limit 4";
+        String getProductsBySellerParams = seller;
+        return this.jdbcTemplate.query(getProductsBySellerQuery,
+                (rs, rowNum) -> new GetProductSellerRes(
+                        rs.getInt("productIdx"),
+                        rs.getString("title"),
+                        rs.getInt("price"),
+                        rs.getString("imageUrl")),
+                getProductsBySellerParams);
+    }
+
 }

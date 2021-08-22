@@ -84,6 +84,16 @@ public class ProductProvider {
         }
     }
 
+    @Transactional
+    public List<GetProductSellerRes> getProductsBySeller(String seller) throws BaseException {
+        try {
+            List<GetProductSellerRes> getProductSellerRes = productDao.getProductsBySeller(seller);
+            return getProductSellerRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 //    public int checkID(String ID) throws BaseException{
 //        try{
 //            return userDao.checkID(ID);

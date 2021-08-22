@@ -85,6 +85,12 @@ Password : hwy7f2
 ### 2021-08-22 진행상황
 + 상품 등록 API 개발
 + 상품 정보 수정 API 개발
++ dev/prod 서브도메인 서버 구축
++ SSL 적용
+
+### 2021-08-23 진행상황
++ AWS 서버 배포
++ 게시자 판매 상품 조회 API
 
 
 ## ⚠️ Issues
@@ -103,6 +109,7 @@ github에 push 및 pull이 되지 않으며 repository를 찾지 못하는 이�
 ### 서브 도메인 적용 이슈 (2021.08.16)
 서브 도메인 접속 시 ```ERR_CONNECTION_TIMED_OUT``` 에러 발생 
 > 해결 과정 
+1. ```/etc/nginx/sites-available```에 서버 블록 만들지 않고 따로 파일을 만들어 설정 -> 해결 안 됨
 
 ### certbot 적용 실패 이슈 (2021.08.16)
 certbot 적용시 실패하는 이슈가 발생 

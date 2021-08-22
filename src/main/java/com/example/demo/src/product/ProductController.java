@@ -119,4 +119,20 @@ public class ProductController {
             return new BaseResponse<>(baseException.getStatus());
         }
     }
+
+    /**
+     * 게시자(유저)로 상품 검색
+     * [GET] /app/products?seller={seller}
+     */
+    //Query String
+    @ResponseBody
+    @GetMapping("/search") // (GET) 127.0.0.1:9000/app/products
+    public BaseResponse<List<GetProductSellerRes>> getProductsBySeller(@RequestParam(required = false) String seller) {
+        try{
+            List<GetProductSellerRes> getProductSellerRes = productProvider.getProductsBySeller(seller);
+            return new BaseResponse<>(getProductSellerRes);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }
