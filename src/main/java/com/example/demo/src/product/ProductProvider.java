@@ -102,5 +102,14 @@ public class ProductProvider {
 //        }
 //    }
 
+    @Transactional
+    public int getSellerIdByProductId(int productIdx) throws BaseException {
+        try {
+            return productDao.getSellerIdByProductId(productIdx);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 
 }

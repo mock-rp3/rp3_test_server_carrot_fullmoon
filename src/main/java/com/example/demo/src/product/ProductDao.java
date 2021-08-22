@@ -247,4 +247,20 @@ public class ProductDao {
         return this.jdbcTemplate.update(updateViewCountQuery, updateViewCountParams);
     }
 
+    public int modifyProductPull(PatchPullReq patchPullReq) {
+        String modifyProductPullQuery = "update Product set price = ? where sellerId =? AND productIdx = ? ";
+        Object[] modifyProductPullParams = new Object[]{
+                patchPullReq.getPrice()
+                ,patchPullReq.getSellerId()
+                ,patchPullReq.getProductIdx()};
+
+        return this.jdbcTemplate.update(modifyProductPullQuery, modifyProductPullParams);
+    }
+
+    public int getSellerIdByProductId(int productIdx) {
+        String getSellerIdByProductIdQuery = "select sellerId from Product where productIdx = ?";
+        int getSellerIdByProductIdParams = productIdx;
+        return this.jdbcTemplate.queryForObject(getSellerIdByProductIdQuery, int.class, getSellerIdByProductIdParams);
+    }
+
 }

@@ -23,7 +23,7 @@ public class ProductController {
     private final ProductProvider productProvider;
     private final ProductService productService;
 
-    public ProductController(ProductProvider productProvider, ProductService productService, JwtService jwtService){
+    public ProductController(ProductProvider productProvider, ProductService productService, JwtService jwtService) {
         this.productProvider = productProvider;
         this.productService = productService;
     }
@@ -36,15 +36,15 @@ public class ProductController {
     @ResponseBody
     @GetMapping("") // (GET) 127.0.0.1:9000/app/products
     public BaseResponse<List<GetProductRes>> getProducts(@RequestParam(required = false) String title) {
-        try{
-            if(title == null){
+        try {
+            if (title == null) {
                 List<GetProductRes> getProductRes = productProvider.getProducts();
                 return new BaseResponse<>(getProductRes);
             }
             // Get products
             List<GetProductRes> getProductRes = productProvider.getProductsByTitle(title);
             return new BaseResponse<>(getProductRes);
-        } catch(BaseException exception){
+        } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
@@ -52,6 +52,7 @@ public class ProductController {
     /**
      * 상품 디테일 조회 API
      * [GET] /app/products/:productIdx
+     *
      * @return BaseResponse<GetDetailRes, GetDetailImageRes>
      */
     // Path-variable
@@ -59,10 +60,10 @@ public class ProductController {
     @GetMapping("/{productIdx}") // (GET) 127.0.0.1:9000/app/products/:productIdx
     public BaseResponse<List<String>> getAllDetail(@PathVariable("productIdx") int productIdx) {
         // Get Image
-        try{
+        try {
             List<String> resultDetailList = productProvider.getAllDetail(productIdx);
             return new BaseResponse<>(resultDetailList);
-        } catch(BaseException exception){
+        } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
 
@@ -71,16 +72,17 @@ public class ProductController {
     /**
      * 상품 등록 API
      * [POST] /app/products
+     *
      * @return BaseResponse<PostProductRes>
      */
     // Body
     @ResponseBody
     @PostMapping("")
     public BaseResponse<PostProductRes> createProduct(@RequestBody PostProductReq postProductReq) {
-        try{
+        try {
             PostProductRes postProductRes = productService.createProduct(postProductReq);
             return new BaseResponse<>(postProductRes);
-        } catch(BaseException exception){
+        } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
@@ -128,10 +130,10 @@ public class ProductController {
     @ResponseBody
     @GetMapping("/search") // (GET) 127.0.0.1:9000/app/products
     public BaseResponse<List<GetProductSellerRes>> getProductsBySeller(@RequestParam(required = false) String seller) {
-        try{
+        try {
             List<GetProductSellerRes> getProductSellerRes = productProvider.getProductsBySeller(seller);
             return new BaseResponse<>(getProductSellerRes);
-        } catch(BaseException exception){
+        } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
@@ -149,6 +151,32 @@ public class ProductController {
 
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 상품 끌어올리기
+     */
+    @PatchMapping("/pull/{productIdx}")
+    public BaseResponse<String> modifyProductPull(@PathVariable("productIdx") int productIdx, @RequestBody PatchPullReq patchPullReq) {
+        int dbSellerId;
+        try {
+            dbSellerId = productProvider.getSellerIdByProductId(productIdx);
+            if (patchPullReq.getSellerId() != dbSellerId) {
+                return new BaseResponse<>(PATCH_NOT_MATCH_USER);
+            }
+        } catch (BaseException baseException) {
+            return new BaseResponse<>(baseException.getStatus());
+        }
+        try {
+            patchPullReq = new PatchPullReq(productIdx,
+                    patchPullReq.getPrice(),
+                    patchPullReq.getSellerId());
+            productService.modifyProductPull(patchPullReq);
+
+            return new BaseResponse<>(SUCCESS_PULL_PRODUCT);
+        } catch (BaseException baseException) {
+            return new BaseResponse<>(baseException.getStatus());
         }
     }
 }

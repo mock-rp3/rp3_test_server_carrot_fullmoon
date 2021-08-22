@@ -3,6 +3,7 @@ package com.example.demo.src.product;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.src.product.model.PatchProductReq;
+import com.example.demo.src.product.model.PatchPullReq;
 import com.example.demo.src.product.model.PostProductReq;
 import com.example.demo.src.product.model.PostProductRes;
 import org.slf4j.Logger;
@@ -74,6 +75,18 @@ public class ProductService {
             }
 //        return result;
         } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    @Transactional
+    public void modifyProductPull(PatchPullReq patchPullReq) throws BaseException {
+        try{
+            int result = productDao.modifyProductPull(patchPullReq);
+            if (result == 0){
+                throw new BaseException(MODIFY_FAIL_PULL_PRODUCT);
+            }
+        } catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }
     }

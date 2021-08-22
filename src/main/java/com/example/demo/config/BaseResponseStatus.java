@@ -16,6 +16,7 @@ public enum BaseResponseStatus {
     SUCCESS_DELETE_PRODUCT(true, 1003, "중고 판매글 삭제에 성공하였습니다."),
     SUCCESS_UPDATE_PRODUCT(true, 1004, "중고 판매글 수정에 성공하였습니다."),
     SUCCESS_UPDATE_VIEW(true, 1005, "게시글 조회수가 증가하였습니다."),
+    SUCCESS_PULL_PRODUCT(true, 1006, "중고 판매글 끌올에 성공하였습니다."),
 
 
     /**
@@ -50,6 +51,7 @@ public enum BaseResponseStatus {
     // [DELETE] /users/{userInfoIdx}
     EMPTY_CLOSING_ACCOUNT_REASON(false, 2040, "계정 삭제 이유를 선택해주세요."),
 
+    PATCH_NOT_MATCH_USER(false, 2041, "판매글을 작성한 유저가 아닙니다."),
     /**
      * 3000 : Response 오류
      */
@@ -79,7 +81,8 @@ public enum BaseResponseStatus {
     DELETE_FAIL_USER(false,4020,"유저 정보 삭제 실패"),
     DELETE_FAIL_PRODUCT(false,4021,"상품 게시글 정보 삭제 실패"),
 
-    MODIFY_FAIL_VIEW_COUNT(false,4030,"게시글 조회수 증가 실패"),;
+    MODIFY_FAIL_VIEW_COUNT(false,4030,"게시글 조회수 증가 실패"),
+    MODIFY_FAIL_PULL_PRODUCT(false,4031,"게시글 조회수 증가 실패");
 
     // 5000 : 필요시 만들어서 쓰세요
     // 6000 : 필요시 만들어서 쓰세요
