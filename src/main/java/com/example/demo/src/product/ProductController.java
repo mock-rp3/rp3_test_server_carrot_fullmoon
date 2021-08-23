@@ -271,6 +271,21 @@ public class ProductController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 인기 상품 조회
+     */
+    //Query String
+    @ResponseBody
+    @GetMapping("/suggest") // (GET) 127.0.0.1:9000/app/products
+    public BaseResponse<List<GetProductSearchRes>> getRandomProducts() {
+        try {
+            List<GetProductSearchRes> getProductSearchRes = productProvider.getRandomProducts();
+            return new BaseResponse<>(getProductSearchRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }
 
 
