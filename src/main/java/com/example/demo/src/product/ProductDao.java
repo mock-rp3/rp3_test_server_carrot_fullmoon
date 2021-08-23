@@ -312,4 +312,36 @@ public class ProductDao {
                 getProductStatusParams);
 
     }
+
+    public List<GetProductRes> getProductsByCategory(int categoryId) {
+        String getProductsByCategoryQuery = "select productIdx,\n" +
+                "       Product.createdAt,\n" +
+                "       title,\n" +
+                "       price,\n" +
+                "       pulledAt,\n" +
+                "       imageUrl,\n" +
+                "       regionNameGu,\n" +
+                "       regionNameTown,\n" +
+                "       count(W.wishIdx)\n" +
+                "from Product\n" +
+                "         join ProductImage PI on Product.productIdx = PI.productId\n" +
+                "         join UserInfo UI on UI.userInfoIdx = Product.sellerId\n" +
+                "         join Region R on R.regionIdx = Product.regionId\n" +
+                "         join Wish W on Product.productIdx = W.productId\n" +
+                "where (UI.status & Product.status = 'normal') AND categoryId = ? \n" +
+                "group by productIdx";
+        int getProductsByCategoryParams = categoryId;
+        return this.jdbcTemplate.query(getProductsByCategoryQuery,
+                (rs, rowNum) -> new GetProductRes(
+                        rs.getInt("productIdx"),
+                        rs.getString("createdAt"),
+                        rs.getString("title"),
+                        rs.getInt("price"),
+                        rs.getString("pulledAt"),
+                        rs.getString("imageUrl"),
+                        rs.getString("regionNameGu"),
+                        rs.getString("regionNameTown"),
+                        rs.getInt("count(W.wishIdx)")),
+                getProductsByCategoryParams);
+    }
 }

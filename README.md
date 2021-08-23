@@ -97,6 +97,7 @@ Password : hwy7f2
 + 상품 관심 해제 API
 + 상품 상태 변경 API
 + 유저 판매내역 조회 API 
++ 상품 판매글 카테고리 검색 API 
 
 
 ## ⚠️ Issues

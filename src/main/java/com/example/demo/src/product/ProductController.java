@@ -241,6 +241,21 @@ public class ProductController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 상품 카테고리 검색
+     */
+    //Query String
+    @ResponseBody
+    @GetMapping("/category") // (GET) 127.0.0.1:9000/app/products
+    public BaseResponse<List<GetProductRes>> getProductsByCategory(@RequestParam(required = false) int category) {
+        try {
+            List<GetProductRes> getProductRes = productProvider.getProductsByCategory(category);
+            return new BaseResponse<>(getProductRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }
 
 

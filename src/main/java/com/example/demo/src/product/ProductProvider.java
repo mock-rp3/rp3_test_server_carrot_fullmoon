@@ -112,4 +112,14 @@ public class ProductProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    @Transactional
+    public List<GetProductRes> getProductsByCategory(int category) throws BaseException {
+        try {
+            List<GetProductRes> getProductRes = productDao.getProductsByCategory(category);
+            return getProductRes;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
