@@ -19,6 +19,7 @@ public enum BaseResponseStatus {
     SUCCESS_PULL_PRODUCT(true, 1006, "중고 판매글 끌올에 성공하였습니다."),
     SUCCESS_WISH_PRODUCT(true, 1007, "중고 판매글 관심 설정에 성공하였습니다."),
     SUCCESS_REVOKE_WISH_PRODUCT(true, 1008, "중고 판매글 관심 해제에 성공하였습니다."),
+    SUCCESS_UPDATE_PRODUCT_STATUS(true, 1009, "중고 판매글 상태 변경에 성공하였습니다."),
 
 
     /**

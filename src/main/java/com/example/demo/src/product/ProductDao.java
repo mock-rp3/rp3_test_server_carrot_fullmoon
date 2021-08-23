@@ -251,8 +251,8 @@ public class ProductDao {
         String modifyProductPullQuery = "update Product set price = ? where sellerId =? AND productIdx = ? ";
         Object[] modifyProductPullParams = new Object[]{
                 patchPullReq.getPrice()
-                ,patchPullReq.getSellerId()
-                ,patchPullReq.getProductIdx()};
+                , patchPullReq.getSellerId()
+                , patchPullReq.getProductIdx()};
 
         return this.jdbcTemplate.update(modifyProductPullQuery, modifyProductPullParams);
     }
@@ -265,19 +265,28 @@ public class ProductDao {
 
     public int createWish(PostWishReq postWishReq) {
         String createWishQuery = "insert into Wish (productId, userInfoId) values (?, ?)";
-        Object[] createWishParams = new Object[] {
+        Object[] createWishParams = new Object[]{
                 postWishReq.getProductId()
-                ,postWishReq.getUserInfoId()
+                , postWishReq.getUserInfoId()
         };
-       return this.jdbcTemplate.update(createWishQuery, createWishParams);
+        return this.jdbcTemplate.update(createWishQuery, createWishParams);
     }
 
     public int updateWish(PostWishReq postWishReq) {
         String updateWishQuery = "delete from Wish where productId =? and userInfoId = ?";
-        Object[] updateWishParams = new Object[] {
+        Object[] updateWishParams = new Object[]{
                 postWishReq.getProductId()
-                ,postWishReq.getUserInfoId()
+                , postWishReq.getUserInfoId()
         };
         return this.jdbcTemplate.update(updateWishQuery, updateWishParams);
+    }
+
+    public int updateProductStatus(PatchStatusReq patchStatusReq) {
+        String updateProductStatusQuery = "update Product set status = ? where productIdx = ?";
+        Object[] updateProductStatusParams = new Object[]{
+                patchStatusReq.getStatus()
+                , patchStatusReq.getProductIdx()
+        };
+        return this.jdbcTemplate.update(updateProductStatusQuery, updateProductStatusParams);
     }
 }

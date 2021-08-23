@@ -205,6 +205,20 @@ public class ProductController {
             return new BaseResponse<>(baseException.getStatus());
         }
     }
+
+    /**
+     * 상품 상태 업데이트
+     */
+    @PatchMapping("/status")
+    public BaseResponse<String> updateProductStatus(@RequestBody PatchStatusReq patchStatusReq) throws BaseException {
+        try {
+            productService.updateProductStatus(patchStatusReq);
+            return new BaseResponse<>(SUCCESS_UPDATE_PRODUCT_STATUS);
+        } catch (BaseException baseException) {
+            return new BaseResponse<>(baseException.getStatus());
+        }
+    }
+
 }
 
 

@@ -106,4 +106,13 @@ public class ProductService {
         }
     }
 
+    @Transactional
+    public void updateProductStatus(PatchStatusReq patchStatusReq) throws BaseException {
+        try {
+            productDao.updateProductStatus(patchStatusReq);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }

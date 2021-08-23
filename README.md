@@ -95,6 +95,7 @@ Password : hwy7f2
 + 상품 판매글 끌어올리기 API 개발
 + 상품 관심 설정 API
 + 상품 관심 해제 API
++ 상품 상태 변경 API
 
 
 ## ⚠️ Issues
