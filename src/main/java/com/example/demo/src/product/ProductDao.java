@@ -344,4 +344,31 @@ public class ProductDao {
                         rs.getInt("count(W.wishIdx)")),
                 getProductsByCategoryParams);
     }
+
+    public List<GetProductSearchRes> getPopularProducts() {
+        String getPopularProductsQuery = "select productIdx,\n" +
+                "       title,\n" +
+                "       price,\n" +
+                "       imageUrl,\n" +
+                "       regionNameGu,\n" +
+                "       regionNameTown,\n" +
+                "       Product.status\n" +
+                "from Product\n" +
+                "         join ProductImage PI on Product.productIdx = PI.productId\n" +
+                "         join UserInfo UI on UI.userInfoIdx = Product.sellerId\n" +
+                "         join Region R on R.regionIdx = Product.regionId\n" +
+                "         join Wish W on Product.productIdx = W.productId\n" +
+                "where UI.status & Product.status = 'normal'\n" +
+                "group by productIdx order by viewCount + count(W.wishIdx) desc";
+        return this.jdbcTemplate.query(getPopularProductsQuery,
+                (rs, rowNum) -> new GetProductSearchRes(
+                        rs.getInt("productIdx"),
+                        rs.getString("title"),
+                        rs.getInt("price"),
+                        rs.getString("imageUrl"),
+                        rs.getString("regionNameGu"),
+                        rs.getString("regionNameTown"),
+                        rs.getString("status"))
+        );
+    }
 }
