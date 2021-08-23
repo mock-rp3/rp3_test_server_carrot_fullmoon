@@ -271,4 +271,13 @@ public class ProductDao {
         };
        return this.jdbcTemplate.update(createWishQuery, createWishParams);
     }
+
+    public int updateWish(PostWishReq postWishReq) {
+        String updateWishQuery = "delete from Wish where productId =? and userInfoId = ?";
+        Object[] updateWishParams = new Object[] {
+                postWishReq.getProductId()
+                ,postWishReq.getUserInfoId()
+        };
+        return this.jdbcTemplate.update(updateWishQuery, updateWishParams);
+    }
 }

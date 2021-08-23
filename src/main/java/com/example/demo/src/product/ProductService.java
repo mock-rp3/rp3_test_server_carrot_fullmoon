@@ -97,4 +97,13 @@ public class ProductService {
         }
     }
 
+    @Transactional
+    public void updateWish(PostWishReq postWishReq) throws BaseException {
+        try {
+            productDao.updateWish(postWishReq);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }

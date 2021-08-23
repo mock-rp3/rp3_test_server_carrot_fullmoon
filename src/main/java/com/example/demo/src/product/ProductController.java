@@ -192,6 +192,19 @@ public class ProductController {
             return new BaseResponse<>(baseException.getStatus());
         }
     }
+
+    /**
+     * 위시 해제
+     */
+    @DeleteMapping("/wish")
+    public BaseResponse<String> updateWish(@RequestBody PostWishReq postWishReq) throws BaseException {
+        try {
+            productService.updateWish(postWishReq);
+            return new BaseResponse<>(SUCCESS_REVOKE_WISH_PRODUCT);
+        } catch (BaseException baseException) {
+            return new BaseResponse<>(baseException.getStatus());
+        }
+    }
 }
 
 
