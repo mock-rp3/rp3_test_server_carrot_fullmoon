@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.example.demo.config.BaseResponseStatus.*;
 
@@ -22,10 +23,12 @@ public class ProductController {
     @Autowired
     private final ProductProvider productProvider;
     private final ProductService productService;
+    private final JwtService jwtService;
 
     public ProductController(ProductProvider productProvider, ProductService productService, JwtService jwtService) {
         this.productProvider = productProvider;
         this.productService = productService;
+        this.jwtService = jwtService;
     }
 
     /**
@@ -219,6 +222,25 @@ public class ProductController {
         }
     }
 
+    /**
+     * 판매 내역 조회
+     * - 유저로 쿼리스트링
+     * - jwt로 유저 접근
+     */
+    @GetMapping("/status")
+    public BaseResponse<List<GetProductStatusRes>> getProductStatus(@RequestParam String status, @RequestParam int sellerId) {
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if (sellerId != userIdxByJwt) {
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            List<GetProductStatusRes> getProductStatusRes = productProvider.getProductStatus(status,sellerId);
+            return new BaseResponse<>(getProductStatusRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }
 
 

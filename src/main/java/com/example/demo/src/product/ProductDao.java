@@ -289,4 +289,27 @@ public class ProductDao {
         };
         return this.jdbcTemplate.update(updateProductStatusQuery, updateProductStatusParams);
     }
+
+    // as는 select에서만 되는 것 같다 안 됨
+    public List<GetProductStatusRes> getProductStatus(String status, int sellerId) {
+        String getProductStatusQuery = "select PI.imageUrl, P.title, R.regionNameGu, R.regionNameTown, P.createdAt, P.updatedAt, P.price, P.status as status, P.sellerId\n" +
+                "from Product P\n" +
+                "         join ProductImage PI on P.productIdx = PI.productId\n" +
+                "         join Region R on P.regionId = R.regionIdx\n" +
+                "having status = ? and sellerId = ?";
+        Object[] getProductStatusParams = new Object[]{status, sellerId};
+        return this.jdbcTemplate.query(getProductStatusQuery,
+                (rs, rowNum) -> new GetProductStatusRes(
+                        rs.getString("imageUrl"),
+                        rs.getString("title"),
+                        rs.getString("regionNameGu"),
+                        rs.getString("regionNameTown"),
+                        rs.getString("createdAt"),
+                        rs.getString("updatedAt"),
+                        rs.getInt("price"),
+                        rs.getString("status"),
+                        rs.getInt("sellerId")),
+                getProductStatusParams);
+
+    }
 }
