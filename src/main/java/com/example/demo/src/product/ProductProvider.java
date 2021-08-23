@@ -94,14 +94,6 @@ public class ProductProvider {
         }
     }
 
-//    public int checkID(String ID) throws BaseException{
-//        try{
-//            return userDao.checkID(ID);
-//        } catch (Exception exception){
-//            throw new BaseException(DATABASE_ERROR);
-//        }
-//    }
-
     @Transactional
     public int getSellerIdByProductId(int productIdx) throws BaseException {
         try {
@@ -110,6 +102,4 @@ public class ProductProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-
-
 }

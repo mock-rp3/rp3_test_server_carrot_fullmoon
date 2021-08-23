@@ -2,10 +2,7 @@ package com.example.demo.src.product;
 
 
 import com.example.demo.config.BaseException;
-import com.example.demo.src.product.model.PatchProductReq;
-import com.example.demo.src.product.model.PatchPullReq;
-import com.example.demo.src.product.model.PostProductReq;
-import com.example.demo.src.product.model.PostProductRes;
+import com.example.demo.src.product.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +30,7 @@ public class ProductService {
     //POST
     @Transactional
     public PostProductRes createProduct(PostProductReq postProductReq) throws BaseException {
-        try{
+        try {
             int newProduct = productDao.createProduct(postProductReq);
             return new PostProductRes(newProduct);
         } catch (Exception exception) {
@@ -56,12 +53,12 @@ public class ProductService {
 
     @Transactional
     public void modifyProductInfo(PatchProductReq patchProductReq) throws BaseException {
-        try{
+        try {
             int result = productDao.modifyProductInfo(patchProductReq);
-            if (result == 0){
+            if (result == 0) {
                 throw new BaseException(MODIFY_FAIL_PRODUCT);
             }
-        } catch(Exception exception){
+        } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }
@@ -81,12 +78,21 @@ public class ProductService {
 
     @Transactional
     public void modifyProductPull(PatchPullReq patchPullReq) throws BaseException {
-        try{
+        try {
             int result = productDao.modifyProductPull(patchPullReq);
-            if (result == 0){
+            if (result == 0) {
                 throw new BaseException(MODIFY_FAIL_PULL_PRODUCT);
             }
-        } catch(Exception exception){
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    @Transactional
+    public void createWish(PostWishReq postWishReq) throws BaseException {
+        try {
+            productDao.createWish(postWishReq);
+        } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }

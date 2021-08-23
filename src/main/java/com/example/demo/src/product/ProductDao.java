@@ -263,4 +263,12 @@ public class ProductDao {
         return this.jdbcTemplate.queryForObject(getSellerIdByProductIdQuery, int.class, getSellerIdByProductIdParams);
     }
 
+    public int createWish(PostWishReq postWishReq) {
+        String createWishQuery = "insert into Wish (productId, userInfoId) values (?, ?)";
+        Object[] createWishParams = new Object[] {
+                postWishReq.getProductId()
+                ,postWishReq.getUserInfoId()
+        };
+       return this.jdbcTemplate.update(createWishQuery, createWishParams);
+    }
 }

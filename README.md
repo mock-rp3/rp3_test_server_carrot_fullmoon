@@ -93,6 +93,7 @@ Password : hwy7f2
 + 게시자 판매 상품 조회 API
 + 게시글 조회수 증가 API 
 + 상품 판매글 끌어올리기 API 개발
++ 상품 관심 설정 API
 
 
 ## ⚠️ Issues

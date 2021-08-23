@@ -179,4 +179,19 @@ public class ProductController {
             return new BaseResponse<>(baseException.getStatus());
         }
     }
+
+    /**
+     * 위시 설정
+     */
+    @PostMapping("/wish")
+    public BaseResponse<String> createWish(@RequestBody PostWishReq postWishReq) throws BaseException {
+        try {
+            productService.createWish(postWishReq);
+            return new BaseResponse<>(SUCCESS_WISH_PRODUCT);
+        } catch (BaseException baseException) {
+            return new BaseResponse<>(baseException.getStatus());
+        }
+    }
 }
+
+
