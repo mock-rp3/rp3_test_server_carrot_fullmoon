@@ -2,6 +2,7 @@ package com.example.demo.src.community;
 
 import com.example.demo.src.community.model.*;
 import com.example.demo.src.product.model.GetProductRes;
+import com.example.demo.src.user.model.PostUserReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -136,5 +137,14 @@ public class CommunityDao {
         int deleteCommunityParams = communityIdx;
 
         return this.jdbcTemplate.update(deleteCommunityQuery, deleteCommunityParams);
+    }
+
+    public int createCommunity(PostCommunityReq postCommunityReq){
+        String createCommunityQuery = "insert into Community (description, categoryId, regionId, userInfoId) VALUES (?,?,?,?)";
+        Object[] createCommunityParams = new Object[]{postCommunityReq.getDescription(), postCommunityReq.getCategoryId(), postCommunityReq.getRegionId(), postCommunityReq.getUserInfoId()};
+        this.jdbcTemplate.update(createCommunityQuery, createCommunityParams);
+
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
     }
 }

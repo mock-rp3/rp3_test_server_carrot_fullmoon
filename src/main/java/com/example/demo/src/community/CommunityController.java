@@ -3,6 +3,8 @@ package com.example.demo.src.community;
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.product.model.GetProductRes;
+import com.example.demo.src.product.model.PostProductReq;
+import com.example.demo.src.product.model.PostProductRes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.src.community.model.*;
@@ -76,6 +78,22 @@ public class CommunityController {
 
             return new BaseResponse<>(SUCCESS_DELETE_COMMUNITY);
 
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 동네생활 등록 API
+     * [POST]
+     */
+    // Body
+    @ResponseBody
+    @PostMapping("")
+    public BaseResponse<PostCommunityRes> createCommunity(@RequestBody PostCommunityReq postCommunityReq) {
+        try {
+            PostCommunityRes postCommunityRes = communityService.createCommunity(postCommunityReq);
+            return new BaseResponse<>(postCommunityRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
