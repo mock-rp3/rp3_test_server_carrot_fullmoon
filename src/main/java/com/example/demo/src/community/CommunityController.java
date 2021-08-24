@@ -66,4 +66,19 @@ public class CommunityController {
 
     }
 
+    /**
+     * 동네생활 삭제 API
+     */
+    @PatchMapping("/delete/{communityIdx}")
+    public BaseResponse<String> deleteCommunity(@PathVariable("communityIdx") int communityIdx) {
+        try {
+            communityService.deleteCommunity(communityIdx);
+
+            return new BaseResponse<>(SUCCESS_DELETE_COMMUNITY);
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 }

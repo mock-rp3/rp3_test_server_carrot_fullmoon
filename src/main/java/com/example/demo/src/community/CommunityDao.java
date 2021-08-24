@@ -130,4 +130,11 @@ public class CommunityDao {
                 getCommunityParams
         );
     }
+
+    public int deleteCommunity(int communityIdx) {
+        String deleteCommunityQuery = "update Community set status = 'deleted' where communityIdx = ? ";
+        int deleteCommunityParams = communityIdx;
+
+        return this.jdbcTemplate.update(deleteCommunityQuery, deleteCommunityParams);
+    }
 }

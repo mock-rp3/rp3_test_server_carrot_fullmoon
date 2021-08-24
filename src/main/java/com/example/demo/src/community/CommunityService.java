@@ -26,4 +26,16 @@ public class CommunityService {
         this.communityProvider = communityProvider;
 
     }
+
+    @Transactional
+    public void deleteCommunity(int communityIdx) throws BaseException {
+        try {
+            int result = communityDao.deleteCommunity(communityIdx);
+            if (result == 0) {
+                throw new BaseException(DELETE_FAIL_PRODUCT);
+            }
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

@@ -140,18 +140,7 @@ public class ProductDao {
         return images;
     }
 
-//    public List<GetDetailAllRes> getAllDetail(int productIdx) {
-//        String getDetailAllQuery = "select imageUrl from ProductImage where productIdx = ?";
-//        int getDetailAllParams = productIdx;
-//        return this.jdbcTemplate.query(getDetailAllQuery,
-//                (rs,rowNum) -> new GetDetailImageRes(
-//                        rs.getString("imageUrl")),
-//                getDetailAllParams);
-//    }
-
-
     public int createProduct(PostProductReq postProductReq) {
-
         try {
             String getRegionIdQuery = "select regionIdx from Region where userInfoId = ?";
             int getSellerId = postProductReq.getSellerId();
