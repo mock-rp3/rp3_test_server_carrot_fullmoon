@@ -3,6 +3,7 @@ package com.example.demo.src.community;
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.product.model.GetProductRes;
+import com.example.demo.src.product.model.PatchProductReq;
 import com.example.demo.src.product.model.PostProductReq;
 import com.example.demo.src.product.model.PostProductRes;
 import org.slf4j.Logger;
@@ -96,6 +97,23 @@ public class CommunityController {
             return new BaseResponse<>(postCommunityRes);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 동네생활 게시글 변경
+     */
+    @PatchMapping("/{communityIdx}")
+    public BaseResponse<String> updateCommunity(@PathVariable("communityIdx") int communityIdx, @RequestBody PatchCommunityReq patchCommunityReq) {
+        try {
+            patchCommunityReq = new PatchCommunityReq(communityIdx,
+                    patchCommunityReq.getCategoryId(),
+                    patchCommunityReq.getDescription());
+            communityService.updateCommunity(patchCommunityReq);
+
+            return new BaseResponse<>(SUCCESS_UPDATE_COMMUNITY);
+        } catch (BaseException baseException) {
+            return new BaseResponse<>(baseException.getStatus());
         }
     }
 

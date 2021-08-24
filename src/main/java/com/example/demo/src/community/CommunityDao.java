@@ -2,6 +2,7 @@ package com.example.demo.src.community;
 
 import com.example.demo.src.community.model.*;
 import com.example.demo.src.product.model.GetProductRes;
+import com.example.demo.src.product.model.PatchProductReq;
 import com.example.demo.src.user.model.PostUserReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -139,12 +140,22 @@ public class CommunityDao {
         return this.jdbcTemplate.update(deleteCommunityQuery, deleteCommunityParams);
     }
 
-    public int createCommunity(PostCommunityReq postCommunityReq){
+    public int createCommunity(PostCommunityReq postCommunityReq) {
         String createCommunityQuery = "insert into Community (description, categoryId, regionId, userInfoId) VALUES (?,?,?,?)";
         Object[] createCommunityParams = new Object[]{postCommunityReq.getDescription(), postCommunityReq.getCategoryId(), postCommunityReq.getRegionId(), postCommunityReq.getUserInfoId()};
         this.jdbcTemplate.update(createCommunityQuery, createCommunityParams);
 
         String lastInsertIdQuery = "select last_insert_id()";
-        return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+    }
+
+    public int updateCommunity(PatchCommunityReq patchCommunityReq) {
+        String updateCommunityQuery = "update Community set categoryId = ?, description = ? where communityIdx = ? ";
+        Object[] updateCommunityParams = new Object[]{
+                patchCommunityReq.getCategoryId()
+                , patchCommunityReq.getDescription()
+                , patchCommunityReq.getCommunityIdx()};
+
+        return this.jdbcTemplate.update(updateCommunityQuery, updateCommunityParams);
     }
 }

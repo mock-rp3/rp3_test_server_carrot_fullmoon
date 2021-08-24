@@ -5,6 +5,7 @@ import com.example.demo.config.secret.Secret;
 import com.example.demo.src.community.model.*;
 import com.example.demo.src.product.ProductDao;
 import com.example.demo.src.product.ProductProvider;
+import com.example.demo.src.product.model.PatchProductReq;
 import com.example.demo.src.product.model.PostProductRes;
 import com.example.demo.src.user.model.PostUserReq;
 import com.example.demo.src.user.model.PostUserRes;
@@ -50,6 +51,19 @@ public class CommunityService {
         try{
             int newCommunity = communityDao.createCommunity(postCommunityReq);
             return new PostCommunityRes(newCommunity);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    //PATCH
+    @Transactional
+    public void updateCommunity(PatchCommunityReq patchCommunityReq) throws BaseException {
+        try {
+            int result = communityDao.updateCommunity(patchCommunityReq);
+            if (result == 0) {
+                throw new BaseException(MODIFY_FAIL_COMMUNITY);
+            }
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }

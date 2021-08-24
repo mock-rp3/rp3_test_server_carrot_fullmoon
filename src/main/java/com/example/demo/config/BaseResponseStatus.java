@@ -21,6 +21,7 @@ public enum BaseResponseStatus {
     SUCCESS_REVOKE_WISH_PRODUCT(true, 1008, "중고 판매글 관심 해제에 성공하였습니다."),
     SUCCESS_UPDATE_PRODUCT_STATUS(true, 1009, "중고 판매글 상태 변경에 성공하였습니다."),
     SUCCESS_DELETE_COMMUNITY(true, 1010, "동네생활 게시글 삭제에 성공하였습니다."),
+    SUCCESS_UPDATE_COMMUNITY(true, 1011, "동네생활 게시글 수정에 성공하였습니다."),
 
 
     /**
@@ -77,6 +78,7 @@ public enum BaseResponseStatus {
     //[PATCH] /users/{userInfoIdx}
     MODIFY_FAIL_USER(false,4014,"유저 정보 수정 실패"),
     MODIFY_FAIL_PRODUCT(false,4015,"중고 판매글 정보 수정 실패"),
+    MODIFY_FAIL_COMMUNITY(false,4016,"동네생활 게시글 정보 수정 실패"),
 
     PASSWORD_ENCRYPTION_ERROR(false, 4011, "비밀번호 암호화에 실패하였습니다."),
     PASSWORD_DECRYPTION_ERROR(false, 4012, "비밀번호 복호화에 실패하였습니다."),
