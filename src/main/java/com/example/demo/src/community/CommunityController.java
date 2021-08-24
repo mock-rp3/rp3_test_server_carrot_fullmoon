@@ -48,4 +48,22 @@ public class CommunityController {
         }
     }
 
+    /**
+     * 동네생활 디테일 조회 API
+     * [GET] /app/community/:communityIdx
+     */
+    // Path-variable
+    @ResponseBody
+    @GetMapping("/{communityIdx}") // (GET) 127.0.0.1:9000/app/products/:productIdx
+    public BaseResponse<List<GetCommunityDetailRes>> getCommunity(@PathVariable("communityIdx") int communityIdx) {
+        // Get Image
+        try {
+            List<GetCommunityDetailRes> getCommunityDetailResList = communityProvider.getCommunity(communityIdx);
+            return new BaseResponse<>(getCommunityDetailResList);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
+
 }

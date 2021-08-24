@@ -3,6 +3,7 @@ package com.example.demo.src.community;
 import com.example.demo.config.BaseException;
 import com.example.demo.src.community.model.*;
 import com.example.demo.src.product.ProductDao;
+import com.example.demo.src.product.model.GetDetailRes;
 import com.example.demo.src.product.model.GetProductRes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,5 +46,15 @@ public class CommunityProvider {
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
+    }
+
+    @Transactional
+    public List<GetCommunityDetailRes> getCommunity(int communityIdx) throws BaseException {
+//        try {
+            List<GetCommunityDetailRes> getCommunityDetailResList = communityDao.getCommunity(communityIdx);
+            return getCommunityDetailResList;
+//        } catch (Exception exception) {
+//            throw new BaseException(DATABASE_ERROR);
+//        }
     }
 }
