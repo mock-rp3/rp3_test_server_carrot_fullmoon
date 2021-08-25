@@ -142,47 +142,51 @@ public class UserController {
     }
 
 
-//    /**
-//     * 로그인 API
-//     * [POST] /app/joinAndLogIn
-//     *
-//     * @return PostLoginRes
-//     * @return BaseResponse<PostLoginRes>
-//     * @RequestBody PostLoginReq
-//     */
-//    @ResponseBody
-//    @PostMapping("/join-login")
-//    public BaseResponse<PostLoginRes> joinAndLogIn(@RequestBody PostUserLoginReq postUserLoginReq) {
-//        String phoneNumber = postUserLoginReq.getPhoneNumber();
-//        if (postUserLoginReq.getPhoneNumber() == null || postUserLoginReq.getPhoneNumber().length() == 0) {
-//            return new BaseResponse<>(LOGIN_USERS_EMPTY_PHONE_NUMBER);
-//        }
-//        if (postUserLoginReq.getRegionNameCity() == null || postUserLoginReq.getRegionNameCity().length() == 0) {
-//            return new BaseResponse<>(POST_USERS_EMPTY_CITY);
-//        }
-//        if (postUserLoginReq.getRegionNameGu() == null || postUserLoginReq.getRegionNameGu().length() == 0) {
-//            return new BaseResponse<>(POST_USERS_EMPTY_GU);
-//        }
-//        if (postUserLoginReq.getRegionNameTown() == null || postUserLoginReq.getRegionNameTown().length() == 0) {
-//            return new BaseResponse<>(POST_USERS_EMPTY_TOWN);
-//        }
-//        if (!isRegexPhoneNumber(postUserLoginReq.getPhoneNumber())) {
-//            return new BaseResponse<>(INVALID_PHONE_NUMBER);
-//        }
-//        // service 단으로 보내야함
-//        // 이미 존재하는 회원이라면 그냥 로그인
-//        if (userProvider.checkPhoneNumber(postUserLoginReq.getPhoneNumber()) == 1) {
-//            PostLoginRes postLoginRes = userService.userLogin(postUserLoginReq);
-//            return new BaseResponse<>(postLoginRes);
-//        }
-//        // 존재하지 않는다면 회원가입
-//        try {
-//            PostLoginRes postLoginRes = userService.userJoin(postUserLoginReq);
-//            return new BaseResponse<>(postLoginRes);
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>(exception.getStatus());
-//        }
-//    }
+    /**
+     * 로그인 API
+     * [POST] /app/joinAndLogIn
+     *
+     * @return PostLoginRes
+     * @return BaseResponse<PostLoginRes>
+     * @RequestBody PostLoginReq
+     */
+    @ResponseBody
+    @PostMapping("/join-login")
+    public BaseResponse<PostLoginRes> joinAndLogIn(@RequestBody PostUserLoginReq postUserLoginReq) {
+        if (postUserLoginReq.getPhoneNumber() == null || postUserLoginReq.getPhoneNumber().length() == 0) {
+            return new BaseResponse<>(LOGIN_USERS_EMPTY_PHONE_NUMBER);
+        }
+        if (postUserLoginReq.getRegionNameCity() == null || postUserLoginReq.getRegionNameCity().length() == 0) {
+            return new BaseResponse<>(POST_USERS_EMPTY_CITY);
+        }
+        if (postUserLoginReq.getRegionNameGu() == null || postUserLoginReq.getRegionNameGu().length() == 0) {
+            return new BaseResponse<>(POST_USERS_EMPTY_GU);
+        }
+        if (postUserLoginReq.getRegionNameTown() == null || postUserLoginReq.getRegionNameTown().length() == 0) {
+            return new BaseResponse<>(POST_USERS_EMPTY_TOWN);
+        }
+        if (!isRegexPhoneNumber(postUserLoginReq.getPhoneNumber())) {
+            return new BaseResponse<>(INVALID_PHONE_NUMBER);
+        }
+        // service 단으로 보내야함
+        // 이미 존재하는 회원이라면 그냥 로그인
+        try {
+            int numberIsExist = userProvider.checkPhoneNumber(postUserLoginReq.getPhoneNumber());
+            if (numberIsExist == 1) {
+                PostLoginRes postLoginRes = userService.userLogin(postUserLoginReq);
+                return new BaseResponse<>(postLoginRes);
+            }
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+        // 존재하지 않는다면 회원가입
+        try {
+            PostLoginRes postLoginRes = userService.userJoin(postUserLoginReq);
+            return new BaseResponse<>(postLoginRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 
     /**
      * 유저정보변경 API

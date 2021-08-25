@@ -105,11 +105,6 @@ public class UserService {
     //POST
     @Transactional
     public PostUserRes userJoin(PostUserLoginReq postUserLoginReq) throws BaseException {
-        //중복
-        if(userProvider.checkPhoneNumber(postUserLoginReq.getPhoneNumber()) ==1){
-            throw new BaseException(POST_USERS_EXISTS_PHONE_NUMBER);
-        }
-
         String pwd;
         try{
             pwd = new AES128(Secret.USER_INFO_PASSWORD_KEY).encrypt(postUserLoginReq.getPassword());

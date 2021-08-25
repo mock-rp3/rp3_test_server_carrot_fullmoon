@@ -15,24 +15,24 @@ public class UserDao {
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public void setDataSource(DataSource dataSource){
+    public void setDataSource(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public List<GetUserRes> getUsers(){
+    public List<GetUserRes> getUsers() {
         String getUsersQuery = "select * from UserInfo";
         return this.jdbcTemplate.query(getUsersQuery,
-                (rs,rowNum) -> new GetUserRes(
+                (rs, rowNum) -> new GetUserRes(
                         rs.getInt("userInfoIdx"),
                         rs.getString("status"),
                         rs.getString("createdAt"),
                         rs.getString("phoneNumber"),
                         rs.getString("nickname"),
                         rs.getString("profileImageUrl"))
-                );
+        );
     }
 
-    public List<GetUserRes> getUsersByName(String name){
+    public List<GetUserRes> getUsersByName(String name) {
         String getUsersByNameQuery = "select * from UserInfo where nickname =?";
         String getUsersByNameParams = name;
         return this.jdbcTemplate.query(getUsersByNameQuery,
@@ -43,10 +43,10 @@ public class UserDao {
                         rs.getString("phoneNumber"),
                         rs.getString("nickname"),
                         rs.getString("profileImageUrl")),
-        getUsersByNameParams);
+                getUsersByNameParams);
     }
 
-    public GetUserRes getUser(int userInfoIdx){
+    public GetUserRes getUser(int userInfoIdx) {
         String getUserQuery = "select * from UserInfo where userInfoIdx = ?";
         int getUserParams = userInfoIdx;
         return this.jdbcTemplate.queryForObject(getUserQuery,
@@ -59,18 +59,18 @@ public class UserDao {
                         rs.getString("profileImageUrl")),
                 getUserParams);
     }
-    
 
-    public int createUser(PostUserReq postUserReq){
+
+    public int createUser(PostUserReq postUserReq) {
         String createUserQuery = "insert into UserInfo (phoneNumber, password, nickname, profileImageUrl) VALUES (?,?,?,?)";
         Object[] createUserParams = new Object[]{postUserReq.getPhoneNumber(), postUserReq.getPassword(), postUserReq.getNickname(), postUserReq.getProfileImageUrl()};
         this.jdbcTemplate.update(createUserQuery, createUserParams);
 
         String lastInsertIdQuery = "select last_insert_id()";
-        return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
     }
 
-    public int checkPhoneNumber(String phoneNumber){
+    public int checkPhoneNumber(String phoneNumber) {
         String checkPhoneNumberQuery = "select exists(select phoneNumber from UserInfo where phoneNumber = ?)";
         String checkPhoneNumberParams = phoneNumber;
         return this.jdbcTemplate.queryForObject(checkPhoneNumberQuery,
@@ -79,51 +79,51 @@ public class UserDao {
 
     }
 
-    public User getUserByPhoneNumber(PostLoginReq postLoginReq){
+    public User getUserByPhoneNumber(PostLoginReq postLoginReq) {
         String getUserByPhoneNumberQuery = "select userInfoIdx, phoneNumber, password, nickname, profileImageUrl from UserInfo where phoneNumber = ?";
         String getUserByPhoneNumberParams = postLoginReq.getPhoneNumber();
 
         return this.jdbcTemplate.queryForObject(getUserByPhoneNumberQuery,
-                (rs,rowNum)-> new User(
+                (rs, rowNum) -> new User(
                         rs.getInt("userInfoIdx"),
                         rs.getString("phoneNumber"),
                         rs.getString("password"),
                         rs.getString("nickname"),
                         rs.getString("profileImageUrl")),
                 getUserByPhoneNumberParams
-                );
+        );
 
     }
 
-    public int modifyUserInfo(PatchUserReq patchUserReq){
+    public int modifyUserInfo(PatchUserReq patchUserReq) {
         String modifyUserInfoQuery = "update UserInfo set nickname = ?, profileImageUrl = ? where userInfoIdx = ? ";
         Object[] modifyUserInfoParams = new Object[]{patchUserReq.getNickname(), patchUserReq.getProfileImageUrl(), patchUserReq.getUserInfoIdx()};
 
-        return this.jdbcTemplate.update(modifyUserInfoQuery,modifyUserInfoParams);
+        return this.jdbcTemplate.update(modifyUserInfoQuery, modifyUserInfoParams);
     }
 
-    public int deleteUserInfo(DeleteUserReq deleteUserReq){
+    public int deleteUserInfo(DeleteUserReq deleteUserReq) {
         String deleteUserInfoQuery = "update UserInfo set status = 'deleted', closingReason = ? where userInfoIdx = ? ";
         Object[] deleteUserInfoParams = new Object[]{deleteUserReq.getClosingReason(), deleteUserReq.getUserInfoIdx()};
 
-        return this.jdbcTemplate.update(deleteUserInfoQuery,deleteUserInfoParams);
+        return this.jdbcTemplate.update(deleteUserInfoQuery, deleteUserInfoParams);
     }
 
-    public int userJoin(PostUserLoginReq postUserLoginReq){
+    public int userJoin(PostUserLoginReq postUserLoginReq) {
         String createUserQuery = "insert into UserInfo (phoneNumber, password, nickname, profileImageUrl) VALUES (?,?,?,?)";
         Object[] createUserParams = new Object[]{postUserLoginReq.getPhoneNumber(), postUserLoginReq.getPassword(), postUserLoginReq.getNickname(), postUserLoginReq.getProfileImageUrl()};
         this.jdbcTemplate.update(createUserQuery, createUserParams);
 
         String lastInsertIdQuery = "select last_insert_id()";
-        return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
     }
 
-    public User userLogin(PostUserLoginReq postUserLoginReq){
+    public User userLogin(PostUserLoginReq postUserLoginReq) {
         String getUserByPhoneNumberQuery = "select userInfoIdx, phoneNumber, password, nickname, profileImageUrl from UserInfo where phoneNumber = ?";
         String getUserByPhoneNumberParams = postUserLoginReq.getPhoneNumber();
 
         return this.jdbcTemplate.queryForObject(getUserByPhoneNumberQuery,
-                (rs,rowNum)-> new User(
+                (rs, rowNum) -> new User(
                         rs.getInt("userInfoIdx"),
                         rs.getString("phoneNumber"),
                         rs.getString("password"),

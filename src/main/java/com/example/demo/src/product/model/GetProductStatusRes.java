@@ -17,4 +17,5 @@ public class GetProductStatusRes {
     private int price;
     private String status;
     private int sellerId;
+private int productIdx;
 }
