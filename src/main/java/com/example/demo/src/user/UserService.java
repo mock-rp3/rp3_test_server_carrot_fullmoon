@@ -85,4 +85,45 @@ public class UserService {
 //            throw new BaseException(DATABASE_ERROR);
 //        }
     }
+
+    @Transactional
+    public PostLoginRes userLogin(PostUserLoginReq postUserLoginReq) throws BaseException {
+        User user = userDao.userLogin(postUserLoginReq);
+        String userPhoneNumber;
+        userPhoneNumber = user.getPhoneNumber();
+
+        if (postUserLoginReq.getPhoneNumber().equals(userPhoneNumber)) {
+            int userInfoIdx = userDao.userLogin(postUserLoginReq).getUserInfoIdx();
+            String authJwt = jwtService.createJwt(userInfoIdx);
+            return new PostLoginRes(userInfoIdx, authJwt);
+        }
+        else{
+            throw new BaseException(LOGIN_USERS_NOT_JOIN);
+        }
+    }
+
+    //POST
+    @Transactional
+    public PostUserRes userJoin(PostUserLoginReq postUserLoginReq) throws BaseException {
+        //중복
+        if(userProvider.checkPhoneNumber(postUserLoginReq.getPhoneNumber()) ==1){
+            throw new BaseException(POST_USERS_EXISTS_PHONE_NUMBER);
+        }
+
+        String pwd;
+        try{
+            pwd = new AES128(Secret.USER_INFO_PASSWORD_KEY).encrypt(postUserLoginReq.getPassword());
+            postUserLoginReq.setPassword(pwd);
+        } catch (Exception ignored) {
+            throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
+        }
+//        try{
+        int userInfoIdx = userDao.userJoin(postUserLoginReq);
+        //jwt 발급.
+        String jwt = jwtService.createJwt(userInfoIdx);
+        return new PostUserRes(jwt,userInfoIdx);
+//        } catch (Exception exception) {
+//            throw new BaseException(DATABASE_ERROR);
+//        }
+    }
 }

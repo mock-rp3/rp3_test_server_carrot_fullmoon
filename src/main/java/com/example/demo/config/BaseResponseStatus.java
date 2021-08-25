@@ -67,6 +67,12 @@ public enum BaseResponseStatus {
     DUPLICATED_EMAIL(false, 3013, "중복된 이메일입니다."),
     FAILED_TO_LOGIN(false,3014,"없는 아이디거나 비밀번호가 틀렸습니다."),
 
+    POST_USERS_EMPTY_CITY(false,3015,"도시명을 입력해주세요."),
+    POST_USERS_EMPTY_GU(false,3016,"구명을 입렵해주세요."),
+    POST_USERS_EMPTY_TOWN(false,3017,"동네명을 입력해주세요."),
+
+
+
 
 
     /**

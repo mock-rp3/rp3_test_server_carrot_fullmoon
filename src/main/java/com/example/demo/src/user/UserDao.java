@@ -109,6 +109,29 @@ public class UserDao {
         return this.jdbcTemplate.update(deleteUserInfoQuery,deleteUserInfoParams);
     }
 
+    public int userJoin(PostUserLoginReq postUserLoginReq){
+        String createUserQuery = "insert into UserInfo (phoneNumber, password, nickname, profileImageUrl) VALUES (?,?,?,?)";
+        Object[] createUserParams = new Object[]{postUserLoginReq.getPhoneNumber(), postUserLoginReq.getPassword(), postUserLoginReq.getNickname(), postUserLoginReq.getProfileImageUrl()};
+        this.jdbcTemplate.update(createUserQuery, createUserParams);
 
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
+    }
+
+    public User userLogin(PostUserLoginReq postUserLoginReq){
+        String getUserByPhoneNumberQuery = "select userInfoIdx, phoneNumber, password, nickname, profileImageUrl from UserInfo where phoneNumber = ?";
+        String getUserByPhoneNumberParams = postUserLoginReq.getPhoneNumber();
+
+        return this.jdbcTemplate.queryForObject(getUserByPhoneNumberQuery,
+                (rs,rowNum)-> new User(
+                        rs.getInt("userInfoIdx"),
+                        rs.getString("phoneNumber"),
+                        rs.getString("password"),
+                        rs.getString("nickname"),
+                        rs.getString("profileImageUrl")),
+                getUserByPhoneNumberParams
+        );
+
+    }
 
 }

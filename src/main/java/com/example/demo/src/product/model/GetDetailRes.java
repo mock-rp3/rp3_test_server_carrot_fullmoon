@@ -21,6 +21,7 @@ public class GetDetailRes {
     private String pulledAt;
     private String description;
     private int wishCount;
+    private int viewCount;
     private int price;
     private String canProposal;
     private int userInfoIdx;

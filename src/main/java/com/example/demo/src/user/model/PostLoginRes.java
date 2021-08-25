@@ -8,7 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class PostLoginRes {
-
     private int userInfoIdx;
     private String authJwt;
 }

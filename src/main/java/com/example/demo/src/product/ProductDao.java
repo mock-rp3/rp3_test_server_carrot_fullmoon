@@ -38,7 +38,7 @@ public class ProductDao {
                 "         join UserInfo UI on UI.userInfoIdx = Product.sellerId\n" +
                 "         join Region R on R.regionIdx = Product.regionId\n" +
                 "         left join Wish W on Product.productIdx = W.productId\n" +
-                "where UI.status & Product.status = 'normal'\n" +
+                "where UI.status = 'normal' and Product.status = 'normal'\n" +
                 "group by productIdx";
         return this.jdbcTemplate.query(getProductsQuery,
                 (rs, rowNum) -> new GetProductRes(
@@ -69,7 +69,7 @@ public class ProductDao {
                 "         join UserInfo UI on UI.userInfoIdx = Product.sellerId\n" +
                 "         join Region R on R.regionIdx = Product.regionId\n" +
                 "         left join Wish W on Product.productIdx = W.productId\n" +
-                "where (UI.status & Product.status = 'normal') AND title LIKE concat('%',?,'%')\n" +
+                "where (UI.status = 'normal' and Product.status = 'normal') AND title LIKE concat('%',?,'%')\n" +
                 "group by productIdx";
         String getProductsByTitleParams = title;
         return this.jdbcTemplate.query(getProductsByTitleQuery,
@@ -99,6 +99,7 @@ public class ProductDao {
                 "       pulledAt,\n" +
                 "       description,\n" +
                 "       count(W.wishIdx),\n" +
+                "       viewCount,\n" +
                 "       price,\n" +
                 "       canProposal,\n" +
                 "       UI.userInfoIdx\n" +
@@ -109,7 +110,7 @@ public class ProductDao {
                 "         join Region R on R.regionIdx = P.regionId\n" +
                 "         left join Wish W on P.productIdx = W.productId\n" +
                 "         join Category C on C.categoryIdx = P.categoryId\n" +
-                "where (UI.status & P.status = 'normal')\n" +
+                "where (UI.status = 'normal' and P.status = 'normal')\n" +
                 "  AND productIdx = ?";
         int getDetailParams = productIdx;
         return this.jdbcTemplate.query(getDetailQuery,
@@ -126,6 +127,7 @@ public class ProductDao {
                         rs.getString("pulledAt"),
                         rs.getString("description"),
                         rs.getInt("count(W.wishIdx)"),
+                        rs.getInt("viewCount"),
                         rs.getInt("price"),
                         rs.getString("canProposal"),
                         rs.getInt("userInfoIdx")),
@@ -216,7 +218,7 @@ public class ProductDao {
                 "from Product\n" +
                 "         join ProductImage PI on Product.productIdx = PI.productId\n" +
                 "         join UserInfo UI on UI.userInfoIdx = Product.sellerId\n" +
-                "where (UI.status & Product.status = 'normal')\n" +
+                "where (UI.status = 'normal' and Product.status = 'normal')\n" +
                 "  AND sellerId = ?\n" +
                 "group by productIdx limit 4";
         String getProductsBySellerParams = seller;
@@ -317,7 +319,7 @@ public class ProductDao {
                 "         join UserInfo UI on UI.userInfoIdx = Product.sellerId\n" +
                 "         join Region R on R.regionIdx = Product.regionId\n" +
                 "         left join Wish W on Product.productIdx = W.productId\n" +
-                "where (UI.status & Product.status = 'normal') AND categoryId = ? \n" +
+                "where (UI.status = 'normal' and Product.status = 'normal') AND categoryId = ? \n" +
                 "group by productIdx";
         int getProductsByCategoryParams = categoryId;
         return this.jdbcTemplate.query(getProductsByCategoryQuery,
@@ -347,7 +349,7 @@ public class ProductDao {
                 "         join UserInfo UI on UI.userInfoIdx = Product.sellerId\n" +
                 "         join Region R on R.regionIdx = Product.regionId\n" +
                 "         left join Wish W on Product.productIdx = W.productId\n" +
-                "where UI.status & Product.status = 'normal'\n" +
+                "where UI.status = 'normal' and Product.status = 'normal'\n" +
                 "group by productIdx order by viewCount + count(W.wishIdx) desc";
         return this.jdbcTemplate.query(getPopularProductsQuery,
                 (rs, rowNum) -> new GetProductSearchRes(
@@ -374,7 +376,7 @@ public class ProductDao {
                 "         join UserInfo UI on UI.userInfoIdx = Product.sellerId\n" +
                 "         join Region R on R.regionIdx = Product.regionId\n" +
                 "         left join Wish W on Product.productIdx = W.productId\n" +
-                "where UI.status & Product.status = 'normal'\n" +
+                "where UI.status = 'normal' and Product.status = 'normal'\n" +
                 "group by productIdx order by rand() limit 10";
         return this.jdbcTemplate.query(getPopularProductsQuery,
                 (rs, rowNum) -> new GetProductSearchRes(
