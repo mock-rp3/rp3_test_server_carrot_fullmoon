@@ -109,13 +109,32 @@ public class UserDao {
         return this.jdbcTemplate.update(deleteUserInfoQuery, deleteUserInfoParams);
     }
 
-    public int userJoin(PostUserLoginReq postUserLoginReq) {
+    public User userJoin(PostUserLoginReq postUserLoginReq) {
         String createUserQuery = "insert into UserInfo (phoneNumber, password, nickname, profileImageUrl) VALUES (?,?,?,?)";
         Object[] createUserParams = new Object[]{postUserLoginReq.getPhoneNumber(), postUserLoginReq.getPassword(), postUserLoginReq.getNickname(), postUserLoginReq.getProfileImageUrl()};
         this.jdbcTemplate.update(createUserQuery, createUserParams);
 
-        String lastInsertIdQuery = "select last_insert_id()";
-        return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+        String lastInsertUserIdQuery = "select last_insert_id()";
+        int lastInsertUserId = this.jdbcTemplate.queryForObject(lastInsertUserIdQuery, int.class);
+
+        String createUserRegionQuery = "insert into Region (userInfoId, regionNameCity, regionNameGu, regionNameTown) VALUES (?,?,?,?)";
+        Object[] createUserRegionParams = new Object[]{lastInsertUserId, postUserLoginReq.getRegionNameCity(), postUserLoginReq.getRegionNameGu(), postUserLoginReq.getRegionNameTown()};
+        this.jdbcTemplate.update(createUserRegionQuery,createUserRegionParams);
+
+        // String lastInsertIdQuery = "select last_insert_id()";
+        // return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+        // return lastInsertUserId;
+        String getUserByPhoneNumberQuery = "select userInfoIdx, phoneNumber, password, nickname, profileImageUrl from UserInfo where phoneNumber = ?";
+        String getUserByPhoneNumberParams = postUserLoginReq.getPhoneNumber();
+        return this.jdbcTemplate.queryForObject(getUserByPhoneNumberQuery,
+                (rs, rowNum) -> new User(
+                        rs.getInt("userInfoIdx"),
+                        rs.getString("phoneNumber"),
+                        rs.getString("password"),
+                        rs.getString("nickname"),
+                        rs.getString("profileImageUrl")),
+                getUserByPhoneNumberParams
+        );
     }
 
     public User userLogin(PostUserLoginReq postUserLoginReq) {

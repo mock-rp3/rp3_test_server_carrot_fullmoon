@@ -8,6 +8,7 @@ import com.example.demo.config.BaseResponse;
 import com.example.demo.src.user.model.*;
 import com.example.demo.utils.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -149,6 +150,8 @@ public class UserController {
      * @return PostLoginRes
      * @return BaseResponse<PostLoginRes>
      * @RequestBody PostLoginReq
+     *
+     * 문제가 많은 코드.......405 에러 뜸 매핑자체가 안 됨
      */
     @ResponseBody
     @PostMapping("/join-login")

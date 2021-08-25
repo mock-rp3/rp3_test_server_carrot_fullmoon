@@ -146,10 +146,8 @@ public class ProductDao {
         try {
             String getRegionIdQuery = "select regionIdx from Region where userInfoId = ?";
             int getSellerId = postProductReq.getSellerId();
-
             int regionId = this.jdbcTemplate.queryForObject(getRegionIdQuery, int.class, getSellerId);
 
-            System.out.println("셀러아이디 체크" + regionId);
             String createProductQuery = "insert into Product (title" +
                     ", description, price, canProposal, categoryId, sellerId, regionId)\n" +
                     "values (?,?,?,?,?,?,?)";

@@ -104,7 +104,7 @@ public class UserService {
 
     //POST
     @Transactional
-    public PostUserRes userJoin(PostUserLoginReq postUserLoginReq) throws BaseException {
+    public PostLoginRes userJoin(PostUserLoginReq postUserLoginReq) throws BaseException {
         String pwd;
         try{
             pwd = new AES128(Secret.USER_INFO_PASSWORD_KEY).encrypt(postUserLoginReq.getPassword());
@@ -113,10 +113,10 @@ public class UserService {
             throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
         }
 //        try{
-        int userInfoIdx = userDao.userJoin(postUserLoginReq);
+        int userInfoIdx = userDao.userJoin(postUserLoginReq).getUserInfoIdx();
         //jwt 발급.
-        String jwt = jwtService.createJwt(userInfoIdx);
-        return new PostUserRes(jwt,userInfoIdx);
+        String authJwt = jwtService.createJwt(userInfoIdx);
+        return new PostLoginRes(userInfoIdx, authJwt);
 //        } catch (Exception exception) {
 //            throw new BaseException(DATABASE_ERROR);
 //        }

@@ -54,8 +54,9 @@ public class ChatDao {
     }
 
 
-    public List<GetChatDetailRes> getChatRoom(int chatIdx) {
+    public List<GetChatDetailRes> getChatRoom(int chatRoomIdx) {
         String getChatRoomQuery = "select chatRoomIdx,\n" +
+                "       U.userInfoIdx,\n" +
                 "       U.nickname,\n" +
                 "       UV.mannerGrade,\n" +
                 "       ChatRoom.productId,\n" +
@@ -76,8 +77,9 @@ public class ChatDao {
                 "         join UserInfo U on CM.senderId = U.userInfoIdx\n" +
                 "         join Region R on P.regionId = R.regionIdx\n" +
                 "         left join UserVar UV on U.userInfoIdx = UV.userInfoId\n" +
-                "group by chatRoomIdx";
-        int getChatRoomParams = chatIdx;
+                "where chatRoomIdx = ?\n" +
+                "group by U.userInfoIdx;\n";
+        int getChatRoomParams = chatRoomIdx;
         return this.jdbcTemplate.query(getChatRoomQuery,
                 (rs, rowNum) -> new GetChatDetailRes(
                         rs.getInt("chatRoomIdx"),
