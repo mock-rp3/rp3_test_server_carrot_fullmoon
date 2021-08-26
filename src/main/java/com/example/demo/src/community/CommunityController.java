@@ -152,4 +152,40 @@ public class CommunityController {
             return new BaseResponse<>(baseException.getStatus());
         }
     }
+
+    /**
+     * 리액션 설정
+     */
+    @PatchMapping("/reaction")
+    public BaseResponse<String> updateReaction(@RequestBody PostReactionReq postReactionReq) throws BaseException {
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if (postReactionReq.getUserInfoId() != userIdxByJwt) {
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            communityService.updateReaction(postReactionReq);
+            return new BaseResponse<>(SUCCESS_UPDATE_REACTION);
+        } catch (BaseException baseException) {
+            return new BaseResponse<>(baseException.getStatus());
+        }
+    }
+
+    /**
+     * 리액션 설정
+     */
+    @PatchMapping("/delete/reaction")
+    public BaseResponse<String> deleteReaction(@RequestBody DeleteReactionReq deleteReactionReq) throws BaseException {
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if (deleteReactionReq.getUserInfoId() != userIdxByJwt) {
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            communityService.deleteReaction(deleteReactionReq);
+            return new BaseResponse<>(SUCCESS_DELETE_REACTION);
+        } catch (BaseException baseException) {
+            return new BaseResponse<>(baseException.getStatus());
+        }
+    }
 }

@@ -78,4 +78,22 @@ public class CommunityService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    @Transactional
+    public void updateReaction(PostReactionReq postReactionReq) throws BaseException {
+        try {
+            communityDao.updateReaction(postReactionReq);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    @Transactional
+    public void deleteReaction(DeleteReactionReq deleteReactionReq) throws BaseException {
+        try {
+            communityDao.deleteReaction(deleteReactionReq);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

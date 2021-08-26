@@ -200,4 +200,23 @@ public class CommunityDao {
         };
         return this.jdbcTemplate.update(createReactionQuery, createReactionParams);
     }
+
+    public int updateReaction(PostReactionReq postReactionReq) {
+        String updateReactionQuery = "update Reaction set reactionChoice = ? where userInfoId = ? and communityId= ?";
+        Object[] updateReactionParams = new Object[]{
+                postReactionReq.getReactionChoice()
+                , postReactionReq.getUserInfoId()
+                , postReactionReq.getCommunityId()};
+
+        return this.jdbcTemplate.update(updateReactionQuery, updateReactionParams);
+    }
+
+    public int deleteReaction(DeleteReactionReq deleteReactionReq) {
+        String deleteReactionQuery = "update Reaction set status = 'deleted' where userInfoId = ? and communityId= ?";
+        Object[] deleteReactionParams = new Object[]{
+                deleteReactionReq.getUserInfoId()
+                , deleteReactionReq.getCommunityId()};
+
+        return this.jdbcTemplate.update(deleteReactionQuery, deleteReactionParams);
+    }
 }
