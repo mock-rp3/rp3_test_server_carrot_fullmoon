@@ -286,6 +286,24 @@ public class ProductController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 관심 목록 조회
+     */
+    @GetMapping("/wish/{userInfoId}")
+    public BaseResponse<List<GetProductWish>> getWishProducts(@PathVariable("userInfoId") int userInfoId) {
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if (userInfoId != userIdxByJwt) {
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            List<GetProductWish> getProductWishList = productProvider.getWishProducts(userInfoId);
+            return new BaseResponse<>(getProductWishList);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }
 
 

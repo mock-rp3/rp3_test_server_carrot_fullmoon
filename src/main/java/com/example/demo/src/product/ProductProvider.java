@@ -142,4 +142,14 @@ public class ProductProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    @Transactional
+    public List<GetProductWish> getWishProducts(int userInfoId) throws BaseException {
+        try {
+            List<GetProductWish> getProductWishList = productDao.getWishProducts(userInfoId);
+            return getProductWishList;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

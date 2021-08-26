@@ -217,15 +217,23 @@ public class ProductDao {
             Object[] createProductImageParams = new Object[]{postProductReq.getImageUrl(), lastProductId};
             this.jdbcTemplate.update(createProductImageQuery, createProductImageParams);
 
-            String lastInsertIdQuery = "select last_insert_id()";
-            return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+            String lastInsertImageIdQuery = "select last_insert_id()";
+            return this.jdbcTemplate.queryForObject(lastInsertImageIdQuery, int.class);
 
         } catch (EmptyResultDataAccessException e) {
             throw new RuntimeException("EmptyResult");
 
         } catch (IncorrectResultSizeDataAccessException e) {
-            String lastInsertIdQuery = "select last_insert_id()";
-            return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+
+            String lastInsertImageIdQuery = "select last_insert_id()";
+            return this.jdbcTemplate.queryForObject(lastInsertImageIdQuery, int.class);
+
+//            String lastInsertImageIdQuery = "select last_insert_id()";
+//            int lastInsertImageId = this.jdbcTemplate.queryForObject(lastInsertImageIdQuery, int.class);
+//            String stringLastInsertImageId = Integer.toString(lastInsertImageId);
+//            String findProductIdQuery = "select productId from ProductImage where pdImageIdx = ?";
+//            return this.jdbcTemplate.query(findProductIdQuery,stringLastInsertImageId);
+
         }
     }
 
@@ -481,5 +489,59 @@ public class ProductDao {
                         rs.getString("regionNameTown"),
                         rs.getString("status"))
         );
+    }
+
+    public List<GetProductWish> getWishProducts(int userInfoId) {
+        String getWishProductsQuery = "select productIdx,\n" +
+                "       case\n" +
+                "           when timestampdiff(MINUTE, Product.createdAt, CURRENT_TIMESTAMP()) < 60\n" +
+                "               then concat(timestampdiff(MINUTE, Product.createdAt, CURRENT_TIMESTAMP()), '분 전')\n" +
+                "           when timestampdiff(HOUR, Product.createdAt, CURRENT_TIMESTAMP()) < 24\n" +
+                "               then concat(timestampdiff(HOUR, Product.createdAt, CURRENT_TIMESTAMP()), '시간 전')\n" +
+                "           when timestampdiff(DAY, Product.createdAt, CURRENT_TIMESTAMP()) < 30\n" +
+                "               then concat(timestampdiff(DAY, Product.createdAt, CURRENT_TIMESTAMP()), '일 전')\n" +
+                "           else date_format(Product.createdAt, '%Y년-%m월-%d일')\n" +
+                "           end as createdAt,\n" +
+                "       title,\n" +
+                "       price,\n" +
+                "       case\n" +
+                "           when timestampdiff(MINUTE, Product.pulledAt, CURRENT_TIMESTAMP()) < 60\n" +
+                "               then concat('끌올 ', timestampdiff(MINUTE, Product.pulledAt, CURRENT_TIMESTAMP()), '분 전')\n" +
+                "           when timestampdiff(HOUR, Product.pulledAt, CURRENT_TIMESTAMP()) < 24\n" +
+                "               then concat('끌올 ', timestampdiff(HOUR, Product.pulledAt, CURRENT_TIMESTAMP()), '시간 전')\n" +
+                "           when timestampdiff(DAY, Product.pulledAt, CURRENT_TIMESTAMP()) < 30\n" +
+                "               then concat('끌올 ', timestampdiff(DAY, Product.pulledAt, CURRENT_TIMESTAMP()), '일 전')\n" +
+                "           else date_format(Product.pulledAt, '%Y년-%m월-%d일')\n" +
+                "           end as pulledAt,\n" +
+                "       imageUrl,\n" +
+                "       regionNameGu,\n" +
+                "       regionNameTown,\n" +
+                "       count(W.wishIdx),\n" +
+                "       W.userInfoId as userInfoId\n" +
+                "from Product\n" +
+                "         join ProductImage PI on Product.productIdx = PI.productId\n" +
+                "         join UserInfo UI on UI.userInfoIdx = Product.sellerId\n" +
+                "         join Region R on R.regionIdx = Product.regionId\n" +
+                "         left join Wish W on Product.productIdx = W.productId\n" +
+                "where UI.status = 'normal'\n" +
+                "  and Product.status = 'normal'\n" +
+                "and W.status = 'normal'\n" +
+                "group by wishIdx\n" +
+                "having userInfoId = ?\n" +
+                "order by date(Product.createdAt) desc";
+        int getWishProductsParams = userInfoId;
+        return this.jdbcTemplate.query(getWishProductsQuery,
+                (rs, rowNum) -> new GetProductWish(
+                        rs.getInt("productIdx"),
+                        rs.getString("createdAt"),
+                        rs.getString("title"),
+                        rs.getInt("price"),
+                        rs.getString("pulledAt"),
+                        rs.getString("imageUrl"),
+                        rs.getString("regionNameGu"),
+                        rs.getString("regionNameTown"),
+                        rs.getInt("count(W.wishIdx)"),
+                        rs.getInt("userInfoId")),
+                getWishProductsParams);
     }
 }
