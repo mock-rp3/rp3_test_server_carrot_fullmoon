@@ -3,6 +3,7 @@ package com.example.demo.src.community;
 import com.example.demo.src.community.model.*;
 import com.example.demo.src.product.model.GetProductRes;
 import com.example.demo.src.product.model.PatchProductReq;
+import com.example.demo.src.product.model.PostKeywordReq;
 import com.example.demo.src.user.model.PostUserReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -188,5 +189,15 @@ public class CommunityDao {
                         rs.getInt("count(C.userInfoId)"),
                         rs.getInt("categoryId")),
                 getCommunityByCategoryParams);
+    }
+
+    public int createReaction(PostReactionReq postReactionReq) {
+        String createReactionQuery = "insert into Reaction (reactionChoice, userInfoId, communityId) values (?, ?, ?)";
+        Object[] createReactionParams = new Object[]{
+                postReactionReq.getReactionChoice(),
+                postReactionReq.getUserInfoId(),
+                postReactionReq.getCommunityId()
+        };
+        return this.jdbcTemplate.update(createReactionQuery, createReactionParams);
     }
 }

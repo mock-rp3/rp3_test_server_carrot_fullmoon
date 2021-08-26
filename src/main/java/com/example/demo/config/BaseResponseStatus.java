@@ -23,6 +23,7 @@ public enum BaseResponseStatus {
     SUCCESS_DELETE_COMMUNITY(true, 1010, "동네생활 게시글 삭제에 성공하였습니다."),
     SUCCESS_UPDATE_COMMUNITY(true, 1011, "동네생활 게시글 수정에 성공하였습니다."),
     SUCCESS_KEYWORD_PRODUCT(true, 1012, "키워드 설정에 성공하였습니다."),
+    SUCCESS_KEYWORD_REACTION(true, 1013, "리액션 설정에 성공하였습니다."),
 
 
     /**

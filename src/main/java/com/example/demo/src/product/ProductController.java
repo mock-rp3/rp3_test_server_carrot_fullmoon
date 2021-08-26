@@ -306,7 +306,7 @@ public class ProductController {
     }
 
     /**
-     * 위시 설정
+     * 키워드 설정
      */
     @PostMapping("/keyword")
     public BaseResponse<String> createKeyword(@RequestBody PostKeywordReq postKeywordReq) throws BaseException {

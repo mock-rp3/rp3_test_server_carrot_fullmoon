@@ -2,10 +2,8 @@ package com.example.demo.src.community;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
-import com.example.demo.src.product.model.GetProductRes;
-import com.example.demo.src.product.model.PatchProductReq;
-import com.example.demo.src.product.model.PostProductReq;
-import com.example.demo.src.product.model.PostProductRes;
+import com.example.demo.src.product.model.*;
+import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.src.community.model.*;
@@ -24,10 +22,12 @@ public class CommunityController {
     @Autowired
     private final CommunityProvider communityProvider;
     private final CommunityService communityService;
+    private final JwtService jwtService;
 
-    public CommunityController(CommunityProvider communityProvider, CommunityService communityService) {
+    public CommunityController(CommunityProvider communityProvider, CommunityService communityService, JwtService jwtService) {
         this.communityProvider = communityProvider;
         this.communityService = communityService;
+        this.jwtService = jwtService;
     }
 
     /**
@@ -132,6 +132,24 @@ public class CommunityController {
             return new BaseResponse<>(getCommunityResList);
         } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 리액션 설정
+     */
+    @PostMapping("/reaction")
+    public BaseResponse<String> createReaction(@RequestBody PostReactionReq postReactionReq) throws BaseException {
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if (postReactionReq.getUserInfoId() != userIdxByJwt) {
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            communityService.createReaction(postReactionReq);
+            return new BaseResponse<>(SUCCESS_KEYWORD_REACTION);
+        } catch (BaseException baseException) {
+            return new BaseResponse<>(baseException.getStatus());
         }
     }
 }
