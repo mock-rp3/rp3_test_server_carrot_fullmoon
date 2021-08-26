@@ -148,6 +148,7 @@ Password : hwy7f2
 + 동네생활 리액션 수정 API
 + 동네생활 리액션 해제 API
 + 동네생활 댓글 작성 API
++ 채팅방 메시지 발신 API
 
 
 ## ⚠️ Issues

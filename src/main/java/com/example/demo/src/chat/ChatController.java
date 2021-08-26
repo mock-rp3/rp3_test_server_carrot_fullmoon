@@ -3,6 +3,7 @@ package com.example.demo.src.chat;
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
 import com.example.demo.src.chat.model.*;
+import com.example.demo.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.example.demo.config.BaseResponseStatus.SUCCESS_DELETE_COMMUNITY;
-import static com.example.demo.config.BaseResponseStatus.SUCCESS_UPDATE_COMMUNITY;
+import static com.example.demo.config.BaseResponseStatus.*;
 
 @RestController
 @RequestMapping("/app/chat")
@@ -21,10 +21,12 @@ public class ChatController {
     @Autowired
     private final ChatProvider chatProvider;
     private final ChatService chatService;
+    private final JwtService jwtService;
 
-    public ChatController(ChatProvider chatProvider, ChatService chatService) {
+    public ChatController(ChatProvider chatProvider, ChatService chatService, JwtService jwtService) {
         this.chatProvider = chatProvider;
         this.chatService = chatService;
+        this.jwtService = jwtService;
     }
     /**
      * 채팅방 전체 조회 API [메인화면]
@@ -56,19 +58,24 @@ public class ChatController {
         }
     }
 
-//    /**
-//     * 동네생활 등록 API
-//     * [POST]
-//     */
-//    // Body
-//    @ResponseBody
-//    @PostMapping("")
-//    public BaseResponse<PostChatRes> createChat(@RequestBody PostChatReq postChatReq) {
-//        try {
-//            PostChatRes postChatRes = chatService.createChat(postChatReq);
-//            return new BaseResponse<>(postChatRes);
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//    }
+    /**
+     * 채팅 등록 API
+     * [POST]
+     */
+    // Body
+    @ResponseBody
+    @PostMapping("")
+    public BaseResponse<String> createChat(@RequestBody PostChatReq postChatReq) throws BaseException {
+        int userIdxByJwt = jwtService.getUserIdx();
+        //userIdx와 접근한 유저가 같은지 확인
+        if (postChatReq.getSenderId() != userIdxByJwt) {
+            return new BaseResponse<>(INVALID_USER_JWT);
+        }
+        try {
+            chatService.createChat(postChatReq);
+            return new BaseResponse<>(SUCCESS_SEND_CHAT);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }

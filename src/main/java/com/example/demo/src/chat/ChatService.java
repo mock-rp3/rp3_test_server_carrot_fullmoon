@@ -29,15 +29,14 @@ public class ChatService {
 
     }
 
-//    //POST
-//    @Transactional
-//    public PostChatRes createChat(PostChatReq postChatReq) throws BaseException {
+    //POST
+    @Transactional
+    public void createChat(PostChatReq postChatReq) throws BaseException {
 //        try{
-//            int newChat= communityDao.createChat(postChatReq);
-//            return new PostChatRes(newChat);
+            communityDao.createChat(postChatReq);
 //        } catch (Exception exception) {
 //            throw new BaseException(DATABASE_ERROR);
 //        }
-//    }
+    }
 
 }

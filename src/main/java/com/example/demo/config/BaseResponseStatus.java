@@ -26,6 +26,7 @@ public enum BaseResponseStatus {
     SUCCESS_KEYWORD_REACTION(true, 1013, "리액션 설정에 성공하였습니다."),
     SUCCESS_UPDATE_REACTION(true, 1014, "리액션 수정에 성공하였습니다."),
     SUCCESS_DELETE_REACTION(true, 1015, "리액션 삭제에 성공하였습니다."),
+    SUCCESS_SEND_CHAT(true, 1016, "채팅 발송에 성공하였습니다."),
 
 
     /**

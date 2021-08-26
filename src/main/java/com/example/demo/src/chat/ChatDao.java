@@ -99,13 +99,13 @@ public class ChatDao {
         );
     }
 
-//    public int createChat(PostChatReq postChatReq) {
-//        String createChatQuery = "insert into Community (description, categoryId, regionId, userInfoId) VALUES (?,?,?,?)";
-//        Object[] createChatParams = new Object[]{postChatReq.getDescription(), postChatReq.getCategoryId(), postChatReq.getRegionId(), postChatReq.getUserInfoId()};
-//        this.jdbcTemplate.update(createChatQuery, createChatParams);
-//
-//        String lastInsertIdQuery = "select last_insert_id()";
-//        return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
-//    }
+    public int createChat(PostChatReq postChatReq) {
+        String createChatQuery = "insert into ChatMessage (chatRoomId, senderId, chatMessage) VALUES (?,?,?)";
+        Object[] createChatParams = new Object[]{postChatReq.getChatRoomId(), postChatReq.getSenderId(), postChatReq.getChatMessage()};
+        this.jdbcTemplate.update(createChatQuery, createChatParams);
+
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+    }
 
 }
