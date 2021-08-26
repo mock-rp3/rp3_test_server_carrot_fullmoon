@@ -304,6 +304,24 @@ public class ProductController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 위시 설정
+     */
+    @PostMapping("/keyword")
+    public BaseResponse<String> createKeyword(@RequestBody PostKeywordReq postKeywordReq) throws BaseException {
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if (postKeywordReq.getUserInfoId() != userIdxByJwt) {
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            productService.createKeyword(postKeywordReq);
+            return new BaseResponse<>(SUCCESS_KEYWORD_PRODUCT);
+        } catch (BaseException baseException) {
+            return new BaseResponse<>(baseException.getStatus());
+        }
+    }
 }
 
 

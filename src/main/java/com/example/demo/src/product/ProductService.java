@@ -115,4 +115,14 @@ public class ProductService {
         }
     }
 
+    //POST
+    @Transactional
+    public void createKeyword(PostKeywordReq postKeywordReq) throws BaseException {
+        try {
+            productDao.createKeyword(postKeywordReq);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }

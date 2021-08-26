@@ -544,4 +544,13 @@ public class ProductDao {
                         rs.getInt("userInfoId")),
                 getWishProductsParams);
     }
+
+    public int createKeyword(PostKeywordReq postKeywordReq) {
+        String createKeywordQuery = "insert into Keyword (userInfoId, keyword) values (?, ?)";
+        Object[] createKeywordParams = new Object[]{
+                postKeywordReq.getUserInfoId(),
+                postKeywordReq.getKeyword()
+        };
+        return this.jdbcTemplate.update(createKeywordQuery, createKeywordParams);
+    }
 }
