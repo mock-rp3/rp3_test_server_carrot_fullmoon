@@ -158,4 +158,35 @@ public class CommunityDao {
 
         return this.jdbcTemplate.update(updateCommunityQuery, updateCommunityParams);
     }
+
+    public List<GetCommunityCategory> getCommunityByCategory(int categoryId) {
+        String getCommunityByCategoryQuery = "select communityIdx,\n" +
+                "       Community.createdAt,\n" +
+                "       Community.description,\n" +
+                "       CC.name,\n" +
+                "       R.regionNameTown,\n" +
+                "       count(R2.userInfoId),\n" +
+                "       count(C.userInfoId),\n" +
+                "       categoryId\n" +
+                "from Community\n" +
+                "         join CmCategory CC on CC.cmCategoryIdx = Community.categoryId\n" +
+                "         join UserInfo UI on UI.userInfoIdx = Community.userInfoId\n" +
+                "         join Region R on UI.userInfoIdx = R.userInfoId\n" +
+                "         left join Comment C on Community.communityIdx = C.communityId\n" +
+                "         left join Reaction R2 on Community.communityIdx = R2.communityId\n" +
+                "where (UI.status & Community.status = 'normal') and categoryId = ?\n" +
+                "group by communityIdx";
+        int getCommunityByCategoryParams = categoryId;
+        return this.jdbcTemplate.query(getCommunityByCategoryQuery,
+                (rs, rowNum) -> new GetCommunityCategory(
+                        rs.getInt("communityIdx"),
+                        rs.getString("createdAt"),
+                        rs.getString("description"),
+                        rs.getString("name"),
+                        rs.getString("regionNameTown"),
+                        rs.getInt("count(R2.userInfoId)"),
+                        rs.getInt("count(C.userInfoId)"),
+                        rs.getInt("categoryId")),
+                getCommunityByCategoryParams);
+    }
 }

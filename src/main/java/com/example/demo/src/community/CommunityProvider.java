@@ -57,4 +57,14 @@ public class CommunityProvider {
 //            throw new BaseException(DATABASE_ERROR);
 //        }
     }
+
+    @Transactional
+    public List<GetCommunityCategory> getCommunityByCategory(int category) throws BaseException {
+//        try {
+            List<GetCommunityCategory> getCommunityResList = communityDao.getCommunityByCategory(category);
+            return getCommunityResList;
+//        } catch (Exception exception) {
+//            throw new BaseException(DATABASE_ERROR);
+//        }
+    }
 }
