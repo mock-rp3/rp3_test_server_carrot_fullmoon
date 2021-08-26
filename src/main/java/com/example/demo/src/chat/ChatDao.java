@@ -101,7 +101,7 @@ public class ChatDao {
 
 //    public int createChat(PostChatReq postChatReq) {
 //        String createChatQuery = "insert into Community (description, categoryId, regionId, userInfoId) VALUES (?,?,?,?)";
-//        Object[] createChatParams = new Object[]{postChatReq.getDescription()};
+//        Object[] createChatParams = new Object[]{postChatReq.getDescription(), postChatReq.getCategoryId(), postChatReq.getRegionId(), postChatReq.getUserInfoId()};
 //        this.jdbcTemplate.update(createChatQuery, createChatParams);
 //
 //        String lastInsertIdQuery = "select last_insert_id()";

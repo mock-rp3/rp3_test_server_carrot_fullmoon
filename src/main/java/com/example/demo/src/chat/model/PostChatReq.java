@@ -8,4 +8,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class PostChatReq {
+    private String chatMessage;
+    private int senderId;
+    private int chatRoomId;
 }

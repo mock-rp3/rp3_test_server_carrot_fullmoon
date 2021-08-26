@@ -150,12 +150,12 @@ public class UserController {
      * @return PostLoginRes
      * @return BaseResponse<PostLoginRes>
      * @RequestBody PostLoginReq
-     *
+     * <p>
      * 문제가 많은 코드.......405 에러 뜸 매핑자체가 안 됨
      */
     @ResponseBody
     @PostMapping("/join-login")
-    public BaseResponse<PostLoginRes> joinAndLogIn(@RequestBody PostUserLoginReq postUserLoginReq) {
+    public BaseResponse<PostLoginRes> joinAndLogIn(@RequestBody PostUserLoginReq postUserLoginReq) throws BaseException {
         if (postUserLoginReq.getPhoneNumber() == null || postUserLoginReq.getPhoneNumber().length() == 0) {
             return new BaseResponse<>(LOGIN_USERS_EMPTY_PHONE_NUMBER);
         }
@@ -173,22 +173,24 @@ public class UserController {
         }
         // service 단으로 보내야함
         // 이미 존재하는 회원이라면 그냥 로그인
-        try {
-            int numberIsExist = userProvider.checkPhoneNumber(postUserLoginReq.getPhoneNumber());
-            if (numberIsExist == 1) {
-                PostLoginRes postLoginRes = userService.userLogin(postUserLoginReq);
-                return new BaseResponse<>(postLoginRes);
-            }
-        } catch (BaseException exception){
-            return new BaseResponse<>(exception.getStatus());
-        }
-        // 존재하지 않는다면 회원가입
-        try {
-            PostLoginRes postLoginRes = userService.userJoin(postUserLoginReq);
+//        try {
+        int numberIsExist = userProvider.checkPhoneNumber(postUserLoginReq.getPhoneNumber());
+        if (numberIsExist == 1) {
+            PostLoginRes postLoginRes = userService.userLogin(postUserLoginReq);
             return new BaseResponse<>(postLoginRes);
-        } catch (BaseException exception) {
-            return new BaseResponse<>(exception.getStatus());
         }
+//        } catch (BaseException exception){
+//            return new BaseResponse<>(exception.getStatus());
+//        }
+        // 존재하지 않는다면 회원가입
+//        try {
+//        if (numberIsExist == 0) {
+        PostLoginRes postLoginRes = userService.userJoin(postUserLoginReq);
+        return new BaseResponse<>(postLoginRes);
+//        }
+//        } catch (BaseException exception) {
+//            return new BaseResponse<>(exception.getStatus());
+//        }
     }
 
     /**
