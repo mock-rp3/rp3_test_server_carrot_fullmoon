@@ -219,4 +219,13 @@ public class CommunityDao {
 
         return this.jdbcTemplate.update(deleteReactionQuery, deleteReactionParams);
     }
+
+    public int createComment(PostCommentReq postCommentReq) {
+        String createCommentQuery = "insert into Comment (userInfoId, communityId, description, parentComment) VALUES (?,?,?,?)";
+        Object[] createCommentParams = new Object[]{postCommentReq.getUserInfoId(), postCommentReq.getCommunityId(), postCommentReq.getDescription(), postCommentReq.getParentComment()};
+        this.jdbcTemplate.update(createCommentQuery, createCommentParams);
+
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+    }
 }

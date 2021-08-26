@@ -188,4 +188,22 @@ public class CommunityController {
             return new BaseResponse<>(baseException.getStatus());
         }
     }
+
+    /**
+     * 리액션 설정
+     */
+    @PostMapping("/comment")
+    public BaseResponse<PostCommentRes> createComment(@RequestBody PostCommentReq postCommentReq) throws BaseException {
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if (postCommentReq.getUserInfoId() != userIdxByJwt) {
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            PostCommentRes postCommentRes = communityService.createComment(postCommentReq);
+            return new BaseResponse<>(postCommentRes);
+        } catch (BaseException baseException) {
+            return new BaseResponse<>(baseException.getStatus());
+        }
+    }
 }

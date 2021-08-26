@@ -96,4 +96,15 @@ public class CommunityService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    //POST
+    @Transactional
+    public PostCommentRes createComment(PostCommentReq postCommentReq) throws BaseException {
+        try{
+            int newComment = communityDao.createComment(postCommentReq);
+            return new PostCommentRes(newComment);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
