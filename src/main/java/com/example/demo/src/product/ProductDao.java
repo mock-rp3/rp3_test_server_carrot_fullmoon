@@ -56,7 +56,7 @@ public class ProductDao {
                 "         left join Wish W on Product.productIdx = W.productId\n" +
                 "where UI.status = 'normal'\n" +
                 "  and Product.status = 'normal'\n" +
-                "group by productIdx";
+                "group by productIdx order by date(Product.createdAt) desc";
         return this.jdbcTemplate.query(getProductsQuery,
                 (rs, rowNum) -> new GetProductRes(
                         rs.getInt("productIdx"),
@@ -104,7 +104,7 @@ public class ProductDao {
                 "         left join Wish W on Product.productIdx = W.productId\n" +
                 "where (UI.status = 'normal' and Product.status = 'normal')\n" +
                 "  AND title LIKE concat('%', ?, '%')\n" +
-                "group by productIdx";
+                "group by productIdx order by date(Product.createdAt) desc";
         String getProductsByTitleParams = title;
         return this.jdbcTemplate.query(getProductsByTitleQuery,
                 (rs, rowNum) -> new GetProductRes(
@@ -413,7 +413,7 @@ public class ProductDao {
                 "         left join Wish W on Product.productIdx = W.productId\n" +
                 "where (UI.status = 'normal' and Product.status = 'normal')\n" +
                 "  AND categoryId = ?\n" +
-                "group by productIdx";
+                "group by productIdx order by date(Product.createdAt) desc";
         int getProductsByCategoryParams = categoryId;
         return this.jdbcTemplate.query(getProductsByCategoryQuery,
                 (rs, rowNum) -> new GetProductRes(
