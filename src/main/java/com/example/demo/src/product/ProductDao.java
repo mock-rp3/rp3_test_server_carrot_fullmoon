@@ -25,10 +25,26 @@ public class ProductDao {
 
     public List<GetProductRes> getProducts() {
         String getProductsQuery = "select productIdx,\n" +
-                "       Product.createdAt,\n" +
+                "       case\n" +
+                "           when timestampdiff(MINUTE, Product.createdAt, CURRENT_TIMESTAMP()) < 60\n" +
+                "               then concat(timestampdiff(MINUTE, Product.createdAt, CURRENT_TIMESTAMP()), '분 전')\n" +
+                "           when timestampdiff(HOUR, Product.createdAt, CURRENT_TIMESTAMP()) < 24\n" +
+                "               then concat(timestampdiff(HOUR, Product.createdAt, CURRENT_TIMESTAMP()), '시간 전')\n" +
+                "           when timestampdiff(DAY, Product.createdAt, CURRENT_TIMESTAMP()) < 30\n" +
+                "               then concat(timestampdiff(DAY, Product.createdAt, CURRENT_TIMESTAMP()), '일 전')\n" +
+                "           else date_format(Product.createdAt, '%Y년-%m월-%d일')\n" +
+                "           end as createdAt,\n" +
                 "       title,\n" +
                 "       price,\n" +
-                "       pulledAt,\n" +
+                "       case\n" +
+                "           when timestampdiff(MINUTE, Product.pulledAt, CURRENT_TIMESTAMP()) < 60\n" +
+                "               then concat('끌올 ',timestampdiff(MINUTE, Product.pulledAt, CURRENT_TIMESTAMP()), '분 전')\n" +
+                "           when timestampdiff(HOUR, Product.pulledAt, CURRENT_TIMESTAMP()) < 24\n" +
+                "               then concat('끌올 ',timestampdiff(HOUR, Product.pulledAt, CURRENT_TIMESTAMP()), '시간 전')\n" +
+                "           when timestampdiff(DAY, Product.pulledAt, CURRENT_TIMESTAMP()) < 30\n" +
+                "               then concat('끌올 ',timestampdiff(DAY, Product.pulledAt, CURRENT_TIMESTAMP()), '일 전')\n" +
+                "           else date_format(Product.pulledAt, '%Y년-%m월-%d일')\n" +
+                "           end as pulledAt,\n" +
                 "       imageUrl,\n" +
                 "       regionNameGu,\n" +
                 "       regionNameTown,\n" +
@@ -38,7 +54,8 @@ public class ProductDao {
                 "         join UserInfo UI on UI.userInfoIdx = Product.sellerId\n" +
                 "         join Region R on R.regionIdx = Product.regionId\n" +
                 "         left join Wish W on Product.productIdx = W.productId\n" +
-                "where UI.status = 'normal' and Product.status = 'normal'\n" +
+                "where UI.status = 'normal'\n" +
+                "  and Product.status = 'normal'\n" +
                 "group by productIdx";
         return this.jdbcTemplate.query(getProductsQuery,
                 (rs, rowNum) -> new GetProductRes(
@@ -56,10 +73,26 @@ public class ProductDao {
 
     public List<GetProductRes> getProductsByTitle(String title) {
         String getProductsByTitleQuery = "select productIdx,\n" +
-                "       Product.createdAt,\n" +
+                "       case\n" +
+                "           when timestampdiff(MINUTE, Product.createdAt, CURRENT_TIMESTAMP()) < 60\n" +
+                "               then concat(timestampdiff(MINUTE, Product.createdAt, CURRENT_TIMESTAMP()), '분 전')\n" +
+                "           when timestampdiff(HOUR, Product.createdAt, CURRENT_TIMESTAMP()) < 24\n" +
+                "               then concat(timestampdiff(HOUR, Product.createdAt, CURRENT_TIMESTAMP()), '시간 전')\n" +
+                "           when timestampdiff(DAY, Product.createdAt, CURRENT_TIMESTAMP()) < 30\n" +
+                "               then concat(timestampdiff(DAY, Product.createdAt, CURRENT_TIMESTAMP()), '일 전')\n" +
+                "           else date_format(Product.createdAt, '%Y년-%m월-%d일')\n" +
+                "           end as createdAt,\n" +
                 "       title,\n" +
                 "       price,\n" +
-                "       pulledAt,\n" +
+                "       case\n" +
+                "           when timestampdiff(MINUTE, Product.pulledAt, CURRENT_TIMESTAMP()) < 60\n" +
+                "               then concat('끌올 ',timestampdiff(MINUTE, Product.pulledAt, CURRENT_TIMESTAMP()), '분 전')\n" +
+                "           when timestampdiff(HOUR, Product.pulledAt, CURRENT_TIMESTAMP()) < 24\n" +
+                "               then concat('끌올 ',timestampdiff(HOUR, Product.pulledAt, CURRENT_TIMESTAMP()), '시간 전')\n" +
+                "           when timestampdiff(DAY, Product.pulledAt, CURRENT_TIMESTAMP()) < 30\n" +
+                "               then concat('끌올 ',timestampdiff(DAY, Product.pulledAt, CURRENT_TIMESTAMP()), '일 전')\n" +
+                "           else date_format(Product.pulledAt, '%Y년-%m월-%d일')\n" +
+                "           end as pulledAt,\n" +
                 "       imageUrl,\n" +
                 "       regionNameGu,\n" +
                 "       regionNameTown,\n" +
@@ -69,7 +102,8 @@ public class ProductDao {
                 "         join UserInfo UI on UI.userInfoIdx = Product.sellerId\n" +
                 "         join Region R on R.regionIdx = Product.regionId\n" +
                 "         left join Wish W on Product.productIdx = W.productId\n" +
-                "where (UI.status = 'normal' and Product.status = 'normal') AND title LIKE concat('%',?,'%')\n" +
+                "where (UI.status = 'normal' and Product.status = 'normal')\n" +
+                "  AND title LIKE concat('%', ?, '%')\n" +
                 "group by productIdx";
         String getProductsByTitleParams = title;
         return this.jdbcTemplate.query(getProductsByTitleQuery,
@@ -95,8 +129,24 @@ public class ProductDao {
                 "       UV.mannerGrade,\n" +
                 "       title,\n" +
                 "       C.name,\n" +
-                "       P.createdAt,\n" +
-                "       pulledAt,\n" +
+                "       case\n" +
+                "           when timestampdiff(MINUTE, P.createdAt, CURRENT_TIMESTAMP()) < 60\n" +
+                "               then concat(timestampdiff(MINUTE, P.createdAt, CURRENT_TIMESTAMP()), '분 전')\n" +
+                "           when timestampdiff(HOUR, P.createdAt, CURRENT_TIMESTAMP()) < 24\n" +
+                "               then concat(timestampdiff(HOUR, P.createdAt, CURRENT_TIMESTAMP()), '시간 전')\n" +
+                "           when timestampdiff(DAY, P.createdAt, CURRENT_TIMESTAMP()) < 30\n" +
+                "               then concat(timestampdiff(DAY, P.createdAt, CURRENT_TIMESTAMP()), '일 전')\n" +
+                "           else date_format(P.createdAt, '%Y년-%m월-%d일')\n" +
+                "           end as createdAt,\n" +
+                "       case\n" +
+                "           when timestampdiff(MINUTE, P.pulledAt, CURRENT_TIMESTAMP()) < 60\n" +
+                "               then concat('끌올 ', timestampdiff(MINUTE, P.pulledAt, CURRENT_TIMESTAMP()), '분 전')\n" +
+                "           when timestampdiff(HOUR, P.pulledAt, CURRENT_TIMESTAMP()) < 24\n" +
+                "               then concat('끌올 ', timestampdiff(HOUR, P.pulledAt, CURRENT_TIMESTAMP()), '시간 전')\n" +
+                "           when timestampdiff(DAY, P.pulledAt, CURRENT_TIMESTAMP()) < 30\n" +
+                "               then concat('끌올 ', timestampdiff(DAY, P.pulledAt, CURRENT_TIMESTAMP()), '일 전')\n" +
+                "           else date_format(P.pulledAt, '%Y년-%m월-%d일')\n" +
+                "           end as pulledAt,\n" +
                 "       description,\n" +
                 "       count(W.wishIdx),\n" +
                 "       viewCount,\n" +
@@ -285,8 +335,24 @@ public class ProductDao {
                 "       P.title,\n" +
                 "       R.regionNameGu,\n" +
                 "       R.regionNameTown,\n" +
-                "       P.createdAt,\n" +
-                "       P.updatedAt,\n" +
+                "       case\n" +
+                "           when timestampdiff(MINUTE, P.createdAt, CURRENT_TIMESTAMP()) < 60\n" +
+                "               then concat(timestampdiff(MINUTE, P.createdAt, CURRENT_TIMESTAMP()), '분 전')\n" +
+                "           when timestampdiff(HOUR, P.createdAt, CURRENT_TIMESTAMP()) < 24\n" +
+                "               then concat(timestampdiff(HOUR, P.createdAt, CURRENT_TIMESTAMP()), '시간 전')\n" +
+                "           when timestampdiff(DAY, P.createdAt, CURRENT_TIMESTAMP()) < 30\n" +
+                "               then concat(timestampdiff(DAY, P.createdAt, CURRENT_TIMESTAMP()), '일 전')\n" +
+                "           else date_format(P.createdAt, '%Y년-%m월-%d일')\n" +
+                "           end  as createdAt,\n" +
+                "       case\n" +
+                "           when timestampdiff(MINUTE, P.pulledAt, CURRENT_TIMESTAMP()) < 60\n" +
+                "               then concat('끌올 ', timestampdiff(MINUTE, P.pulledAt, CURRENT_TIMESTAMP()), '분 전')\n" +
+                "           when timestampdiff(HOUR, P.pulledAt, CURRENT_TIMESTAMP()) < 24\n" +
+                "               then concat('끌올 ', timestampdiff(HOUR, P.pulledAt, CURRENT_TIMESTAMP()), '시간 전')\n" +
+                "           when timestampdiff(DAY, P.pulledAt, CURRENT_TIMESTAMP()) < 30\n" +
+                "               then concat('끌올 ', timestampdiff(DAY, P.pulledAt, CURRENT_TIMESTAMP()), '일 전')\n" +
+                "           else date_format(P.pulledAt, '%Y년-%m월-%d일')\n" +
+                "           end  as pulledAt,\n" +
                 "       P.price,\n" +
                 "       P.status as status,\n" +
                 "       P.sellerId,\n" +
@@ -305,7 +371,7 @@ public class ProductDao {
                         rs.getString("regionNameGu"),
                         rs.getString("regionNameTown"),
                         rs.getString("createdAt"),
-                        rs.getString("updatedAt"),
+                        rs.getString("pulledAt"),
                         rs.getInt("price"),
                         rs.getString("status"),
                         rs.getInt("sellerId"),
@@ -316,10 +382,26 @@ public class ProductDao {
 
     public List<GetProductRes> getProductsByCategory(int categoryId) {
         String getProductsByCategoryQuery = "select productIdx,\n" +
-                "       Product.createdAt,\n" +
+                "       case\n" +
+                "           when timestampdiff(MINUTE, Product.createdAt, CURRENT_TIMESTAMP()) < 60\n" +
+                "               then concat(timestampdiff(MINUTE, Product.createdAt, CURRENT_TIMESTAMP()), '분 전')\n" +
+                "           when timestampdiff(HOUR, Product.createdAt, CURRENT_TIMESTAMP()) < 24\n" +
+                "               then concat(timestampdiff(HOUR, Product.createdAt, CURRENT_TIMESTAMP()), '시간 전')\n" +
+                "           when timestampdiff(DAY, Product.createdAt, CURRENT_TIMESTAMP()) < 30\n" +
+                "               then concat(timestampdiff(DAY, Product.createdAt, CURRENT_TIMESTAMP()), '일 전')\n" +
+                "           else date_format(Product.createdAt, '%Y년-%m월-%d일')\n" +
+                "           end as createdAt,\n" +
                 "       title,\n" +
                 "       price,\n" +
-                "       pulledAt,\n" +
+                "       case\n" +
+                "           when timestampdiff(MINUTE, Product.pulledAt, CURRENT_TIMESTAMP()) < 60\n" +
+                "               then concat('끌올 ', timestampdiff(MINUTE, Product.pulledAt, CURRENT_TIMESTAMP()), '분 전')\n" +
+                "           when timestampdiff(HOUR, Product.pulledAt, CURRENT_TIMESTAMP()) < 24\n" +
+                "               then concat('끌올 ', timestampdiff(HOUR, Product.pulledAt, CURRENT_TIMESTAMP()), '시간 전')\n" +
+                "           when timestampdiff(DAY, Product.pulledAt, CURRENT_TIMESTAMP()) < 30\n" +
+                "               then concat('끌올 ', timestampdiff(DAY, Product.pulledAt, CURRENT_TIMESTAMP()), '일 전')\n" +
+                "           else date_format(Product.pulledAt, '%Y년-%m월-%d일')\n" +
+                "           end as pulledAt,\n" +
                 "       imageUrl,\n" +
                 "       regionNameGu,\n" +
                 "       regionNameTown,\n" +
@@ -329,7 +411,8 @@ public class ProductDao {
                 "         join UserInfo UI on UI.userInfoIdx = Product.sellerId\n" +
                 "         join Region R on R.regionIdx = Product.regionId\n" +
                 "         left join Wish W on Product.productIdx = W.productId\n" +
-                "where (UI.status = 'normal' and Product.status = 'normal') AND categoryId = ? \n" +
+                "where (UI.status = 'normal' and Product.status = 'normal')\n" +
+                "  AND categoryId = ?\n" +
                 "group by productIdx";
         int getProductsByCategoryParams = categoryId;
         return this.jdbcTemplate.query(getProductsByCategoryQuery,
