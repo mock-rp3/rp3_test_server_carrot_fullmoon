@@ -259,4 +259,19 @@ public class UserController {
         }
     }
 
+//    @ResponseBody
+//    @PostMapping("/authSMS")
+//    public BaseResponse<PostLoginRes> logIn(@RequestBody PostLoginReq postLoginReq) {
+//        if (postLoginReq.getPhoneNumber() == null || postLoginReq.getPhoneNumber().length() == 0) {
+//            return new BaseResponse<>(LOGIN_USERS_EMPTY_PHONE_NUMBER);
+//        }
+//        try {
+//            PostLoginRes postLoginRes = userProvider.logIn(postLoginReq);
+//            return new BaseResponse<>(postLoginRes);
+//        } catch (BaseException exception) {
+//            return new BaseResponse<>(exception.getStatus());
+//        }
+//    }
+
+
 }

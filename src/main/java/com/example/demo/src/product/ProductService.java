@@ -30,12 +30,12 @@ public class ProductService {
     //POST
     @Transactional
     public PostProductRes createProduct(PostProductReq postProductReq) throws BaseException {
-        try {
+//        try {
             int newProduct = productDao.createProduct(postProductReq);
             return new PostProductRes(newProduct);
-        } catch (Exception exception) {
-            throw new BaseException(DATABASE_ERROR);
-        }
+//        } catch (Exception exception) {
+//            throw new BaseException(DATABASE_ERROR);
+//        }
     }
 
     @Transactional

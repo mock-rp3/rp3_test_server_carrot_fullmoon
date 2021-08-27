@@ -1864,15 +1864,16 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="436" parent="295" name="authJwt">
+    <column id="436" parent="295" name="closingReason">
       <Position>10</Position>
-      <DataType>text|0s</DataType>
-    </column>
-    <column id="437" parent="295" name="closingReason">
-      <Position>11</Position>
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <DefaultExpression>&apos;not Deleted&apos;</DefaultExpression>
+    </column>
+    <column id="437" parent="295" name="authJwt">
+      <Position>11</Position>
+      <DataType>varchar(100)|0s</DataType>
+      <DefaultExpression>&apos;12334&apos;</DefaultExpression>
     </column>
     <key id="438" parent="295" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>

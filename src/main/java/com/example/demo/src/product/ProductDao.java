@@ -50,13 +50,13 @@ public class ProductDao {
                 "       regionNameTown,\n" +
                 "       count(W.wishIdx)\n" +
                 "from Product\n" +
-                "         join ProductImage PI on Product.productIdx = PI.productId\n" +
                 "         join UserInfo UI on UI.userInfoIdx = Product.sellerId\n" +
-                "         join Region R on R.regionIdx = Product.regionId\n" +
+                "         left join ProductImage PI on Product.productIdx = PI.productId\n" +
+                "         left join Region R on R.regionIdx = Product.regionId\n" +
                 "         left join Wish W on Product.productIdx = W.productId\n" +
                 "where UI.status = 'normal'\n" +
                 "  and Product.status = 'normal'\n" +
-                "group by productIdx order by date(Product.createdAt) desc";
+                "group by productIdx order by date(Product.createdAt) asc";
         return this.jdbcTemplate.query(getProductsQuery,
                 (rs, rowNum) -> new GetProductRes(
                         rs.getInt("productIdx"),
