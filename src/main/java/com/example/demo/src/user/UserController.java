@@ -151,7 +151,7 @@ public class UserController {
      * @return BaseResponse<PostLoginRes>
      * @RequestBody PostLoginReq
      * <p>
-     * 문제가 많은 코드.......405 에러 뜸 매핑자체가 안 됨
+     *
      */
     @ResponseBody
     @PostMapping("/join-login")
