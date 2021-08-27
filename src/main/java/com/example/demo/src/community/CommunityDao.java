@@ -228,4 +228,13 @@ public class CommunityDao {
         String lastInsertIdQuery = "select last_insert_id()";
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
     }
+
+    public int deleteComment(DeleteCommentReq deleteCommentReq) {
+        String deleteReactionQuery = "update Comment set status = 'deleted' where userInfoId = ? and commentIdx= ?";
+        Object[] deleteReactionParams = new Object[]{
+                deleteCommentReq.getUserInfoId()
+                , deleteCommentReq.getCommentIdx()};
+
+        return this.jdbcTemplate.update(deleteReactionQuery, deleteReactionParams);
+    }
 }

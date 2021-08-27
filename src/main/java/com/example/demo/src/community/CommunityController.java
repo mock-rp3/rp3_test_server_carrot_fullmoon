@@ -206,4 +206,20 @@ public class CommunityController {
             return new BaseResponse<>(baseException.getStatus());
         }
     }
+
+    @PatchMapping("/delete/comment")
+    public BaseResponse<String> deleteComment(@RequestBody DeleteCommentReq deleteCommentReq) throws BaseException {
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+            //userIdx와 접근한 유저가 같은지 확인
+            if (deleteCommentReq.getUserInfoId() != userIdxByJwt) {
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+            communityService.deleteComment(deleteCommentReq);
+            return new BaseResponse<>(SUCCESS_DELETE_REACTION);
+        } catch (BaseException baseException) {
+            return new BaseResponse<>(baseException.getStatus());
+        }
+    }
+
 }

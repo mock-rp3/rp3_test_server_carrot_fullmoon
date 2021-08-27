@@ -3,6 +3,8 @@ package com.example.demo.src.user;
 
 import com.example.demo.src.user.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -62,12 +64,23 @@ public class UserDao {
 
 
     public int createUser(PostUserReq postUserReq) {
-        String createUserQuery = "insert into UserInfo (phoneNumber, password, nickname, profileImageUrl) VALUES (?,?,?,?)";
-        Object[] createUserParams = new Object[]{postUserReq.getPhoneNumber(), postUserReq.getPassword(), postUserReq.getNickname(), postUserReq.getProfileImageUrl()};
-        this.jdbcTemplate.update(createUserQuery, createUserParams);
+        try {
+            String createUserQuery = "insert into UserInfo (phoneNumber, password, nickname, profileImageUrl) VALUES (?,?,?,?)";
+            Object[] createUserParams = new Object[]{postUserReq.getPhoneNumber(), postUserReq.getPassword(), postUserReq.getNickname(), postUserReq.getProfileImageUrl()};
+            this.jdbcTemplate.update(createUserQuery, createUserParams);
 
-        String lastInsertIdQuery = "select last_insert_id()";
-        return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+            String lastInsertIdQuery = "select last_insert_id()";
+            int lastId = this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+            String createRegionIdQuery = "insert into Region (userInfoId) values (?)";
+            return this.jdbcTemplate.queryForObject(createRegionIdQuery, int.class, lastId);
+//        return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+        } catch (EmptyResultDataAccessException e) {
+            throw new RuntimeException("EmptyResult");
+
+        } catch (IncorrectResultSizeDataAccessException e) {
+            String lastInsertImageIdQuery = "select last_insert_id()";
+            return this.jdbcTemplate.queryForObject(lastInsertImageIdQuery, int.class);
+        }
     }
 
     public int checkPhoneNumber(String phoneNumber) {

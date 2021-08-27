@@ -107,4 +107,13 @@ public class CommunityService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    @Transactional
+    public void deleteComment(DeleteCommentReq deleteCommentReq) throws BaseException {
+        try {
+            communityDao.deleteComment(deleteCommentReq);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
